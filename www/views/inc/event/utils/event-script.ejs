@@ -1,0 +1,68 @@
+<script>
+// chức năng xem thêm
+    let page =  1;
+    function checkExit(data, callback) {
+        if(!data){
+            if(callback){
+                callback.showError();
+            }else{
+                return { error : true, message : 'data is exist' } 
+            }
+        }
+        
+    }
+    function componentPostEvent({ listBlogs }){
+        checkExit(listBlogs);
+        let  elment  ='';
+        listBlogs.forEach(blog=>{
+            if(blog && !$(`${blog._id}`).length){
+                let description = blog.description;
+                if(description.length >30){
+                    description = description.slice(0,30) + '....'
+                }
+                elment += `
+                <div class="col-12 col-xl-3 col-lg-4 col-md-6 t-news-item" id = ${blog._id}>
+                <div class="t-product-slider-item-wrapper">
+                    <div class="t-product-slider-item-img">
+                        <img src="/template/images/product-img2.jpg" alt="Product">
+                    </div>
+                    <p class="t-product-slider-item-title">
+                        ${blog.title}
+                    </p>
+                    <div class="t-news-author">
+                        <img src="${blog.author && blog.author.image || '/template/images/icon-people.png' }" alt="Author">
+                        ${blog.author && blog.author.fullname || ''}
+                    </div>
+                    <div class="t-product-slider-item-description">
+                        ${description}
+                    </div>
+                    <a class="t-product-slider-item-link" href="/event/details-blog-event/?slug=${blog.slug}&category=${blog.category._id}"><%- lang(langKey,'details')%> <img src="/template/images/icon-arrow-right.svg" alt="Arrow" /></a>
+                </div>
+            </div>`
+            }
+        });
+        $('#container-list-blog-event').append(elment);
+        if(listBlogs.length == 0){
+            $('#btn-load-more-event').remove();
+        }
+       
+    }
+    async function loadMoreBlogEvent(){
+        page  =  page + 1;
+        let eventID = urlQuery('eventID');
+        let dataCallAjax = {
+            method : 'POST',
+            data  : { eventID, page },
+            url  :'/get-more-blog-event'
+        }
+        let dataToView = {};
+        dataToView.showError = (error)=>{
+            console.log('nothing to show', error);
+        }
+        dataToView.showSuccess = (data)=>{
+            componentPostEvent({ listBlogs : data });
+        }
+        getDataServerAndMapView({ dataCallAjax, dataToView });
+    }
+    $('body').on('click','#btn-load-more-event', loadMoreBlogEvent)
+</script>

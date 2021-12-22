@@ -1,0 +1,336 @@
+<body>
+	<!--_______________________________HEADER_______________________________________-->
+	<button class="flat-btn hide-pc t-mobile-menu-btn"><img src="/template/images/mobile-menu.svg" alt="Menu" /></button>
+    <% include ../core/topbar.ejs %>
+	
+	<!--_________________________________PRODUCT BANNER______________________________-->
+	<div class="t-home-block t-product-banner t-product-detail-banner">
+		<div class="container">
+			<div class="t-home-block-content">
+				<img class="t-product-icon" src="/template/images/product-icon.png" alt="Product" />
+				<p class="t-title">
+					<%= infoBlog && infoBlog.title%>
+				</p>
+				<p class="t-description">
+					<%=infoBlog &&infoBlog.description%>
+				</p>
+				<!-- <div class="t-product-banner-video">
+					<iframe id="youtubePlayer" allowfullscreen src="https://www.youtube.com/embed/HdewU9LCDMs?enablejsapi=1" allow="autoplay"></iframe>
+					<button class="flat-btn t-product-banner-video-play-btn">
+						<img class="t-product-banner-video-img" src="/template/images/product-banner.jpg" alt="Banner" />
+						<span class="t-product-banner-video-background"></span>
+						<img class="t-product-banner-video-icon" src="/template/images/icon-video.png" alt="Video" />
+					</button>
+				</div> -->
+			</div>
+		</div>
+	</div>
+	<div class="t-product-detail-block-container">
+		<div class="container">
+			<div class="t-product-detail-block row">
+				<!-- <div class="col-12 col-lg-6 t-product-detail-img">
+					<img src="/template/images/product-detail-img1.jpg" alt="Product" />
+				</div> -->
+				<div class="col-12 col-lg-6 t-product-detail-text">
+					<%- infoBlog && infoBlog.content%>
+
+					<!-- <p class="t-title t-title-product">
+						Lorem Ipsum is <span class="color-blue">simply dummy</span> text of the printing.
+					</p>
+					<div class="t-product-detail-description">
+						It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It has survived not five centuries, but also the leap into electronic typesetting, remaining  unchanged.
+					</div>
+					<div class="t-product-detail-bullet">
+						<p>
+							<img src="/template/images/icon-check.png" alt="Bullet" />
+							Lorem Ipsum is not simply random text.
+						</p>
+						<p>
+							<img src="/template/images/icon-check.png" alt="Bullet" />
+							It has roots in a piece of classical Latin literature from 45 BC
+						</p>
+						<p>
+							<img src="/template/images/icon-check.png" alt="Bullet" />
+							Making it over 2000 years old. Richard McClintock.
+						</p>
+					</div> -->
+				</div>
+			</div>
+		</div>
+	</div>
+		<!--_________________________________OTHER NEWS______________________________-->
+		<div class="t-related-news">
+			<div class="container">
+				<p class="t-related-news-title"> <%- lang(langKey,'doc_them_cau_chuyen_khac')%></p>
+				<div class="t-news-item-container row">
+					<%for(let i =0; i< listBothCategoryEvent.length; i ++){ %>
+						<%let blog = listBothCategoryEvent[i]
+						if(blog){%>
+						<div class="col-12 col-xl-3 col-lg-4 col-md-6 t-news-item">
+							<div class="t-product-slider-item-wrapper">
+								<div class="t-product-slider-item-img">
+									<img src="<%= (blog &&  blog.image || '/template/images/product-img1.jpg') %>" alt="Product">
+								</div>
+								<p class="t-product-slider-item-title">
+									<%= blog && blog.title || ''%>
+								</p>
+								<div class="t-news-author">
+									<img src="<%= blog &&  blog.author && blog.author.image || '/template/images/icon-people.png' %>" alt="Author" />
+									<%=blog &&  blog.author && blog.author.fullname%>
+								</div>
+								<div class="t-product-slider-item-description">
+									<%= blog &&  blog.description || ''%>
+								</div>
+								<a class="t-product-slider-item-link" href="/event/details-blog-event/?slug=<%=blog.slug%>&category=<%=blog.category._id%>"><%- lang(langKey,'details')%> <img src="/template/images/icon-arrow-right.svg" alt="Arrow" /></a>
+							</div>
+						</div>
+						<%}%>
+					<%}%>
+				</div>
+			</div>
+		</div>
+	
+
+	<!-- ____________________________________PRODUCT DETAIL BLOCK________________________________
+	<div class="t-product-detail-block-container">
+		<div class="container">
+			<div class="t-product-detail-block row">
+				<div class="col-12 col-lg-6 t-product-detail-img">
+					<img src="/template/images/product-detail-img1.jpg" alt="Product" />
+				</div>
+				<div class="col-12 col-lg-6 t-product-detail-text">
+					<p class="t-title t-title-product">
+						Lorem Ipsum is <span class="color-blue">simply dummy</span> text of the printing.
+					</p>
+					<div class="t-product-detail-description">
+						It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It has survived not five centuries, but also the leap into electronic typesetting, remaining  unchanged.
+					</div>
+					<div class="t-product-detail-bullet">
+						<p>
+							<img src="/template/images/icon-check.png" alt="Bullet" />
+							Lorem Ipsum is not simply random text.
+						</p>
+						<p>
+							<img src="/template/images/icon-check.png" alt="Bullet" />
+							It has roots in a piece of classical Latin literature from 45 BC
+						</p>
+						<p>
+							<img src="/template/images/icon-check.png" alt="Bullet" />
+							Making it over 2000 years old. Richard McClintock.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!____________________________________PRODUCT DETAIL BLOCK________________________________-->
+	<!-- <div class="t-product-detail-block-container">
+		<div class="container">
+			<div class="t-product-detail-block row">
+				<div class="col-12 col-lg-6 order-0 order-lg-1 t-product-detail-img">
+					<img src="/template/images/product-detail-img1.jpg" alt="Product" />
+				</div>
+				<div class="col-12 col-lg-6 order-1 order-lg-0 t-product-detail-text">
+					<p class="t-title t-title-product">
+						Lorem Ipsum is <span class="color-blue">simply dummy</span> text of the printing.
+					</p>
+					<div class="t-product-detail-description">
+						It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It has survived not five centuries, but also the leap into electronic typesetting, remaining  unchanged.
+					</div>
+					<div class="t-product-detail-bullet">
+						<p>
+							<img src="/template/images/icon-check.png" alt="Bullet" />
+							Lorem Ipsum is not simply random text.
+						</p>
+						<p>
+							<img src="/template/images/icon-check.png" alt="Bullet" />
+							It has roots in a piece of classical Latin literature from 45 BC
+						</p>
+						<p>
+							<img src="/template/images/icon-check.png" alt="Bullet" />
+							Making it over 2000 years old. Richard McClintock.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> -->
+
+	<!--____________________________________PRODUCT DETAIL BLOCK________________________________-->
+	<!-- <div class="t-product-detail-block-container">
+		<div class="container">
+			<div class="t-product-detail-block row">
+				<div class="col-12 col-lg-6 t-product-detail-img">
+					<img src="/template/images/product-detail-img1.jpg" alt="Product" />
+				</div>
+				<div class="col-12 col-lg-6 t-product-detail-text">
+					<p class="t-title t-title-product">
+						Lorem Ipsum is <span class="color-blue">simply dummy</span> text of the printing.
+					</p>
+					<div class="t-product-detail-description">
+						It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It has survived not five centuries, but also the leap into electronic typesetting, remaining  unchanged.
+					</div>
+					<div class="t-product-detail-bullet">
+						<p>
+							<img src="/template/images/icon-check.png" alt="Bullet" />
+							Lorem Ipsum is not simply random text.
+						</p>
+						<p>
+							<img src="/template/images/icon-check.png" alt="Bullet" />
+							It has roots in a piece of classical Latin literature from 45 BC
+						</p>
+						<p>
+							<img src="/template/images/icon-check.png" alt="Bullet" />
+							Making it over 2000 years old. Richard McClintock.
+						</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div> -->
+
+	<!--_________________________________OUR CUSTOMER______________________________-->
+	<!-- <div class="t-home-block t-product-detail-customer">
+		<div class="container">
+			<div class="t-home-block-content">
+				<p class="t-title">
+					Đối tượng <span class="color-blue">khách hàng phù hợp</span> với dịch vụ
+				</p>
+				<div class="t-home-customer row">
+					<div class="t-home-customer-item col-12 col-lg-4">
+						<img src="/template/images/home-img-customer1.png" alt="Customer" />
+						<p>Nhà thầu</p>
+						<span>
+							It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries, but also the leap into electronic typesetting It has survived not only five centuries, but also the leap into electronic typesetting
+						</span>
+						<div>
+							<a href="javascript:void(0)">Chi tiết <img src="/template/images/icon-arrow-right.svg" alt="Arrow" /></a>
+						</div>
+					</div>
+					<div class="t-home-customer-item col-12 col-lg-4">
+						<img src="/template/images/home-img-customer2.png" alt="Customer" />
+						<p>Chủ đầu tư, Quản lý dự án</p>
+						<span>
+							It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries, but also the leap into electronic typesetting It has survived not only five centuries, but also the leap into electronic typesetting
+						</span>
+						<div>
+							<a href="javascript:void(0)">Chi tiết <img src="/template/images/icon-arrow-right.svg" alt="Arrow" /></a>
+						</div>
+					</div>
+					<div class="t-home-customer-item col-12 col-lg-4">
+						<img src="/template/images/home-img-customer3.png" alt="Customer" />
+						<p>Đơn vị tư vấn</p>
+						<span>
+							It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries, but also the leap into electronic typesetting It has survived not only five centuries, but also the leap into electronic typesetting
+						</span>
+						<div>
+							<a href="javascript:void(0)">Chi tiết <img src="/template/images/icon-arrow-right.svg" alt="Arrow" /></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="t-home-scrolldown">
+			<button class="btn t-home-scrolldown-btn"><img src="/template/images/icon-arrow-down.png" /></button>
+		</div>
+	</div> -->
+
+	<!--____________________________________PRODUCT SLIDER________________________________-->
+	<!-- <div class="t-home-block bg-white">
+		<div class="container">
+			<div class="t-home-block-content">
+				<p class="t-title t-title-product">
+					Các sản phẩm khác
+				</p>
+				<div class="t-home-product-slider-container t-product-slider-container">
+					<div class="t-home-product-slider" id="t-product-slider">
+						<div class="col-12 col-lg-4 t-product-slider-item">
+							<div class="t-product-slider-item-wrapper">
+								<div class="t-product-slider-item-img">
+									<img src="/template/images/product-img1.jpg" alt="Product" />
+								</div>
+								<p class="t-product-slider-item-title">Sản phẩm 1</p>
+								<div class="t-product-slider-item-description">
+									It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries.
+								</div>
+								<a class="t-product-slider-item-link" href="javascript:void(0)">Chi tiết <img src="/template/images/icon-arrow-right.svg" alt="Arrow" /></a>
+							</div>
+						</div>
+						<div class="col-12 col-lg-4 t-product-slider-item">
+							<div class="t-product-slider-item-wrapper">
+								<div class="t-product-slider-item-img">
+									<img src="/template/images/product-img2.jpg" alt="Product" />
+								</div>
+								<p class="t-product-slider-item-title">Sản phẩm 2</p>
+								<div class="t-product-slider-item-description">
+									It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries.
+								</div>
+								<a class="t-product-slider-item-link" href="javascript:void(0)">Chi tiết <img src="/template/images/icon-arrow-right.svg" alt="Arrow" /></a>
+							</div>
+						</div>
+						<div class="col-12 col-lg-4 t-product-slider-item">
+							<div class="t-product-slider-item-wrapper">
+								<div class="t-product-slider-item-img">
+									<img src="/template/images/product-img3.jpg" alt="Product" />
+								</div>
+								<p class="t-product-slider-item-title">Sản phẩm 3</p>
+								<div class="t-product-slider-item-description">
+									It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries.
+								</div>
+								<a class="t-product-slider-item-link" href="javascript:void(0)">Chi tiết <img src="/template/images/icon-arrow-right.svg" alt="Arrow" /></a>
+							</div>
+						</div>
+						<div class="col-12 col-lg-4 t-product-slider-item">
+							<div class="t-product-slider-item-wrapper">
+								<div class="t-product-slider-item-img">
+									<img src="/template/images/product-img1.jpg" alt="Product" />
+								</div>
+								<p class="t-product-slider-item-title">Sản phẩm 1</p>
+								<div class="t-product-slider-item-description">
+									It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries.
+								</div>
+								<a class="t-product-slider-item-link" href="javascript:void(0)">Chi tiết <img src="/template/images/icon-arrow-right.svg" alt="Arrow" /></a>
+							</div>
+						</div>
+						<div class="col-12 col-lg-4 t-product-slider-item">
+							<div class="t-product-slider-item-wrapper">
+								<div class="t-product-slider-item-img">
+									<img src="/template/images/product-img2.jpg" alt="Product" />
+								</div>
+								<p class="t-product-slider-item-title">Sản phẩm 2</p>
+								<div class="t-product-slider-item-description">
+									It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries.
+								</div>
+								<a class="t-product-slider-item-link" href="javascript:void(0)">Chi tiết <img src="/template/images/icon-arrow-right.svg" alt="Arrow" /></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>  -->
+
+	<!--____________________________________REGISTER & FOOTER_______________________________________-->
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $(".t-product-banner-video-play-btn").click(function() {
+            $(this).hide();
+        });
+        //___________________________INITIAL PRODUCT SLIDER
+        $("#t-product-slider").slick({
+            dots: false,
+            infinite: true,
+            slidesToShow: 3,
+            autoplay: true,
+            autoplaySpeed: 5000,
+            responsive: [
+                {
+                    breakpoint: 1200,
+                    settings: "unslick",
+                }
+            ],
+        });
+    });
+</script>

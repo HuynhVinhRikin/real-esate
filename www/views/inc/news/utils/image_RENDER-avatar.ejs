@@ -1,0 +1,27 @@
+<%if(objUser){%>
+	<%if(objUser.gender == 1){%>
+        <%if(_lodash.get(objUser, 'avatar.name', 'image-default.jpg').includes('http')){%>
+				<img class="wao-header-avatar" 
+					src="<%=_lodash.get(objUser, 'avatar.name', 'image-default.jpg')%>" 
+					alt="<%=_lodash.get(objUser, 'fullname', 'WAODATE')%>"
+				/>
+        <%}else{%>
+				<img class="wao-header-avatar" 
+					src="/files/users/<%=_lodash.get(objUser, 'avatar.name', 'image-default.jpg') == 'image-default.jpg' ? 'image-default.jpg' : _lodash.get(objUser, 'avatar.name')  %>" 
+						alt="<%=_lodash.get(objUser, 'fullname', 'WAODATE')%>"
+				/>
+        <%}%>
+    <%}else{%>    
+        <%if(_lodash.get(objUser, 'avatar.name', 'default_women.jpg').includes('http')){%>
+				<img class="wao-header-avatar" 
+					src="<%=_lodash.get(objUser, 'avatar.name', 'default_women.jpg')%>" 
+					alt="<%=_lodash.get(objUser, 'fullname', 'WAODATE')%>"
+				/>
+        <%}else{%>
+				<img class="wao-header-avatar" 
+					src="/files/users/<%=_lodash.get(objUser, 'avatar.name', 'default_women.jpg') == 'default_women.jpg' || _lodash.get(objUser, 'avatar.name', 'default_women.jpg') == 'image-default.jpg' ? 'default_women.jpg' : _lodash.get(objUser, 'avatar.name'); %>" 
+						alt="<%=_lodash.get(objUser, 'fullname', 'WAODATE')%>"
+				/>
+        <%}%>
+    <%}%>
+<%}%>

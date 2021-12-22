@@ -1,0 +1,179 @@
+<script>
+    $(document).ready(function(){
+        let getInfo = () => {
+            let username = $('#username').val();
+            let password = $('#password').val();
+            let fullname = $('#fullname').val();
+            let groupID = $('#groupID').val();
+            return { username, password, fullname, groupID };
+        }
+
+        $('#btnCreateAdmin').on('click', function(e){
+
+            let data = getInfo();
+            
+            /**
+             * validate
+             */              
+            const { username, password, fullname, groupID } = data;
+
+            if (!username || username.length <=1)
+                return alert('username không hợp lệ');
+            if (!password || password.length <=1)
+                return alert('password không hợp lệ');
+            if (!fullname || fullname.length <=1)
+                return alert('fullname không hợp lệ');
+            /**
+             * end_validate
+             */    
+
+            let token = localStorage.getItem('token_admin');
+            if (!token)
+                return window.location.href = '/admin/clear-session-admin';
+                
+            $.ajax({
+                url: `/admin/create-admin`,
+                method: 'POST',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", 'Bearer '+ token);
+                },
+                data: data,
+                success: function(resp) {
+                    if (resp.error) {
+                        if (resp.message === 'redirect_url_clear_session_admin') 
+                        {
+                            alert(`Phiên Hoạt Động Hết Hạn`);
+                            setTimeout(function(){
+                                window.location.href = '/admin/clear-session-admin';
+                            }, 200);   
+                            return;
+                        } else if (resp.message === 'username_exist') {
+                            return alert(`Tài Khoản đã tồn tại`);
+                        }  
+                        
+                        return alert('Tạo User Thất Bại');
+                    } else if(!resp.error) 
+                        return alert('Tạo User Thành Công')
+                },
+                error: function(err){
+                    return alert('Tạo User Thất Bại');
+                }
+            })
+        });
+
+        $('#btnCreateAdminAndGoBack').on('click', function(e){
+
+            let data = getInfo();
+            /**
+             * validate
+             */              
+            const { username, password, fullname, groupID } = data;
+
+            if (!username || username.length <=1)
+                return alert('username không hợp lệ');
+            if (!password || password.length <=1)
+                return alert('password không hợp lệ');
+            if (!fullname || fullname.length <=1)
+                return alert('fullname không hợp lệ');
+            /**
+             * end_validate
+             */  
+
+            let token = localStorage.getItem('token_admin');
+            if (!token)
+                return window.location.href = '/admin/clear-session-admin';
+                
+            $.ajax({
+                url: `/admin/create-admin`,
+                method: 'POST',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", 'Bearer '+ token);
+                },
+                data: data,
+                success: function(resp) {
+                    if (resp.error) {
+                        if (resp.message === 'redirect_url_clear_session_admin') 
+                        {
+                            alert(`Phiên Hoạt Động Hết Hạn`);
+                            setTimeout(function(){
+                                window.location.href = '/admin/clear-session-admin';
+                            }, 100);   
+                            return;
+                        }  else if (resp.message === 'username_exist') {
+                            return alert(`Tài Khoản đã tồn tại`);
+                        } 
+                        return alert('Tạo User Thất Bại');
+                    } else if(!resp.error)  {
+                        alert('Tạo User Thành Công')
+                        setTimeout(function(){
+                            window.location.href = `/admin/list-admin`
+                        }, 100);
+                        return;
+                    }
+                },
+                error: function(err){
+                    console.log(err.message);
+                    return alert('Tạo User Thất Bại');
+                }
+            })
+        });
+
+        $('#btnUpdateGroupAndGoBack').on('click', function(){
+
+            let data = getInfo();
+            
+            /**
+             * validate
+             */              
+            const { username, password, fullname, groupID } = data;
+
+            if (!username || username.length <=1)
+                return alert('username không hợp lệ');
+            if (!password || password.length <=1)
+                return alert('password không hợp lệ');
+            if (!fullname || fullname.length <=1)
+                return alert('fullname không hợp lệ');
+            /**
+             * end_validate
+             */    
+            let token = localStorage.getItem('token_admin');
+            if (!token)
+                return window.location.href = '/admin/clear-session-admin';
+            let  adminID  = $(this).attr("_adminID");
+            $.ajax({
+                url: `/admin/update-admin/${adminID}`,
+                method: 'POST',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", 'Bearer '+ token);
+                },
+                data: data,
+                success: function(resp) {
+                    if (resp.error) {
+                        if (resp.message === 'redirect_url_clear_session_admin') 
+                        {
+                            alert(`Phiên Hoạt Động Hết Hạn`);
+                            setTimeout(function(){
+                                window.location.href = '/admin/clear-session-admin';
+                            }, 100);   
+                            return;
+                        }  else if (resp.message === 'username_exist') {
+                            return alert(`Tài Khoản đã tồn tại`);
+                        } 
+                        return alert('Update User Thất Bại');
+                    } else if(!resp.error)  {
+                        alert('Update User Thành Công');
+                        setTimeout(function(){
+                            window.location.href = `/admin/list-admin`
+                        }, 100);
+                        return;
+                    }
+                },
+                error: function(err){
+                    return alert('Update User Thất Bại');
+                }
+            })
+        })
+
+
+    });
+</script>

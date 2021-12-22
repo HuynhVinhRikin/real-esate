@@ -1,0 +1,10 @@
+<%var fullnameSplit = user.fullname.split(' ');%>
+<%if(fullnameSplit.length > 2) {%>
+    <%=fullnameSplit.slice(-2).join(' ')%>
+    ,
+    <%=user.age%>
+<%}else{%>
+    <%=user.fullname%>
+    ,
+    <%=user.age%>
+<%}%>

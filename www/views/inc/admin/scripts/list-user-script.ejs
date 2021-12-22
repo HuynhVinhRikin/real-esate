@@ -1,0 +1,314 @@
+<script>
+    $(document).ready(function(){
+
+        <% if (search.status) { %>
+            $('#txtStatus').val(<%= search.status%>);
+        <% } %>
+
+         <% if (search.minAge) { %>
+            $('#txtMinAge').val(<%= search.minAge%>);
+        <% } %>
+
+        <% if (search.maxAge) { %>
+            $('#txtMaxAge').val(<%= search.maxAge%>);
+        <% } %>
+
+        <% if(search.minFeature){ %>
+            $('#txtMinFeature').val(<%= search.minFeature%>);
+        <% } %>
+
+         <% if(search.maxFeature){ %>
+            $('#txtMaxFeature').val(<%= search.maxFeature%>);
+        <% } %>
+       
+        const getFormSearch = () => {
+            let key = $('#txtSearch').val();
+            let starttime = $('#txtStartTime').val();
+            let endtime = $('#txtEndTime').val();
+            // let province = $('#txtProvince').val();
+            let provinceX = '';
+            let minAge = $('#txtMinAge').val();
+            let maxAge = $('#txtMaxAge').val();
+            let sort = $('#txtSort').val();
+
+            let gender = $('#txtGender').val();
+            let isFree = $('#txtIsFree').val();
+
+            let minFeature = $('#txtMinFeature').val();
+            let maxFeature = $('#txtMaxFeature').val();
+            
+            let status  = $('#txtStatus').val();
+            let numberConcept = $('#txtNumberConcept').val();
+        
+            let amountItemShow = $('#select_datatable_length').val();
+            return { key, starttime, endtime, province: provinceX, minAge, maxAge, gender, isFree, sort, minFeature, maxFeature, status, numberConcept, amountItemShow };
+        }
+
+        const buildAndGoURI = () => {
+            const { key, starttime, endtime, province: provinceX, minAge, maxAge, gender, isFree, sort, minFeature, maxFeature, status, numberConcept, amountItemShow } = getFormSearch();
+            let uri  = `/admin/list-user?`;
+
+            if (key) uri += `&key=${key}`;
+
+            if (starttime && endtime) uri += `&starttime=${starttime}&endtime=${endtime}`;
+
+            // TODO CHECK PROVINCE không phải là number nhưng vẫn thêm vào trong uri
+            if (!Number.isNaN(Number(provinceX))) uri += `&province=${provinceX}`;
+
+            if (minAge) uri += `&minAge=${minAge}`;
+            if (maxAge) uri += `&maxAge=${maxAge}`;
+
+
+            if (!Number.isNaN(Number(gender)) && Number(gender)!== -2) uri += `&gender=${gender}`;
+
+            if (!Number.isNaN(Number(isFree)) && Number(isFree)!== -2) uri += `&isFree=${isFree}`;
+
+            if(minFeature) uri += `&minFeature=${minFeature}`;
+            if(maxFeature) uri += `&maxFeature=${maxFeature}`;
+
+            if (sort != -1) uri += `&sort=${sort}`;
+
+            if(status != -2) uri += `&status=${status}`;
+            if(numberConcept && !Number.isNaN(Number(numberConcept))) uri +=`&amountConcept=${numberConcept}`;
+
+            <%- include ./checkPerPageCurrent.ejs %>
+
+            return window.location.href = uri;
+        }
+
+        const buildAndGoURIExportPFD = () => {
+            const {  key, starttime, endtime, province: provinceX, minAge, maxAge, gender, isFree, sort, minFeature, maxFeature, status, numberConcept, amountItemShow } = getFormSearch();
+
+            let uri  = `/admin/pdf-list-user?`;
+
+            if (key) uri += `&key=${key}`;
+
+            if (starttime && endtime) uri += `&starttime=${starttime}&endtime=${endtime}`;
+
+            // TODO CHECK PROVINCE không phải là number nhưng vẫn thêm vào trong uri
+            if (!Number.isNaN(Number(provinceX))) uri += `&province=${provinceX}`;
+
+            if (minAge) uri += `&minAge=${minAge}`;
+            if (maxAge) uri += `&maxAge=${maxAge}`;
+
+            if (!Number.isNaN(Number(isFree)) && Number(gender)!== -1) uri += `&gender=${gender}`;
+
+            if (!Number.isNaN(Number(isFree)) && Number(gender)!== -1) uri += `&isFree=${isFree}`;
+
+            if (sort != -1) uri += `&sort=${sort}`;
+
+            <%- include ./checkPerPageCurrent.ejs %>
+
+            return window.location.href = uri;
+        }
+
+        $('#btnSearch').on('click', function(e){
+            e.preventDefault();
+            buildAndGoURI();
+        })
+      
+        // Mail nhắn nhở kích hoạt
+        $('#btnSearchUserNotActive').on('click', function(e){
+            e.preventDefault();
+            const date = new Date();
+            let day = date.getDate()
+            let month = date.getMonth() + 1
+            let year = date.getFullYear()
+            day = day < 10 ? '0' + day : day
+            month = month < 10 ? '0' + month : month
+            let today = month +"/"+day +"/"+year; // tháng / ngày / năm
+            
+            let uri  = `/admin/list-user?&status=-1&today=${today}&onDisabled=true&maxResult=3000`
+            return window.location.href = uri;
+        })
+
+        $('#btnSendMailReActive').on('click', function(e){
+            e.preventDefault();
+            let listUserNotActive = [];
+            let getUsernameUserNotActive = $('.userNotActive');
+            let getEmailUserNotActive = $('.emailUserNotActive');
+            for(let i = 0; i < getUsernameUserNotActive.length ; i++) {
+                listUserNotActive.push(getEmailUserNotActive[i].getAttribute('title'));
+            }
+            if(listUserNotActive.length > 0){
+                $.ajax({
+                    url: `/admin/send-mail`,
+                    method: 'POST',
+                    data: { listUserNotActive : listUserNotActive },
+                    success: function(resp) {
+                            console.log({ resp });
+                            if (!resp.error) return alert('Cập Nhật Thành Công');
+                            return alert('Lỗi Cập Nhật, vui lòng thử lại sau!');
+                        },
+                        error: function(err){
+                            console.log(err.message)
+                            return alert('Lỗi Cập Nhật, vui lòng thử lại sau!');
+                        }
+                }).done(function(){
+                    // clearInputRequestParticipantion();
+                })
+            }
+
+            const date = new Date();
+            let day = date.getDate()
+            let month = date.getMonth() + 1
+            let year = date.getFullYear()
+            day = day < 10 ? '0' + day : day
+            month = month < 10 ? '0' + month : month
+            let today = month +"/"+day +"/"+year; // tháng / ngày / năm
+            
+            let uri  = `/admin/list-user?&status=-1&today=${today}&onDisabled=true&maxResult=3000`
+            return window.location.href = uri;
+        })
+
+        //send Mail test
+        $('#btnSendMailTest').on('click', function(e){
+            const date = new Date();
+            let day = date.getDate()
+            let month = date.getMonth() + 1
+            let year = date.getFullYear()
+            day = day < 10 ? '0' + day : day
+            month = month < 10 ? '0' + month : month
+            let today = month +"/"+day +"/"+year; // tháng / ngày / năm
+            
+            let listUserSendMailTest = $( ".ckbUserID:checked" )
+            if(listUserSendMailTest.length !== 0){
+                let listIdSenMailTest = [];
+                for(let i = 0; i < listUserSendMailTest.length ; i++) {
+                    listIdSenMailTest.push(listUserSendMailTest[i].value);
+                }
+                $.ajax({
+                    url: `/admin/send-mail`,
+                    method: 'POST',
+                    data: { listIdSenMailTest : listIdSenMailTest },
+                    success: function(resp) {
+                            console.log({ resp });
+                            if (!resp.error) return  window.location.href = `/admin/list-user?&status=-1&today=${today}&onDisabled=true&maxResult=3000`;
+                            return alert('Lỗi Cập Nhật, vui lòng thử lại sau!');
+                        },
+                        error: function(err){
+                            console.log(err.message)
+                            return alert('Lỗi Cập Nhật, vui lòng thử lại sau!');
+                        }
+                }).done(function(){
+                    // clearInputRequestParticipantion();
+                })
+            }else {
+                alert('Vui lòng chọn user test');
+            }
+        })
+         /*
+        *  CODE BEGIN CHECKBOX UPDATE STATUS CONCEPT
+        */
+        //checked item
+
+        let userIdArr = [];
+        $('.ckbUserID').on('click', function(){
+            let userID = $(this).val();
+            if($(this).is(':checked')){
+                userIdArr.push(userID);
+            }else{
+                if(userIdArr.includes(userID)){
+                    userIdArr.splice(userIdArr.indexOf(userID), 1);
+                }
+            }
+
+            if(userIdArr.length > 0){
+                $('#dropdownMenuOptionUser').show();
+            }else{
+                $('#dropdownMenuOptionUser').hide();
+            }
+        })
+        //checked all
+        $('#checkAll').on('change', function(){
+            if($(this).is(':checked')){
+                $('.ckbUserID').prop('checked', true);
+                $('.ckbUserID:checked').each(function(){
+                    $('#dropdownMenuOptionUser').show();
+                    userIdArr.push(this.value);
+                })
+            }else{
+                $('.ckbUserID').prop('checked', false);
+                $('#dropdownMenuOptionUser').hide();
+                userIdArr = []
+            }
+        })
+        /*
+        *  CODE END CHECKBOX UPDATE STATUS CONCEPT
+        */
+        $('.btnUpdateStatusWithListUser').on('click', function(e){
+            e.preventDefault();
+            if (userIdArr.length === 0) 
+                return alert('Vui Lòng Chọn ít nhất 1 Danh Mục');
+            let status = Number($(this).attr('_status'));
+            $.ajax({
+                url: `/admin/update-status-list-user`,
+                method: 'POST',
+                data: { arrUserID: userIdArr, status },
+                success: function(resp){
+                    if(!resp.error){
+                        alert('Cập Nhật Thành Công');
+                        return window.location.reload(true);
+                    }else{
+                        alert('Cập Nhật Thất Bại');
+                    }
+                },
+                error: function(){
+                    alert('Cập Nhật Thất Bại');
+                }
+            })
+        })
+        
+        /*|============================================|
+          |                UPDATE STATUS USER
+          |============================================|*/ 
+
+        $('.btnUpdateStatusUser').on('click', function(e){
+            e.preventDefault();
+            let status = $(this).attr('_status');
+            let userID = $(this).attr('_userID');
+            $.ajax({
+                url: `/admin/update-status-user/${userID}`,
+                method: 'POST',
+                data: { userID, status },
+                success: function(resp){
+                    if(resp.error)
+                       return alert("Lỗi");
+                    window.location.reload(true)
+                },
+                error: function(error){
+                    alert('Lỗi');
+                }
+            })
+        })
+       
+        $('#exportListUserPDF').on('click', function(e){
+            e.preventDefault();
+            buildAndGoURIExportPFD();
+        });
+
+        const data = {
+          account: "Tài khoản",
+          time_link: "Time link",
+          date_modified: "Ngày sửa đổi",
+          rose_lv1: "Hoa Hồng Cấp 1"
+        }
+        $("#view_column").on("change", (e) => {
+          const target = $(e.target);
+          if(Number(target.val()) === -1){
+            return;
+          }
+          $(`.${target.val()}`).addClass("display_selected")
+          $(`option[value='${target.val()}']`).remove(); 
+        }) 
+
+        $(".close_column").on("click", (e)=> {
+          const target = $(e.target);
+          const columnClose = target.attr("data-close");
+          $(`.${columnClose}`).removeClass("display_selected");
+          $('#view_column').append(`<option value="${columnClose}">${data[columnClose]}</option>`)
+        })
+    });
+
+       
+</script>

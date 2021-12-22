@@ -1,0 +1,59 @@
+<body>
+
+	<!--_______________________________HEADER_______________________________________-->
+	<button class="flat-btn hide-pc t-mobile-menu-btn"><img src="/template/images/mobile-menu.svg" alt="Menu" /></button>
+    <% include ../core/topbar.ejs %>
+
+	<!--_________________________________CONTACT FORM_____________________________________-->
+	<div class="t-contact">
+		<div class="container">
+			<p class="t-contact-title"><%- lang(langKey,'title_give_info_for_help')%></p>
+			<div class="row">
+				<div class="col-12 col-lg-5 t-contact-input">
+					<div class="t-modal-input-item">
+						<label><%- lang(langKey,'fullname')%></label>
+						<input type="text" class="form-control"  id = 'input-fullname-req-form' placeholder="<%- lang(langKey,'press')%> <%- lang(langKey,'fullname')%>" />
+					</div>
+					<div class="t-modal-input-item">
+						<label><%- lang(langKey,'company_name')%></label>
+						<input type="text" class="form-control" id = 'input-company-req-form' placeholder="<%- lang(langKey,'press')%> <%- lang(langKey,'company_name')%>" />
+					</div>
+					<div class="t-modal-input-item">
+						<label>Email</label>
+						<input type="text" class="form-control" id = 'input-email-req-form' placeholder="<%- lang(langKey,'press') %> Email" />
+					</div>
+					<div class="t-modal-input-item">
+						<label><%- lang(langKey,'company_type')%></label>
+						<select id = 'input-type-company-req-form' class="form-control">
+							<option value="0">Choose</option>
+							<option value="1">Construction</option>
+							<option value="2">Commerce</option>
+							<option value="3">Manufacturing</option>
+						</select>
+					</div>
+					<div class="t-modal-input-item">
+						<label><%- lang(langKey,'phone')%></label>
+						<input type="text" class="form-control"  id = 'input-phone-req-form' placeholder="<%- lang(langKey,'press')%> <%- lang(langKey,'phone')%>" />
+					</div>
+					<div class="t-modal-input-btn">
+						<button id ='send-req-join-with-trix' class="btn"><%- lang(langKey,'send_req')%></button>
+					</div>
+				</div>
+				<div class="col-12 col-lg-7 t-contact-map">
+					<img style="width: 100%;" src="/template/images/fake-map.png" alt="map" />
+				</div>
+			</div>
+			<div class="t-contact-description">
+				<p>
+					<%- lang(langKey,'headquarters')%> <span class="color-blue">Trixgo</span>
+				</p>
+				<div>
+					<%- lang(langKey,'address_of_us')%>
+					<br />
+					<%- lang(langKey,'phone')%>: <%- lang(langKey,'phone_of_us')%>  <span class="hide-mobile">|</span>  <br class="hide-pc" />Email: <%- lang(langKey,'email_of_us')%>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--____________________________________REGISTER & FOOTER_______________________________________-->

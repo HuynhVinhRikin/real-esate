@@ -1,0 +1,432 @@
+<script>
+
+    // đã move ra file ngoài, cho dùng chung chat-script và main.socket.js
+    // let flagForAutoShowDataPosition = 1001; // gỉa định hiển thị vị trí ưu tiên
+
+    var source = "/template/audios/messenger_sound.mp3"
+    var audio = document.createElement("audio");
+    // audio.autoplay = true;
+    audio.load()
+    audio.addEventListener("load", function() { 
+        audio.play();
+    }, true);
+    audio.src = source;
+
+    let token = localStorage.getItem('token_waodate');
+    const socket = io(`<%= process.env.URL || 'https://henho.waodate.com' %>?token=${token}`);
+
+    let incrNumberNoti = () => {
+        let numStrOrigin = $('.headerNumberNotification').text();
+        let numOrigin = parseInt(numStrOrigin);
+
+        if (!numOrigin){
+            $(`.containerNumberNotification`).append(`
+                <span class="number-notification headerNumberNotification">
+                    1
+                </span>
+            `);
+        } else {
+            let numberAfterUpdate = numOrigin + 1;
+            $(`.containerNumberNotification`).append(`
+                <span class="number-notification headerNumberNotification">
+                    ${numberAfterUpdate}
+                </span>
+            `);
+        }
+    }
+
+    let incrNumberNewMessage = () => {
+        let numStrOrigin = $('.headerNumberNewMessage').text();
+        let numOrigin = parseInt(numStrOrigin);
+        if (!numOrigin){
+            let numberAfterUpdate = numOrigin || 1;
+            $(`.headerNumberNewMessage`).text(`${numberAfterUpdate}`);
+            $(`.headerNumberNewMessage`).css({ 'display': 'block' })
+        } else {
+            let numberAfterUpdate = numOrigin + 1;
+            // console.log(`-----numberAfterUpdate: ${numberAfterUpdate}`)
+            $(`.headerNumberNewMessage`).text(`${numberAfterUpdate}`);
+        }
+        
+    }
+
+    let showPopupSelectedParticipant = (fullnameSender, usernameSender, titleConcept) => {
+        $('#popupSelectedParticipant_fullnameSender').text(fullnameSender);
+        $('#popupSelectedParticipant_title').text(titleConcept);
+        $('#popupSelectedParticipant_hrefSendMessage').attr('href', `/ca-nhan/tin-nhan/${usernameSender}`);
+        $('#popupSelectedParticipant').addClass('wao-popup--open');
+    }
+    const updateNotifyAmount = () =>  {
+        const amountNotify =  $(".notifyCheck").find(".hasNotify");
+        if(amountNotify.length){
+          const amountInNumber = Number(amountNotify.text());
+          amountNotify.text(amountInNumber + 1)
+          return;
+        }
+        $(".notifyCheck").prepend(`
+          <div class="wao-count-notify hasNotify">
+            1
+          </div>
+        `)
+    }
+
+    socket.on('connect', () => {
+        socket.on("NOTIFICATION_ACCEPTED_VIEW_PRIVATE_IMAGE", data => {
+          const { notiID, sender,imageID, messageForReceiver } = data;
+          toastr.options.onHidden = function() { window.location.href = "/ca-nhan/thong-bao" };
+          toastr['info'](`${sender.fullName} đã chọn bạn cho phép bạn truy cập hình ảnh riêng tư!`);
+          const wrapperNotifications = $(".notification-content__body");
+          if(wrapperNotifications.length){
+             const contentNotifyText = `
+              <div class="notification-content__item  notification-content__item--notSeen" _isSeen="0" _notificationid="${notiID}">
+                <a class="" href="/nguoi-dung/thong-tin/${sender.username}?imgId=${imageID}#view_image_${imageID}">
+                  <img class="avatar" src="/files/users/${sender.avatar.name}" alt="Trần Văn Sang.">
+                  <div class=" notification-content__title">
+                      <p class="view-message" noti_id="${notiID}">
+                        ${messageForReceiver}
+                      </p>
+                      <p>
+                        vài giây trước
+                      </p>
+                  </div>
+                </a>
+              </div>`;
+            wrapperNotifications.prepend(contentNotifyText);
+          }
+          updateNotifyAmount();
+        })
+
+        socket.on("NOTIFICATION_REQUEST_FROM_ANOTHER_USER", data => {
+          const { messageForReceiver,notiID, imageID,imageName,sender } = data;
+          toastr.options.onHidden = function() { window.location.href = "/ca-nhan/thong-bao" };
+          toastr['info'](`${sender.fullName} yêu cầu xem hình ảnh riêng tư của bạn!`);
+          const wrapperNotifications = $(".notification-content__body");
+          if(wrapperNotifications.length){
+             const contentNotifyText = `
+              <div class="notification-content__item  notification-content__item--notSeen" _isSeen="0" _notificationid="${notiID}">
+                <a class="" href="/ca-nhan/thong-tin?imgId=${imageID}">
+                  <img class="avatar" src="/files/users/${sender.avatar.name}" alt="Hiếu Châu">
+                  <div class=" notification-content__title">
+                    <p class="view-message" noti_id="${notiID}">
+                      ${messageForReceiver}
+                    </p>
+                    <p>
+                      vài giây trước
+                    </p>
+                  </div>
+                </a>
+              </div>`;
+            wrapperNotifications.prepend(contentNotifyText);
+          }
+          updateNotifyAmount();
+          
+        })
+       
+       socket.on('PARTICIPANT_REQUEST_CONCEPT_SSC', data => {
+            const { infoNoti, infoUser: { fullname, avatar, age }, infoConcept: { title, _id } } = data;
+            const textShow = `<strong>${fullname}</strong> yêu cầu tham gia <strong>${title}</strong>`;
+            audio.play();
+
+            toastr['success'](textShow);
+            $(`.listNotifications`).prepend(`
+                <a class="wao-topbar__dropdown-notification-item wao-topbar__dropdown-notification-item--unSeen" href="#">
+                    <img src="/files/users/${avatar && avatar.name}" alt="">
+                    <div class="wao-topbar__dropdown-notification-dicription">
+                        <p class="h5">${fullname}<span>${age}</span></p>
+                        <p>${textShow}</p>
+                    </div>
+                </a>
+            `);
+
+            incrNumberNoti();
+        })
+
+        socket.on('PARTICIPANT_HAS_BEEN_SELECTED_SSC', data => {
+            const { infoNoti, infoUser: { fullname, avatar, age, username }, infoConcept: { title, _id } } = data;
+            const textShow = `<strong>${fullname}</strong> đã chọn bạn là người tham gia <strong>${title}</strong>`;
+            audio.play();
+            toastr['success'](textShow);
+            $(`.listNotifications`).prepend(`
+                <a class="wao-topbar__dropdown-notification-item wao-topbar__dropdown-notification-item--unSeen" href="#">
+                    <img src="/files/users/${avatar && avatar.name}" alt="">
+                    <div class="wao-topbar__dropdown-notification-dicription">
+                        <p class="h5">${fullname}<span>${age}</span></p>
+                        <p>${textShow}</p>
+                    </div>
+                </a>
+            `);
+
+            $('#message-apply').addClass('')
+            showPopupSelectedParticipant(fullname, username, title);
+        });
+
+        socket.on('USER_CREATE_CONCEPT_RECEIVE_ACCEPT_CSS', data => {
+            // console.log({ data });
+            const { infoNoti, infoUser: { fullname, avatar, age }, infoConcept: { title, _id } } = data;
+            const textShow = `<strong>${fullname}</strong> đã CHẤP NHẬN tham gia <strong>${title}</strong>`
+            audio.play();
+           
+            toastr['success'](textShow);
+            $(`.listNotifications`).prepend(`
+                <a class="wao-topbar__dropdown-notification-item wao-topbar__dropdown-notification-item--unSeen" href="#">
+                    <img src="/files/users/${avatar && avatar.name}" alt="">
+                    <div class="wao-topbar__dropdown-notification-dicription">
+                        <p class="h5">${fullname}<span>${age}</span></p>
+                        <p>${textShow}</p>
+                    </div>
+                </a>
+            `);
+        });
+        <%if(isLogin){%>
+            socket.on('LIST_USER_ONLINE_CSS', ({ listUserConnectedWithInfo, genderOfAuth })  => {
+
+                if (listUserConnectedWithInfo && listUserConnectedWithInfo.length > 0) {
+                    $(`.listUserOnline`).empty();
+                    listUserConnectedWithInfo.filter(item => Number(item.gender) != genderOfAuth).forEach(itemOnline => {
+                        const { infoUser: { avatar, fullname, age, _id, username, gender } } = itemOnline;
+                        let pathAvatar = '';
+                        if (!avatar.name) {
+                            if (Number(gender) == 0) {
+                                pathAvatar = `/files/users/default_women.jpg`
+                            } else {
+                                pathAvatar = `https://scontent.fsgn2-4.fna.fbcdn.net/v/t1.6435-9/139189930_1540976232773275_2446469927733857766_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=x2ebnVXJf30AX_naIET&_nc_ht=scontent.fsgn2-4.fna&oh=00_AT-6kV2nAvlACBDxdIZPSwl-VPfw434R1rKl7djDixJ-BQ&oe=61E960C2`
+                            }
+                        } else {
+                            pathAvatar = `/files/users/${avatar.name}`
+                        }
+                        $(`.listUserOnline`).append(`
+                            <div class="profile-footer__user profile-footer__user--active">
+                                <div class="profile-footer__user-info">
+                                    <img src="${pathAvatar}" alt="${fullname}">
+                                <a href="/nguoi-dung/thong-tin/${username}">    
+                                 <h3>${fullname}<span>${age}</span></h3>
+                                </a>
+                                </div>
+                                <div class="profile-footer__user-talk">
+                                    <a href="/ca-nhan/tin-nhan/${username}" rel="nofollow"><i class="wd-icon fa fa-comments"></i></a>
+                                </div>
+                            </div>
+                        `);
+                    });
+                }
+            });
+        <%}%>
+
+        /**
+         * REMOVE PARTICIPANT
+         */ 
+         socket.on('REMOVE_PARTICIPANT_CSS', data => {
+            const { infoNoti, infoUser: { fullname, avatar, age }, infoConcept: { title, _id } } = data;
+            const textShow = `<strong>${fullname}</strong> đã loại bạn khỏi buổi hẹn hò <strong>${title}</strong>`;
+            audio.play();
+
+            toastr['warning'](textShow);
+            $(`.listNotifications`).prepend(`
+                <a class="wao-topbar__dropdown-notification-item wao-topbar__dropdown-notification-item--unSeen" href="#">
+                    <img src="/files/users/${avatar && avatar.name}" alt="">
+                    <div class="wao-topbar__dropdown-notification-dicription">
+                        <p class="h5">${fullname}<span>${age}</span></p>
+                        <p>${textShow}</p>
+                    </div>
+                </a>
+            `);
+
+            incrNumberNoti();
+        })
+        
+        /**
+         * LIKE USER, LIKE CONCEPT
+         */
+        socket.on('USER_LIKE_CONCEPT_CSS', data => {
+            const { infoNoti, infoUser: { fullname, avatar, age }, infoConcept: { title, _id } } = data;
+            const textShow = `♥️ <strong>${fullname}</strong> đã yêu thích <strong>${title}</strong>`
+            audio.play();
+           
+            toastr['success'](textShow);
+            $(`.listNotifications`).prepend(`
+                <a class="wao-topbar__dropdown-notification-item wao-topbar__dropdown-notification-item--unSeen" href="#">
+                    <img src="/files/users/${avatar && avatar.name}" alt="">
+                    <div class="wao-topbar__dropdown-notification-dicription">
+                        <p class="h5">${fullname}<span>${age}</span></p>
+                        <p>${textShow}</p>
+                    </div>
+                </a>
+            `);
+        });
+
+        socket.on('USER_LIKE_USER_SSC', data => {
+            console.log('vãi lồn')
+            const { infoNoti, infoUser: { fullname, avatar, age } } = data;
+            const textShow = `<strong>${fullname}</strong> đã yêu thích bạn`
+            audio.play();
+          
+            toastr['success'](textShow);
+            $(`.listNotifications`).prepend(`
+                <a class="wao-topbar__dropdown-notification-item wao-topbar__dropdown-notification-item--unSeen" href="#">
+                    <img src="/files/users/${avatar && avatar.name}" alt="">
+                    <div class="wao-topbar__dropdown-notification-dicription">
+                        <p class="h5">${fullname}<span>${age}</span></p>
+                        <p>${textShow}</p>
+                    </div>
+                </a>
+            `);
+        });
+
+        socket.on('USER_UNLIKE_USER_CSS', data => {
+            const { infoUser: { fullname, avatar, age } } = data;
+            const textShow = `<strong>${fullname}</strong> bỏ yêu thích bạn`
+            audio.play();
+           
+            toastr['warning'](textShow);
+            $(`.listNotifications`).prepend(`
+                <a class="wao-topbar__dropdown-notification-item wao-topbar__dropdown-notification-item--unSeen" href="#">
+                    <img src="/files/users/${avatar && avatar.name}" alt="">
+                    <div class="wao-topbar__dropdown-notification-dicription">
+                        <p class="h5">${fullname}<span>${age}</span></p>
+                        <p>${textShow}</p>
+                    </div>
+                </a>
+            `);
+        });
+
+        /**
+         * nếu là trang chat thì ko show thông báo
+         */
+        socket.on('SEND_MESSAGE_SSC', data => {
+            if (!data.messageError) {
+                incrNumberNewMessage();
+            }
+            
+            audio.play();
+            
+            const { infoUser: { fullname, avatar: { name: avatarName }, age, username, gender, _id: userSenderID }, payer } = data;
+            let pathnameSplit = window.location.pathname.split('/');
+            let _username_current = pathnameSplit[pathnameSplit.length-1]
+            // console.log({ username, _username_current })
+
+            $(`#conversisation_${userSenderID}`).attr(`data-position`, flagForAutoShowDataPosition);
+            flagForAutoShowDataPosition++;
+            $(function() {
+                $("body .user-list .user-message").sort(sort_li).appendTo('#mCSB_1_container');
+                function sort_li(a, b) {
+                    let bSort = $(b).attr('data-position');
+                    let aSort = $(a).attr('data-position');
+
+                    return Number(bSort) < Number(aSort) ? -1 : 1;
+                }
+            });
+
+            <%if(!hrefCurrent.includes('/ca-nhan/tin-nhan')){%>
+                const textShow = `<a href="/ca-nhan/tin-nhan/${username}">${fullname} vừa gửi tin nhắn cho bạn!</a>`;
+                toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut",
+                    "onclick": function () { 
+                        return window.location.href = `/ca-nhan/tin-nhan/${username}`
+                    } 
+                    
+                }
+                toastr['info'](textShow);
+            <%}%>
+          
+            if (!payer && _username_current == username && username !== "waodatesupport") {
+                // let pathImage = '';
+                // if (avatarName && avatarName.includes('http')) {
+                //     pathImage = avatarName;
+                // } else {
+                //     pathImage = `/files/users/${avatarName}`;
+                // }
+                let pathImage = $('#image_avatar_chat').attr('src');
+                
+                $(`.message-content`).append(`
+                    <p class="their-message">
+                        <a href="/ca-nhan/goi-dich-vu">
+                            <i>Vui lòng trả phí để xem Tin Nhắn này!</i>
+                        </a>
+                    </p>
+                `)
+                $('.chat-content__body')
+                .animate({
+                    scrollTop: $('.chat-content__body')[0].scrollHeight
+                }, 1000);
+                return;
+            }
+            
+            // console.log({ _username_current, username })
+            if (_username_current == username) { // kiểm tra append đ
+                // console.log({ __: 'passs check username' })
+                const { infoMessage: { body, author } } = data;
+
+                let pathImage = $('#image_avatar_chat').attr('src');
+                $(`.message-content`).append(`
+                    <p class="their-message">
+                        <span>${body}</span>
+                    </p>
+                `)
+            } else {
+                const { infoMessage: { body, author } } = data;
+                $(`#latest_message_${username}`).html(`
+                    <p>
+                        <i>
+                            <strong>${body}</strong> 
+                            <small style="color:red">Tin Nhắn Mới</small>
+                        </i>
+                    </p>
+                `)
+            }
+
+            
+            
+            if (_username_current && _username_current.length > 0 && _username_current != username) {
+                const textShow = `${fullname} vừa gửi tin nhắn cho bạn!`;
+                toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": false,
+                    "progressBar": false,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut",
+                    "onclick": function () { 
+                        return window.location.href = `/ca-nhan/tin-nhan/${username}`
+                    }
+                }
+                toastr['info'](textShow);
+            }
+        });
+    
+        socket.on('ERROR_SELECTED_PARTICIPANT_CSS', ({ message }) => toastr['error'](message));
+        socket.on('ACCEPT_CONCEPT_REQUEST_RESPONSE_ERR_CSS', ({ message }) => toastr['error'](message));
+        socket.on('ACCEPT_CONCEPT_REQUEST_RESPONSE_ERROR', ({ message }) => toastr['error'](message));
+        socket.on('PARTICIPANT_HAS_BEEN_SELECTED_CSS_ERROR', ({ message }) => toastr['error'](message));
+
+        socket.on('PARTICIPANT_HAS_BEEN_SELECTED_CSS_SUCCESS', ({ message }) => toastr['success'](message));
+        socket.on('ACCEPT_CONCEPT_REQUEST_RESPONSE_SUCCESS', ({ message }) => toastr['success'](message));
+        socket.on('ERROR_SELECTED_ENOUGH_PARTICIPANT_CSS', ({ message }) => toastr['error'](message));
+        socket.on('NOTIFICATION_ACCEPTED_VIEW_PRIVATE_IMAGE', ({ message }) => {
+            toastr['success'](message)
+        });
+
+    });
+
+   
+</script>

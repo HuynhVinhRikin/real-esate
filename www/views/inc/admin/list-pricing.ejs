@@ -1,0 +1,55 @@
+<div class="content-page">
+        <div class="content">
+            <div class="container-fluid">
+                <br>
+                
+                <div class="row">
+                     <div class="col-12">
+                        <div class="card m-b-20">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="table-responsive">
+                                            
+                                        <table class="content-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Tên Gói</th>
+                                                        <th>Số Ngày Hoạt Động</th>
+                                                        <th>Point TRẢ</th>
+                                                        <th>Point THƯỞNG</th>
+                                                        <th>Ngày Tạo</th>
+                                                        <th>TRẠNG THÁI</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <%listPricings && listPricings.length && listPricings.forEach((itemPricing, index) => {%>
+                                                        <tr>
+                                                            <td><%=index+1%></td>
+                                                            <td>
+                                                                <strong>
+                                                                    <%=itemPricing.title%>
+                                                                    <!-- <p class="m-0 text-muted font-8">template-an-vat-va-thuc-uong-dr14</p> -->
+                                                                </strong>
+                                                            </td>
+                                                            <td><strong>
+                                                               <%=itemPricing.timeLimit%>
+                                                            </strong></td>
+                                                            <td><%=itemPricing.pointPricing%></td>
+                                                            <td><%=itemPricing.point%></td>
+                                                            <td><%= moment(itemPricing.createAt).format('L');%></td>
+                                                            <td>-</td>
+                                                        </tr>
+                                                    <%})%>
+                                            </tbody>
+                                        </table>
+                                            
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

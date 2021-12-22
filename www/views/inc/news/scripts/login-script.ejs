@@ -1,0 +1,51 @@
+<script>
+    $(document).ready(function(){
+       
+        const getFormLogin = () => {
+
+            const username      = $('#usernameLogin').val().toLowerCase();
+            const password      = $('#passwordLogin').val();
+
+            return { username, password };
+        }
+       
+
+        $('#btn-login').on('click',function(){
+            const data = getFormLogin();
+            let username = $('#usernameLogin');
+            let password = $('#passwordLogin');
+
+            return $.ajax({
+                url: `/dang-nhap`,
+                method: 'POST',
+                data: data,
+                success: function(resp) {
+                    if (resp.error) {
+                        if (resp.message === 'username_not_exist'){
+                            setErrorMessage(username, "Tài Khoản Không Tồn Tại");
+                        }
+                        else if (resp.message === 'user_not_verify'){
+                            setErrorMessage(username, "Tài Khoản Chưa Kích Hoạt!");
+                        }
+                        else if (resp.message === 'user_not_active'){
+                            setErrorMessage(username, "Tài Khoản Đã Bị Khoá");
+                        }else{
+                            setErrorMessage(password, "Sai Tài Khoản Hoặc Mật Khẩu");
+                            // openPopup('#wao-modal-sign-in-fail .wao-modal-content');
+                        }
+                    } else {
+                        localStorage.setItem("token_waodate", resp.data.token);
+                        setTimeout(function(){ 
+                            return window.location.href = '/';
+                        }, 1000);
+                    }
+                },  
+                error: function(err){
+                    enableAndStopLoading(that, 'Đăng Nhập');
+                    alert('Lỗi Đăng Nhập');
+                }
+            })
+        })
+
+    })
+</script>

@@ -1,0 +1,112 @@
+<div class="content-page">
+        <div class="content">
+            <div class="container-fluid">
+                <br>
+                <div class="row">
+                        <div class="col-12">
+                           <div class="card m-b-20">
+                               <div class="card-body">
+                                   <div class="row">
+                                       <h4 class="mt-0 header-title" style="padding-left: 16px">Bộ Lọc và Sắp Xếp</h4>
+                                       <div class="col-md-12">
+                                           <div class="form-group row">
+                                                <div class="col-md-8">
+                                                    <div class="form-group">
+                                                        <label>Ngày Xuất Bản</label>
+                                                        <div>
+                                                            <div class="input-daterange input-group" id="date-range" data-date-format="dd/mm/yyyy">
+                                                                <input type="text" class="form-control" name="start" placeholder="Ngày Bắt Đầu" id="txtStartTime" <% if (search) { %>
+                                                                    value="<%= search.starttime && search.starttime %>"
+                                                                <% } %> > 
+                                                                <input type="text" class="form-control" name="end" placeholder="Ngày Kết Thúc" id="txtEndTime" <% if (search) { %>
+                                                                    value="<%= search.endtime && search.endtime %>"
+                                                                <% } %> >
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                           </div>
+                                       </div>
+                                   </div>
+                                   <hr>
+                                   <div class="row">
+                                       <div class="col-md-12">
+                                           <span class="text-center"> 
+                                               <i>
+                                                   <% if (amount) { %>
+                                                       Có <strong style="color: #29bbe3"><%= amount || 0 %></strong> kết quả trả về 
+                                                   <% }else{ %>
+                                                       Có <strong style="color: #29bbe3"><%= amount || 0 %></strong> kết quả trả về 
+                                                   <% } %>
+                                               </i>
+                                           </span>
+                                           <button class="btn btn-info float-right" id="btnSearch">Tìm Kiếm</button>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card m-b-20">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="table-responsive">
+                                        <%- include ./utils/paging.ejs%>
+                                        <table class="content-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Người Dùng</th>
+                                                        <th>----</th>
+                                                        <th>Tổng Views</th>
+                                                        <th>Tổng Coin</th>
+                                                        <th>Ngày Tạo</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <%listTransactions && listTransactions.length && listTransactions.forEach((itemTransaction, index) => {%>
+                                                        <tr>
+                                                            <td><%=index+1%></td>
+                                                            <td>
+                                                                <strong>
+                                                                    <%let objUser = itemTransaction.user;%>
+                                                                    <%- include ./utils/image_RENDER_ADMIN.ejs%>
+                                                                    <%=itemTransaction.user.fullname%>
+                                                                </strong>
+                                                            </td>
+                                                            <td>
+                                                                <%=itemTransaction.user.fullname%>
+                                                                <p class="m-0 text-muted font-8">
+                                                                    <%=itemTransaction.user.email%>
+                                                                </p>
+                                                            </td>
+                                                            <td>
+                                                                <i>
+                                                                    <strong><%= formatCurrency('###,###.', itemTransaction.point)%> point</strong>
+                                                                </i>
+                                                            </td>
+                                                            <td>
+                                                                <i>
+                                                                    <strong><%= formatCurrency('###,###.', itemTransaction.view)%> views</strong>
+                                                                </i>
+                                                            </td>
+                                                            <td>
+                                                                <%= moment(itemTransaction.createAt).calendar();%>
+                                                            </td>
+                                                        </tr>
+                                                    <%})%>
+                                            </tbody>
+                                        </table>
+                                            <%- include ./utils/paging.ejs%>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,114 @@
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+            
+            <br>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                                <div class="col-lg-12">
+                                    <div class="card m-b-30"><img class="card-img-top img-fluid"
+                                            <%if(infoWithdraw.image) {%>
+                                                <img src="/files/users/<%=infoWithdraw.image%>"
+                                                    style="width: 400px; height: 400px;"
+                                                >
+                                            <%}else{%>
+                                                <img src="/files/users/default-withdraw.png">
+                                            <%}%>
+                                        <div class="card-body">
+                                            <h4 class="card-title font-16 mt-0">
+                                                <%let objUser = infoWithdraw.user%>
+                                                <%-include ./utils/image_RENDER_ADMIN.ejs%>
+                                                
+                                                <%=infoWithdraw.user.fullname%>(<%if(infoWithdraw.user.age){%><%=infoWithdraw.user.age%><%}%>)
+                                                <small>
+                                                    <%=infoWithdraw.user.email%>
+                                                </small>
+                                            </h4>
+                                            <p class="card-text"><small class="text-muted">
+                                                Cập Nhật Lần Cuối: <%= moment(infoWithdraw.modifyAt).format('L');%>
+                                            </small></p>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <table class="content-table">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Người Quản Lý(Admin)</th>
+                                    <th>Trạng Thái</th>
+                                    <th>Thời Gian</th>
+                                    <th>Tổng Rút</th>
+                                </tr>
+                            </thead>
+                                <tbody>
+                                    <% if (listWithdrawDetail && listWithdrawDetail.length > 0) { %>
+                                        <% listWithdrawDetail.forEach(( itemWithdrawDetail, index ) => { %>
+                                            <% if (itemWithdrawDetail) { %>
+                                                <tr>
+                                                    <th>
+                                                        <%= index + 1 %> 
+                                                    </th>
+                                                  
+                                                    <td>
+                                                        <small>
+                                                            <%if(itemWithdrawDetail.admin){%>
+                                                                <%=itemWithdrawDetail.admin.fullname%>/
+                                                                <strong><%=itemWithdrawDetail.admin.username%></strong>
+                                                            <%}else{%>
+                                                                <i>Chưa tiếp nhận</i>
+                                                            <%}%>
+                                                        </small>
+                                                    </td>
+                                                   <td>
+                                                        <% if (itemWithdrawDetail.oldStatus == 0) { %>
+                                                            <i class="mdi mdi-checkbox-blank-circle text-danger">Yêu Cầu Xử Lý</i>
+                                                        <% }else if(itemWithdrawDetail.oldStatus == 1){ %>
+                                                            <i class="mdi mdi-checkbox-blank-circle text-warning">Đang Xử Lý</i>
+                                                        <% } else if(itemWithdrawDetail.oldStatus == 2){%>
+                                                            <i class="mdi mdi-checkbox-blank-circle text-success">Xử Lý Thành Công</i>
+                                                        <% } else if(itemWithdrawDetail.oldStatus == 3){%>
+                                                            <i class="mdi mdi-checkbox-blank-circle" style="color: #000000;">Xử Lý Thất Bại</i>
+                                                        <%}%>
+                                                        <i style="padding: 0px 10px" class="mdi mdi-forward"></i>
+                                                        <% if (itemWithdrawDetail.status == 0) { %>
+                                                            <i class="mdi mdi-checkbox-blank-circle text-danger">Yêu Cầu Xử Lý</i>
+                                                        <% }else if(itemWithdrawDetail.status == 1){ %>
+                                                            <i class="mdi mdi-checkbox-blank-circle text-warning">Đang Xử Lý</i>
+                                                        <% } else if(itemWithdrawDetail.status == 2){%>
+                                                            <i class="mdi mdi-checkbox-blank-circle text-success">Xử Lý Thành Công</i>
+                                                        <% } else if(itemWithdrawDetail.status == 3){%>
+                                                            <i class="mdi mdi-checkbox-blank-circle" style="color: #000000;">Xử Lý Thất Bại</i>
+                                                        <%}%>
+                                                   </td>
+                                                   <td>
+                                                        <%= moment(itemWithdrawDetail.createAt).format('L');%>
+                                                   </td>
+                                                    <td>
+                                                        <strong>
+                                                            <%= formatCurrency('###,###.', itemWithdrawDetail.transactionWithdraw.totalPrice)%> VNĐ
+                                                        </strong>
+                                                    </td>
+                                                </tr>
+                                            <% } %>
+                                        <% }) %>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

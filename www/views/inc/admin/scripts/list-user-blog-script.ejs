@@ -1,0 +1,64 @@
+<script>
+    $(document).ready(function(){
+       
+
+        let arrBlogID = [];
+        let getFormSearchAndFilter = () => {
+            let key = $('#txtSearch').val();
+            let starttime = $('#txtStartTime').val();
+            let endtime = $('#txtEndTime').val();
+            let category = $('#txtCategory').val();
+            let author = $('#txtAuthor').val();
+            let sortView = $('#txtView').val();
+            let status = $('#txtSort').val();
+            /*
+            * so luong item hien thi
+            */
+            let amountItemShow = $('#select_datatable_length').val();
+
+            return { key, starttime, endtime, category, author, sortView, status, amountItemShow };
+        }
+
+        let buildAndGoURI = () =>{
+            let { key, starttime, endtime, category, author, sortView, status, amountItemShow } = getFormSearchAndFilter();
+            let uri = `/admin/list-blog?`;
+            if(key) uri += `&key=${key}`;
+
+            if(starttime && endtime) uri += `&starttime=${starttime}&endtime=${endtime}`
+            if(category != -1) uri += `&category=${category}`;
+            if(author   != -1) uri += `&author=${author}`;
+            if(sortView != -1) uri += `&sortView=${sortView}`;
+            if(status   != -1 && !Number.isNaN(Number(status))) uri += `&status=${status}`;
+            <%- include ./checkPerPageCurrent.ejs %>
+
+            return window.location.href = uri;
+        }
+        $('#btnSearch').on('click', function(e){
+            e.preventDefault();
+            buildAndGoURI();
+        })
+
+        $('.ckbBlogID').on('click', function(e){
+            let blogID = $(this).val();
+            if($(this).is(':checked')){
+                arrBlogID.push(blogID);
+            } else {
+                if(arrBlogID.includes(blogID)){
+                    arrBlogID.splice(arrBlogID.indexOf(blogID), 1);
+                }
+            }
+            if(arrBlogID.length > 0)
+            {
+                $('#dropdownMenuRemoveBlog').show(500);
+            }else{
+                $('#dropdownMenuRemoveBlog').hide(500);
+            }
+            console.log(arrBlogID);
+        })
+
+        
+
+       
+        
+    })
+</script>

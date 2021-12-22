@@ -1,0 +1,197 @@
+<div class="wao-date-card">
+    <div class="left-card wao-pc">
+        <div class="card-img">
+            <%objUser = user;%>
+            <%-include ../image_RENDER-header.ejs%>
+            <%if(user.cmnd){%>
+                <img src="/template/front-end-new/img/favorite/verified_icon.svg" alt="verified icon" class="verified_icon">
+            <%}%>
+        </div>
+    </div>
+    <div class="right-card">
+        <div class="right-top-card">
+            <div class="card-user">
+                <div class="user-left wao-mb">
+                    <div class="user-img card-img">
+                        <%-include ../image_RENDER-header.ejs%>
+                        <%if(user.cmnd){%>
+                            <img src="/template/front-end-new/img/favorite/verified_icon.svg" alt="verified icon" class="verified_icon">
+                        <%}%>
+                    </div>
+                </div>
+                <div class="user-info user-right">
+                    <a href="" class="wao-mb wao-btn wao-like-btn wao-popup-open likeGuest 
+                    <%if(infoUser){%>
+                        <%var listUserLikeGuest = infoUser.usersMeLike.join(',');%>
+                        <%if(listUserLikeGuest.includes(user._id)){%>
+                            active
+                        <%}else{%>
+                        <%}%>
+                    <%}else{%>
+                    <%}%>"
+                    style='cursor: pointer;' _guestID='<%=user._id%>' data="wao-favorite-popup">
+                       
+                        <svg width="18" height="16" viewBox="0 0 18 16" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 16C8.74374 16 8.49669 15.9072 8.30415 15.7388C7.577 15.1035 6.87593 14.5065 6.2574 13.9799L6.25424 13.9772C4.44081 12.4332 2.87485 11.0998 1.78528 9.7863C0.567307 8.31791 0 6.92567 0 5.40473C0 3.92701 0.507156 2.56372 1.42795 1.56581C2.35973 0.556101 3.63826 0 5.02844 0C6.06747 0 7.01903 0.3282 7.8566 0.975406C8.2793 1.3021 8.66245 1.70192 9 2.16828C9.33769 1.70192 9.7207 1.3021 10.1435 0.975406C10.9811 0.3282 11.9327 0 12.9717 0C14.3617 0 15.6404 0.556101 16.5722 1.56581C17.493 2.56372 18 3.92701 18 5.40473C18 6.92567 17.4328 8.31791 16.2149 9.78616C15.1253 11.0998 13.5595 12.433 11.7463 13.9769C11.1267 14.5043 10.4245 15.1023 9.69571 15.739C9.50331 15.9072 9.25612 16 9 16Z"></path>
+                        </svg>
+                        Yêu thích
+                    </a>
+                    <a href="/ca-nhan/tin-nhan/<%=user.username%>" class="wao-mb wao-btn wao-btn-outline-b">
+                        <img src="/template/front-end-new/img/nav/nav_icon_mb_3.svg"
+                             alt="icon">
+                        Nhắn tin
+                    </a>
+                    <p class="name">
+                        <a href="/nguoi-dung/thong-tin/<%=user.username%>">
+                        <%if(user.fullname){%>
+                            <%- include ../fullname_SPLIT.ejs%>
+                        <%}%>
+                        <!-- <%= _lodash.get(user, 'age', 'Chưa cập nhật')%> -->
+                        </a>
+                    </p>
+                    <ul class="meta">
+                        <li>
+                            <span>
+                                <img src="/template/front-end-new/img/date-detail/eye_icon.svg" alt="icon">
+                            </span>
+                            <%=user.amountView && user.amountView%>
+                        </li>
+                        <li>
+                            <span><img src="/template/front-end-new/img/date-detail/heart_icon.svg"alt="icon"></span>
+                            <%=user.usersLikedMe && user.usersLikedMe.length%>
+                        </li>
+                        <li>
+                            <span><img src="/template/front-end-new/img/home/location_icon.svg" alt="icon"></span>
+                            <%if(provinces){%>
+                                <%if(user && !Number.isNaN(Number(user.province))){%>
+                                    
+                                    <% var infoProvince = user.province < 10 ? provinces['0'+user.province] : provinces[user.province]%>
+                                    <%if(infoProvince){%>
+                                        <%if(user && !Number.isNaN(Number(user.district))  && Number(user.district) != -1 && user.district != null){%>
+                                            <% if(user.district < 100) { %>
+                                                <% if(user.district < 10){ %>
+                                                    <%=districts["00"+user.district].name_with_type%><%=", "  %>
+                                                    <%= _lodash.get(infoProvince, 'name', 'Chưa cập nhật')%>
+                                                <% }else{ %> 
+                                                    <%=districts["0"+user.district].name_with_type%><%=", "  %>
+                                                    <%= _lodash.get(infoProvince, 'name', 'Chưa cập nhật')%>
+                                                <%}%>
+                                            <% }else{  %>
+                                                <%=districts[user.district].name_with_type%><%=", "  %> 
+                                                <%= _lodash.get(infoProvince, 'name', 'Chưa cập nhật')%>
+                                            <%}%>
+                                        <%}else{%>
+                                            <%= _lodash.get(infoProvince, 'name', 'Chưa cập nhật')%>
+                                        <%}%>
+                                    <%}else{%>
+                                        Chưa Cập Nhật
+                                    <%}%>
+
+                                <%}else{%>
+                                    Chưa Cập Nhật
+                                <%}%>
+
+                            <%}%>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <a href="/ca-nhan/tin-nhan/<%=user.username%>" class="wao-pc wao-message-btn has-message">
+                <img src="/template/front-end-new/img/nav/nav_icon_mb_3.svg" alt="icon">
+            </a>
+            <a href="" class="wao-like-btn wao-popup-open wao-pc likeGuest
+            <%if(infoUser){%>
+                <%var listUserLikeGuest = infoUser.usersMeLike.join(',');%>
+                <%if(listUserLikeGuest.includes(user._id)){%>
+                    active
+                <%}else{%>
+                <%}%>
+            <%}else{%>
+            <%}%>"
+            _guestID='<%=user._id%>'
+             data="wao-favorite-popup">
+             <svg width="18" height="16" viewBox="0 0 18 16" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 16C8.74374 16 8.49669 15.9072 8.30415 15.7388C7.577 15.1035 6.87593 14.5065 6.2574 13.9799L6.25424 13.9772C4.44081 12.4332 2.87485 11.0998 1.78528 9.7863C0.567307 8.31791 0 6.92567 0 5.40473C0 3.92701 0.507156 2.56372 1.42795 1.56581C2.35973 0.556101 3.63826 0 5.02844 0C6.06747 0 7.01903 0.3282 7.8566 0.975406C8.2793 1.3021 8.66245 1.70192 9 2.16828C9.33769 1.70192 9.7207 1.3021 10.1435 0.975406C10.9811 0.3282 11.9327 0 12.9717 0C14.3617 0 15.6404 0.556101 16.5722 1.56581C17.493 2.56372 18 3.92701 18 5.40473C18 6.92567 17.4328 8.31791 16.2149 9.78616C15.1253 11.0998 13.5595 12.433 11.7463 13.9769C11.1267 14.5043 10.4245 15.1023 9.69571 15.739C9.50331 15.9072 9.25612 16 9 16Z"></path>
+            </svg>
+            </a>
+        </div>
+        <div class="card-content">
+            <ul>
+                <li>
+                    <i><img src="/template/front-end-new/img/home/height.svg" alt="icon"></i>
+                    <%if(user.height){%>
+                        <%= _lodash.get(user, 'height', 'Chưa cập nhật')%>
+                    <%}else{%>
+                        Chưa cập nhật
+                    <%}%>
+                </li>
+                <li>
+                    <i><img src="/template/front-end-new/img/home/weight.svg" alt="icon"></i>
+                    <%if(!Number.isNaN(Number(user.body))){%>
+                        <%var infoBody = constants.bodys.find(body => Object.is(Number(body.value), Number(user.body)))%>
+                        <%= _lodash.get(infoBody, 'text', 'Chưa cập nhật')%>
+                    <%}else{%>
+                        ...
+                    <%}%>
+                </li>
+                <li>
+                    <i><img src="/template/front-end-new/img/home/married.svg" alt="icon"></i>
+                    <%if(!Number.isNaN(Number(user.marital))){%>
+                        <%var infoMarital = constants.maritals.find(marital => Object.is(Number(marital.value), Number(user.marital)))%>
+                        <%= _lodash.get(infoMarital, 'text', 'Chưa cập nhật')%>
+                    <%}else{%>
+                        ...
+                    <%}%>
+                </li>
+                <li>
+                    <i><img src="/template/front-end-new/img/home/major.svg" alt="icon"></i>
+                    <%if(!Number.isNaN(Number(user.education))){%>
+                        <%var infoEdu = constants.educations.find(education => Object.is(Number(education.value), Number(user.education)))%>
+                        <%= _lodash.get(infoEdu, 'text', 'Chưa cập nhật')%>
+                    <%}else{%>
+                        ...
+                    <%}%>
+                </li>
+                <li>
+                    <i><img src="/template/front-end-new/img/home/smoke.svg" alt="icon"></i>
+                    <%if(!Number.isNaN(Number(user.smoking))){%>
+                        <%var infoSmoking = constants.smokings.find(smoking => Object.is(Number(smoking.value), Number(user.smoking)))%>
+                        <%= _lodash.get(infoSmoking, 'text', 'Chưa cập nhật')%>
+                    <%}else{%>
+                        ...
+                    <%}%>
+                </li>
+                <li>
+                    <i><img src="/template/front-end-new/img/home/drink.svg" alt="icon"></i>
+                    <%if(!Number.isNaN(Number(user.drink))){%>
+                        <%var infoDrink = constants.drinks.find(drink => Object.is(Number(drink.value), Number(user.drink)))%>
+                        <%= _lodash.get(infoDrink, 'text', 'Chưa cập nhật')%>
+                    <%}else{%>
+                        ...
+                    <%}%>
+                </li>
+                <li>
+                    <i><img src="/template/front-end-new/img/home/job.svg" alt="icon"></i>
+                    <%if(!Number.isNaN(Number(user.job))){%>
+                        <%var infoJob = constants.jobs.find(job => Object.is(Number(job.value), Number(user.job)))%>
+                        <%= _lodash.get(infoJob, 'text', 'Chưa cập nhật')%>
+                    <%}else{%>
+                        ...
+                    <%}%>
+                </li>
+            </ul>
+            <p class="title">
+                Bio:
+            </p>
+            <p>
+                <%= _lodash.get(user, 'intro', 'Chưa cập nhật')%>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

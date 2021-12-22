@@ -1,0 +1,274 @@
+<div class="content-page">
+        <div class="content">
+            <div class="container-fluid">
+                <br>
+                <br>
+                <div class="row">
+                     <div class="col-12">
+                        <div class="card m-b-20">
+                            <div class="card-body" style="padding-left: 25px;">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                            <!-- CONCEPT INFO -->
+                                        <div class="row">
+                                                <div><%=infoConcept && infoConcept.title%></div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div>
+                                                    <i>Tác Giả:
+                                                        <strong>
+                                                            <%let objUser = infoConcept.author%>
+                                                            <%-include ./utils/image_RENDER_ADMIN.ejs%>
+                                                            <%=infoConcept.author.fullname%>
+                                                                <%if(infoConcept.author.age){%>
+                                                                    - <%=infoConcept.author.age%>
+                                                                <%}%>
+                                                            <small>
+                                                                <%=infoConcept.author.email%>
+                                                            </small>
+                                                        </strong>
+                                                    </i>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div>
+                                                    <%let amountUserSelected = listParticipantsOfConcept.filter(item => Number(item.status) == 1);%>
+                                                    Số Người Tham Gia/Được Chọn: <strong><%=listParticipantsOfConcept.length || 0%>/<%=amountUserSelected.length || 0%></strong>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <div class="row">
+                                                <div>
+                                                    Thời Gian Diễn Ra: 
+                                                        <strong><%= moment(infoConcept.time).format('L');%></strong>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <%if(infoConcept.infoConceptManage.adminManager){%>
+                                                <div class="row">
+                                                    <div>
+                                                        Admin Quản Lý: 
+                                                            <strong>
+                                                                <%=infoConcept.infoConceptManage.adminManager.fullname%>
+                                                                -
+                                                                <%=infoConcept.infoConceptManage.adminManager.username%>
+                                                            </strong>
+                                                    </div>
+                                                </div>
+                                            <%}%>
+                                            
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card-body">
+                                            <h4 class="mt-0 header-title">CẬP NHẬT TRẠNG THÁI STATUS | MESSAGE => CONCEPT</h4>
+                                            <br>
+                                            <div>
+                                                <label class="col-form-label">Trạng Thái</label>
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12">
+                                                        <select class="form-control" id="txtStatus">
+                                                            <option value="-1">Admin chưa xác nhận</option>
+                                                            <option value="0">Admin đã gọi xác nhận -> diễn ra Thất Bại</option>
+                                                            <option value="1">Admin đã gọi xác nhận -> diễn ra Thành Công</option>
+                                                        </select>
+                                                    </div>
+                                                </div> 
+
+                                                <label class="col-form-label">Ghi Chú</label>
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12">
+                                                        <textarea required="" class="form-control" id="txtMessage" rows="5"><%= infoConcept && infoConcept.infoConceptManage.message%></textarea>
+                                                    </div>
+                                                </div> 
+                                                <button type="button" class="btn btn-outline-info waves-effect waves-light" style="padding: 10px 100px;
+                                                    margin-left: 47%;
+                                                " id="btnUpdateInfoConceptManage" _conceptID="<%= infoConcept && infoConcept._id%>">Cập Nhật</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card m-b-20">
+                            <div class="card-body">
+                                <table class="content-table">
+                                <thead>
+                                    <tr>
+                                        <th>Người Tham Gia</th>
+                                        <th>Trạng Thái</th>
+                                        <th>Thời Gian</th>
+                                        <th>`Đi Tới`</th>
+                                        <th>Message</th>
+                                        <th>`Ưu Tiên`</th>
+                                        <th>Tuỳ Chọn</th>
+                                    </tr>
+                                </thead>
+                                    <tbody>
+                                        <% if (listParticipantsOfConcept && listParticipantsOfConcept.length > 0) { %>
+                                            <% listParticipantsOfConcept.forEach(( itemConceptParticipant, index ) => { %>
+                                                <% if (itemConceptParticipant) { %>
+                                                    <tr>
+                                                        <td>
+                                                            <a href="/admin/view-user/<%=itemConceptParticipant.participant.username%>">
+                                                                <%let objUser = itemConceptParticipant.participant%>
+                                                                <%-include ./utils/image_RENDER_ADMIN.ejs%>
+                                                                <%=itemConceptParticipant.participant.fullname%>
+                                                                <%if(itemConceptParticipant.participant.age){%>
+                                                                    - <%=itemConceptParticipant.participant.age%>
+                                                                <%}%>
+                                                                <small>
+                                                                    <%=itemConceptParticipant.participant.email%>
+                                                                </small>
+                                                            </a>
+                                                            
+                                                        </td>
+                                                        <td>
+                                                            <% if (Number(itemConceptParticipant.status) == 1) { %>
+                                                                <span class="badge badge-pill badge-success">
+                                                                    Được Chọn
+                                                                </span>
+                                                            <% }else{ %>
+                                                                <span class="badge badge-danger">
+                                                                    Không Được Chọn
+                                                                </span>
+                                                            <% } %>
+                                                        </td>
+                                                        <td>
+                                                            <%= moment(itemConceptParticipant.createAt).format('L');%>
+                                                        </td>
+                                                        <td>
+                                                            <% if (Number(itemConceptParticipant.isGoing) == -1) { %>
+                                                                <span class="badge badge-pill badge-danger">
+                                                                    Chưa Gọi Xác Nhận
+                                                                </span>
+                                                            <% }else if (Number(itemConceptParticipant.isGoing) == 0) { %>
+                                                                <span class="badge badge-warning">
+                                                                    Không Tham Gia
+                                                                </span>
+                                                            <% } else if (Number(itemConceptParticipant.isGoing) == 1) { %>
+                                                                <span class="badge badge-info">
+                                                                   Đã Gọi -> Sẽ Tham Gia
+                                                                </span>
+                                                            <% } else if (Number(itemConceptParticipant.isGoing) == 2) { %>
+                                                                <span class="badge badge-success">
+                                                                    Đã Gọi -> Đã Tham Gia
+                                                                </span>
+                                                            <% } else if (Number(itemConceptParticipant.isGoing) == -2) { %>
+                                                                <span class="badge badge-danger">
+                                                                    Đã Gọi -> Không Tham Gia
+                                                                </span>
+                                                            <% } %>
+                                                        </td>
+                                                        <td>
+                                                            <%= _lodash.get(itemConceptParticipant, 'message', 'Chưa có message')%>
+                                                        </td>
+                                                        <td>
+                                                            <% if (Number(itemConceptParticipant.isFeature) == 1) { %>
+                                                                <span class="badge badge-pill badge-success">
+                                                                    Ưu Tiên
+                                                                </span>
+                                                            <% }else{ %>
+                                                                <span class="badge badge-danger">
+                                                                    Bình Thường
+                                                                </span>
+                                                            <% } %>
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn btn-outline-info btn-rounded btn-custom btn-block waves-effect waves-light btnUpdateParticipantConcept" _itemID="<%=itemConceptParticipant._id%>">
+                                                                Cập Nhật
+                                                                <i style="padding-left: 10px" class="mdi mdi-forward"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                <% } %>
+                                            <% }) %>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!--  Modal content for the above example -->
+     <div class="modal fade popupUpdateStatusParticipantConcept" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mt-0" id="myLargeModalLabel">
+                        Cập Nhật User Tham Gia
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                        <div class="card m-b-20">
+                            <div class="card-body" style="padding-left: 25px;">
+                                <!-- CONCEPT INFO -->
+                                <div class="row">
+                                    <div><%=infoConcept && infoConcept.title%></div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div>
+                                        <i>Tác Giả:
+                                            <strong>
+                                                <%objUser = infoConcept.author%>
+                                                <%-include ./utils/image_RENDER_ADMIN.ejs%>
+                                                <%=infoConcept.author.fullname%>
+                                                    <%if(infoConcept.author.age){%>
+                                                        - <%=infoConcept.author.age%>
+                                                    <%}%>
+                                                <small>
+                                                    <%=infoConcept.author.email%>
+                                                </small>
+                                            </strong>
+                                        </i>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div>
+                                        Số Người Tham Gia/Được Chọn: <strong><%=listParticipantsOfConcept.length || 0%>/<%=amountUserSelected.length || 0%></strong>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div>
+                                        Thời Gian Diễn Ra: 
+                                            <strong><%= moment(infoConcept.time).format('L');%></strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card m-t-20">
+                            <div class="card-body" style="padding-left: 25px;" id="formForUpdate">
+
+                               
+                            </div>
+                            <div class="card-footer">
+                                <div class="row">
+                                    <button type="button" class="btn btn-outline-info waves-effect waves-light"
+                                        style="padding: 10px 100px;
+                                            margin-left: 47%;
+                                        "
+                                        id="btnUpdateIsGoing"
+                                    >Cập Nhật</button>
+                               </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->

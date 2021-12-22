@@ -1,0 +1,23 @@
+<script>
+        $(document).ready(function(){
+            let getDataFormPricingPackage = () =>{
+                let starttime = $('#txtStartTime').val();
+                let endtime   = $('#txtEndTime').val();
+                let status    = $('#txtStatus').val();
+                return { starttime, endtime, status };
+            }
+    
+            let buildAndGoURI = () =>{
+                 let { starttime, endtime, status } = getDataFormPricingPackage();
+                let uri  = `/admin/list-features?`;
+                if (starttime && endtime) uri += `&starttime=${starttime}&endtime=${endtime}`;
+                if (!Number.isNaN(Number(status)) && Number(status)!== 2) uri += `&status=${status}`;
+                return window.location.href = uri;
+            }
+    
+            $('#btnSearch').on('click', function(e){
+                e.preventDefault();
+                buildAndGoURI();
+            })
+        })
+    </script>

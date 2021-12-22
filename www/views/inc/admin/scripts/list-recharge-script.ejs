@@ -1,0 +1,44 @@
+<script>
+    $(document).ready(function(){
+        let getDataFormSearch = () =>{
+            let starttime = $('#txtStartTime').val();
+            let endtime   = $('#txtEndTime').val();
+            let status    = $('#txtStatus').val();
+            let typeTransaction    = $('#txtTypeTransaction').val();
+            /*
+            * so luong item hien thi
+            */
+            let amountItemShow = $('#select_datatable_length').val();
+            return { starttime, endtime, status, amountItemShow, typeTransaction };
+        }
+
+        let buildAndGoURI = () =>{
+            let { starttime, endtime, status, amountItemShow, typeTransaction } = getDataFormSearch();
+            let uri  = `/admin/list-recharge?`;
+            if (starttime && endtime) uri += `&starttime=${starttime}&endtime=${endtime}`;
+            if (!Number.isNaN(Number(status))) uri += `&status=${status}`;
+            if (!Number.isNaN(Number(typeTransaction)) && Number(typeTransaction)!== 2) uri += `&typeTransaction=${typeTransaction}`;
+            if (!Number.isNaN(Number(amountItemShow))) uri += `&amountItemShow=${amountItemShow}`;
+
+            return window.location.href = uri;
+        }
+
+        let buildAndGoURIExportPFD = () =>{
+            let { starttime, endtime, status } = getDataFormSearch();
+            let uri  = `/admin/pdf-list-recharge?`;
+            if (starttime && endtime) uri += `&starttime=${starttime}&endtime=${endtime}`;
+            if (!Number.isNaN(Number(status))) uri += `&status=${status}`;
+            return window.location.href = uri;
+        }
+
+        $('#btnSearch').on('click', function(e){
+            e.preventDefault();
+            buildAndGoURI();
+        });
+
+        $('#exportListRechargePDF').on('click', function(e){
+            e.preventDefault();
+            buildAndGoURIExportPFD();
+        });
+    })
+</script>

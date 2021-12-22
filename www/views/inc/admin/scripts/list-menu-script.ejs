@@ -1,0 +1,23 @@
+<script>
+    $(document).ready(function(){
+          $('.btnToggleStatus').on('click', function(){
+            let url   = $(this).attr('_url');
+            let status = $(this).attr('_status');
+            $.ajax({ 
+                url: `/admin/update-status-menu/${url}`,
+                method: 'POST',
+                data: { status },
+                // beforeSend: function (xhr) {
+                //     xhr.setRequestHeader("Authorization", 'Bearer '+ token);
+                // },
+                success: function(resp){
+                    if(!resp.error)
+                        return location.reload();
+                },
+                error: function(){
+                    alert('ERROR');
+                }
+            });
+        });
+    })
+</script>

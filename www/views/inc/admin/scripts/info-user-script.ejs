@@ -1,0 +1,260 @@
+<script>
+    $(document).ready(function(){
+
+        let getDataFormUser = () => {
+            //marital: tình trạng hôn nhân
+            //education: học vấn 
+            //leligion: tôn giáo 
+            //revenue: salary
+            let fullname, birthday, age, height, gender, marital, education, body, job,
+                religion, revenue, smoking, drink, province, district, hobies, intro, focusGender,
+                focusAgeFrom, focusAgeTo, focusMarital, focusProvince, dateExpired, packageVIP, newPassword, isUserVip;
+
+                fullname = $('#txtFullname').val();
+                birthday = $('.txtBirthday').val();
+                age      = $('#txtAge').val();
+                height   = $('#txtHeight').val();
+                gender   = $('#txtGender').val();
+                marital  = $('#txtMarital').val();
+                education= $('#txtEducation').val();
+                body     = $('#txtBody').val();
+                job      = $('#txtJob').val();
+                religion = $('#txtReligion').val();
+                revenue  = $('#txtRevenue').val();
+                smoking  = $('#txtSmoking').val();
+                drink    = $('#txtDrink').val();
+                province = $('#province__update_site').val();
+                district = $('#district__update_site').val();
+                hobies   = $('#txtHobies').val();
+                intro    = $('#txtIntro').val();
+                focusGender  = $('#txtFocusGender').val();
+                focusAgeFrom = $('#txtFocusAgeFrom').val();
+                focusAgeTo   = $('#txtFocusAgeTo').val();
+                focusMarital  = $('#txtFocusMarital').val();
+                focusProvince= $('#txtFocusProvince').val();
+                dateExpired =  $('.datapicker_date_expired').val();
+                newPassword = $('#txtNewPassword').val();
+                isUserVip = $('#txtUserType').val();
+                let birthdayDay     = birthday.substr(0, 3); 
+                let birthdayMonth   = birthday.substr(3, 3); 
+                let birthdayYear    = birthday.substr(6, 4); 
+                let birthdayFormat = birthdayMonth + birthdayDay + birthdayYear;
+                packageVIP =  $('#txtPackageVIP').val();
+
+                return { fullname, birthday: birthdayFormat, age, height, gender, marital, education, body, job,
+                religion, revenue, smoking, drink, province, district, hobies, intro, focusGender,
+                focusAgeFrom, focusAgeTo, focusMarital, focusProvince, dateExpired, packageVIP, isUserVip, newPassword }
+        }
+
+        $('#btnUpdate').on('click', function(e){
+            e.preventDefault();
+            let data = getDataFormUser();
+            let userID = $(this).attr('_userID');
+            // kiểm tra năm sinh
+            // kiểm tra dateExpired gte current date
+            if(data.isUserVip == 1 ){
+                if(data.dateExpired){
+                    let currentDate = new Date();
+                    let dateExpiredArr = (data.dateExpired.split(/\//));
+                    let dateExpiredTemp = [ dateExpiredArr[2], dateExpiredArr[1], dateExpiredArr[0] ].join('-');
+                    let dateCheck = new Date(dateExpiredTemp);
+                    if(dateCheck < currentDate)
+                        return alert("Ngày hết hạn user vip phải lớn hơn ngày hiện tại.");
+                }else{
+                    return alert("Vui lòng nhập thời gian hết hạn.");
+                }
+            }
+            var fd   = new FormData();
+            fd.append('data', JSON.stringify(data));
+
+            $.ajax({
+                url        : `/admin/update-info-user/${userID}`,
+                method     : 'POST',
+                data       : fd,
+                contentType: false,
+                processData: false,
+                success    : function(resp) {
+                    if (resp.error) {
+                        return alert('Lỗi Cập Nhật');
+                    } else if (!resp.error){
+                        return toastr['success']('Cập Nhật Thành Công', 'Thông Báo');
+                    }
+                },
+                error: function(err) {
+                    return alert('Lỗi Cập Nhật');
+                }
+            })
+
+        })
+
+        $('#checkedForChangePass').click(function() {
+            if ($(this).is(':checked')) {
+                $('#txtNewPassword').attr('disabled', false);
+            }else{
+                $('#txtNewPassword').attr('disabled', true);
+            }
+        });
+
+        // let listDistrict = <%-JSON.stringify(districts)%>
+        // <% if (infoUser && infoUser.province) { %>
+        //     let infoProvince = <%= infoUser.province %> ;
+        // <% }else{ %>
+        //     let infoProvince = null ;
+        // <% } %>
+
+        //  <% if (infoUser && infoUser.district) { %>
+        //     let infoDistrict = <%= infoUser.district %> ;
+        // <% }else{ %>
+        //     let infoDistrict = null ;
+        // <% } %>
+
+        // if(infoProvince){
+        //     $('#txtDistrict').empty();
+        //     for(let key in listDistrict ){
+        //         if(listDistrict[key].parent_code == infoProvince){
+        //             if(infoDistrict == key){
+        //                 $('#txtDistrict').append(`
+        //                     <option value="${key}" selected>${ listDistrict[key].name }</option>
+        //                 `)
+        //             }else{
+        //                 $('#txtDistrict').append(`
+        //                     <option value="${key}">${ listDistrict[key].name }</option>
+        //                 `)
+        //             }
+        //         }
+        //     }
+        // }else{
+        //      $('#txtDistrict').empty();
+        //     for(let key in listDistrict ){
+        //         if(listDistrict[key].parent_code == 10){
+        //             $('#txtDistrict').append(`
+        //                 <option value="${key}">${ listDistrict[key].name }</option>
+        //             `)
+        //         }
+        //     }
+        // }
+
+        // $('#txtProvince').on('change', function(e){
+        //     let provinceID   = $(this).val();
+        //     $('#txtDistrict').empty();
+        //     for(let key in listDistrict ){
+        //         if(listDistrict[key].parent_code == provinceID){
+        //             $('#txtDistrict').append(`
+        //                 <option value="${key}">${ listDistrict[key].name }</option>
+        //             `)
+        //         }
+        //     }
+        // })
+        $('#province__update_site').on('change', function(e) {
+            const provinceID = $(this).val();
+            $.ajax({
+                url: `/get-district/${provinceID}`,
+                method: 'GET',
+                success: function(listDistricts) {
+                    if (listDistricts) {
+                        $('#district__update_site').empty();
+                        for (let index in listDistricts) {
+                            $('#district__update_site').append(`
+                                <option value="${listDistricts[index].code}">${listDistricts[index].name_with_type}</option>
+                            `);
+                        }
+                    } else {
+                        return toastr['error']('Tỉnh Không Có Huyện');
+                    }
+                },
+                error: function(err){
+                    console.log(err.message)
+                }
+            })
+        });
+        //cap nhap user thuong user vip
+        $('#txtUserType').on('change', function(){
+            let userType = $(this).val();
+            if(userType == 0){
+                $('.datapicker_date_expired').prop("disabled", true);
+                $('.datapicker_date_expired').val(null);
+            }
+            if(userType == 1){
+                $('.datapicker_date_expired').prop("disabled", false);
+            }
+        })
+
+        //Cập nhat avatar user
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#imagePreview').css('background-image', 'url('+e.target.result +')');
+                    $('#imagePreview').hide();
+                    $('#imagePreview').fadeIn(650);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#imageUpload").change(function() {
+            readURL(this);
+            let avatar = $(this)[0].files[0];
+            let userID = $(this).attr('_userID');
+
+            let fd = new FormData();
+            fd.append('image', avatar);
+
+            if(avatar && userID){
+                $.ajax({
+                    url: `/admin/update-avatar-user/${userID}`,
+                    method: 'POST',
+                    data: fd,
+                    processData: false,
+                    contentType: false,
+                    success: function(resp){
+                        if(!resp.error){
+                            toastr['success']('Cập nhật hình ảnh thành công', 'Thông Báo')
+                        }else{
+                            toastr['error']('thất bại', 'Thông Báo')
+                        }
+                    },
+                    error: function(error){
+                        alert(error);
+                    }
+                })
+            }
+
+        });
+
+        // Xóa avatar user
+        $('.btnRemoveAvatar').on('click', function(){
+            let userID = $(this).attr('_userID');
+            swal({
+                title: "Bạn có chắc chắn xóa avatar này không?",
+                text: "Nó sẽ không thể khôi phục",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Xác nhận!",
+                closeOnConfirm: false
+                },
+            function(){
+                $.ajax({
+                    url: `/admin/remove-avatar-user`,
+                    method: 'POST',
+                    data: { userID },
+                    success: function(resp){
+                        if(!resp.error){
+                            swal("Xóa thành công!", "", "success");
+                            return location.reload();
+                        }else{
+                            if(resp.message == "user_not_have_avatar")
+                                return toastr.error("User đang sử dụng hình ảnh mặc đinh", 'Thông Báo');
+                            toastr['error']('thất bại', 'Thông Báo')
+                        }
+                    },
+                    error: function(error){
+                        alert(error)
+                    }
+                })
+            });
+        })
+    })
+
+</script>

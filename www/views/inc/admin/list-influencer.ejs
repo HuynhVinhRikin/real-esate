@@ -1,0 +1,231 @@
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+            <br>
+            <div class="row">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-primary">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-verified float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Tổng influencer <br><br></h6>
+                                <h4 class="mb-4">
+                                    <% if (infoOverview) { %>
+                                        <%= infoOverview.influencerAmount%>
+                                    <% } %>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tổng số user mới đăng ký (trong 24h qua) -->
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-info">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-gnome float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Tổng influencer Chưa Mua Gói</h6>
+                                <h4 class="mb-4">
+                                    <% if (infoOverview) { %>
+                                        <%= infoOverview.influencerNotBuyPackgeAmount%>
+                                    <% } %>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tổng số user bị khóa -->
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-danger">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-lock float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Tổng influencer Hết Hạn</h6>
+                                <h4 class="mb-4">
+                                    <% if (infoOverview) { %>
+                                        <%= infoOverview.influencerAmountExpired%>
+                                    <% } %>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Tổng số user trả phí -->
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-success">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-diamond float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Tổng influencer Đang Hoạt Động</h6>
+                                <h4 class="mb-4">
+                                    <% if (infoOverview) { %>
+                                        <%= infoOverview.influencerAmountActive%>
+                                    <% } %>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                 <div class="col-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <div class="row">
+                                <h4 class="mt-0 header-title" style="padding-left: 16px">Bộ Lọc và Sắp Xếp</h4>
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <select class="form-control" id="txtSort">
+                                                <option value="-2">Tìm kiếm theo trạng thái</option>
+                                                <option value="-1">Link Hết Hạn</option>
+                                                <option value="1">Thành Công</option>
+                                                <option value="0">Chưa Mua Gói</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <span class="text-center"> 
+                                        <i>
+                                            <% if (amount) { %>
+                                                Có <strong style="color: #29bbe3"><%= amount || 0 %></strong> kết quả trả về 
+                                            <% }else{ %>
+                                                Có <strong style="color: #29bbe3"><%= amount || 0 %></strong> kết quả trả về 
+                                            <% } %>
+                                        </i>
+                                    </span>
+                                    <button class="btn btn-info float-right" id="btnSearch">Tìm Kiếm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                    <div class="col-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="table-responsive">
+                                        
+                                    <table class="content-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>User Giới Thiệu</th>
+                                                    <th>User Nạp Tiền</th>
+                                                    <th>Trạng Thái</th>
+                                                    <th>Thời Gian Dùng(ClickTime)</th>
+                                                    <th>Hoa Hồng (%)</th>
+                                                    <th>Tổng Gói/Tổng Hoa Hồng</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <%transactions && transactions.length && transactions.forEach((itemTransaction, index) => {%>
+                                                    <tr>
+                                                        <td><%=index+1%></td>
+                                                        
+                                                        <td>
+                                                            <%if(itemTransaction.refUser){%>
+                                                                <a href="/admin/view-user/<%=itemTransaction.refUser.username%>">
+                                                                    <%let objUser = itemTransaction.refUser%>
+                                                                    <%-include ./utils/image_RENDER_ADMIN.ejs%>
+                                                                    
+                                                                    <%=itemTransaction.refUser.fullname%>(<%if(itemTransaction.refUser.age){%><%=itemTransaction.refUser.age%><%}%>)
+                                                                    <small>
+                                                                        <%=itemTransaction.refUser.email%>
+                                                                    </small>
+                                                                    <p class="m-0 text-muted font-8" style="font-size: 10px; padding-left: 40px">
+                                                                        <%=itemTransaction.refUser.percentCommission%>/
+                                                                        <%= formatCurrency('###,###.', itemTransaction.refUser.totalAmountCommission)%>
+                                                                    </p>
+                                                                </a>
+                                                            <%}else{%>
+                                                                ----
+                                                            <%}%>
+                                                               
+                                                        </td>
+
+                                                        <td>
+                                                            <a href="/admin/view-user/<%=itemTransaction.user.username%>">
+                                                                <%objUser = itemTransaction.user%>
+                                                                <%-include ./utils/image_RENDER_ADMIN.ejs%>
+                                                                
+                                                                <%=itemTransaction.user.fullname%>(<%if(itemTransaction.user.age){%><%=itemTransaction.user.age%><%}%>)
+                                                                <small>
+                                                                    <%=itemTransaction.user.email%>
+                                                                </small>
+                                                                
+                                                            </a>
+                                                            
+                                                        </td>
+
+                                                        <td>
+                                                            <%if(!Number.isNaN(Number(itemTransaction.status))){%>
+                                                                <%if(Object.is(Number(itemTransaction.status), 1)){%>
+                                                                    <i class="mdi mdi-checkbox-blank-circle text-success"></i> Thành Công
+                                                                <%}else if(Object.is(Number(itemTransaction.status), -1)){%>
+                                                                    <i class="mdi mdi-checkbox-blank-circle text-danger"></i> Link Hết Hạn
+                                                                <%}else if(Object.is(Number(itemTransaction.status), 0)){ %>
+                                                                    <i class="mdi mdi-checkbox-blank-circle text-warning"></i> Chưa Mua Gói
+                                                                <% } %>
+                                                            <%}%>
+                                                        </td>
+
+                                                        <td>
+                                                            <%= moment(itemTransaction.clickTime).format('L');%>
+                                                        </td>
+
+                                                        <td>
+                                                            <strong>
+                                                                (<%= itemTransaction.percentCommissionCurrentOfUser * 100%>%)
+                                                            </strong>
+                                                        </td>
+
+                                                        <td>
+                                                            <%= formatCurrency('###,###.', itemTransaction.totalPackagePrice)%>/
+                                                            <strong>
+                                                                <%= formatCurrency('###,###.', itemTransaction.totalCommissionPrice)%>
+                                                            </strong>
+                                                        </td>
+
+                                                    </tr>
+                                                <%})%>
+                                        </tbody>
+                                        <div class="row">
+                                    <div class="col-md-6"> 
+                                        <%- include ./utils/data-table-length.ejs%>
+                                        <div class="dropdown mo-mb-2" id="dropdownMenuOptionTagging" style="display: none">
+                                            <a class="btn btn-light dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Chọn Thao Tác
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 33px, 0px);">
+                                                <a class="dropdown-item btnUpdateStatusWithListTagging" _status="0" href="#">Tắt Hoạt Động</a>
+                                                <a class="dropdown-item btnUpdateStatusWithListTagging" _status="1" href="#">Mở Hoạt Động</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!-- PAGING (WEB ADMIN) -->
+                                        <%- include ./utils/paging.ejs%>
+                                        <!--END PAGING (WEB ADMIN) -->
+                                    </div>
+                                </div>
+                                    </table>
+                                    <%- include ./utils/paging.ejs%>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

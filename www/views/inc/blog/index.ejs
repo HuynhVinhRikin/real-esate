@@ -1,0 +1,525 @@
+<div class="wrapper">
+    <!-- header -->
+    <%-include ./utils/header_BLOG.ejs%>
+<section id="page-content" class="page-wrapper">
+<div class="zm-section  ptb-30">
+    <div class="container">
+		<div class="row mb-20">
+            <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
+                <div class="section-title">
+                    <h2 class="h6 header-color inline-block uppercase"> <a href="/blog/waodate-tips">Waodate Tips </a></h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-sm-12 col-xs-12 col-lg-8">
+                <div class="zm-posts">
+                    <%if(listBlogCategory1.length > 0){%>
+                        <%let infoBlogFirst = listBlogCategory1[0]%>
+                        <article class="zm-post-lay-a">
+                            <div class="zm-post-thumb"> 
+                                <a href="/blog/<%=infoBlogFirst.slug%>">
+                                    <noscript>
+                                        <img width="750" height="465"
+                                            src="/files/blog/<%=infoBlogFirst.image%>"
+                                            class="lazyload attachment-full size-full wp-post-image"
+                                            alt="<%=infoBlogFirst.title%>"
+                                            srcset="/files/blog/<%=infoBlogFirst.image%> 750w, /files/blog/<%=infoBlogFirst.image%> 300w"
+                                            sizes="(max-width: 750px) 100vw, 750px" />
+                                    </noscript>
+                                    <img
+                                        width="750" height="465"
+                                        src="/files/blog/<%=infoBlogFirst.image%>"
+                                        data-src="/files/blog/<%=infoBlogFirst.image%>"
+                                        class="lazyload attachment-full size-full wp-post-image"
+                                        alt="<%=infoBlogFirst.title%>"
+                                        data-srcset="/files/blog/<%=infoBlogFirst.image%> 750w, /files/blog/<%=infoBlogFirst.image%> 300w"
+                                        data-sizes="(max-width: 750px) 100vw, 750px" />
+                                </a>
+                            </div>
+                            <div class="zm-post-dis">
+                                <div class="zm-post-header">
+                                    <h4 class="zm-post-title h2"><a
+                                            href="/blog/<%=infoBlogFirst.slug%>">
+                                        <%=infoBlogFirst.title%>
+                                            </a>
+                                    </h4>
+                                    <div class="zm-post-meta">
+                                        <ul>
+                                            <li class="s-meta"> <a href="/blog/<%=infoBlogFirst.category.slug%>"
+                                                    class="meta-category">
+                                                    <%=infoBlogFirst.category.title%>
+                                                </a></li>
+                                            <li class="s-meta">
+                                                <%=moment(infoBlogFirst.createAt).subtract(10, 'days').calendar();%>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="zm-post-content">
+                                    <p style="overflow: visible">
+                                        <%-infoBlogFirst.description.replace(/<a href=".+">/, '').replace(/<\/a>/, '').substring(0, 166);%> ...
+                                    </p>
+                                </div>
+                            </div>
+                        </article>
+                    <%}%>
+                    
+                </div>
+            </div>
+            <div class="col-md-7 col-sm-12 col-xs-12 col-lg-4 wd-blog-type-1">
+                <div class="zm-posts">
+                    <%listBlogCategory1.splice(0, 1)%>
+                    <%listBlogCategory1.forEach(blogInfo => {%>
+                        <article class="zm-post-lay-d clearfix">
+							<div class="zm-post-thumb f-left"> 
+								<a href="/blog/<%=blogInfo.slug%>">
+									<noscript>
+										<img
+											width="750" height="465"
+											src="/files/blog/<%=blogInfo.image%>"
+											class="lazyload attachment-full size-full wp-post-image"
+											alt="<%=blogInfo.title%>"
+											srcset="/files/blog/<%=blogInfo.image%> 750w, /files/blog/<%=blogInfo.image%> 300w"
+											sizes="(max-width: 750px) 100vw, 750px" />
+									</noscript>
+									<img
+										width="750" height="465"
+										src="/files/blog/<%=blogInfo.image%>"
+										data-src="/files/blog/<%=blogInfo.image%>"
+										class="lazyload attachment-full size-full wp-post-image"
+										alt="<%=blogInfo.title%>"
+										data-srcset="/files/blog/<%=blogInfo.image%> 750w, /files/blog/<%=blogInfo.image%> 300w"
+										data-sizes="(max-width: 750px) 100vw, 750px" />
+									</a>
+							</div>
+							<div class="zm-post-dis f-right">
+								<div class="zm-post-header">
+									<h5 class="zm-post-title"><a
+										href="/blog/<%=blogInfo.slug%>">
+										<%=blogInfo.title%></a></h3>
+									<div class="zm-post-meta">
+										<ul>
+											<li class="s-meta"> <a href="/blog/<%=blogInfo.category.slug%>"
+												class=" meta-category"><%=blogInfo.category.title%></a>
+											<li class="s-meta"><%=moment(blogInfo.createAt).subtract(10, 'days').calendar();%></li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</article>
+                    <%})%>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="zm-section bg-gray ptb-30 category-home-m">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="zm-posts clearfix pl-m-15 pr-m-15">
+                        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 pd-m-0">
+                            <article class="zm-trending-post zm-lay-a1 zm-single-post" data-effict-zoom="1">
+                                <div class="zm-post-thumb"> <a
+                                        href="/blog/waodate-tips/"
+                                        class="category-home-m__item" style="height:360px;overflow:hidden"
+                                        data-dark-overlay="2.5" data-scrim-bottom="9"><noscript><img
+                                                src="<%=process.env.URL%>/blog/wp-content/uploads/2019/05/waodate-tips.jpg"
+                                                style="height:100%;max-width:none;width:auto;transform: translateX(-50%);position: relative;left: 50%;"
+                                                alt="waodate tips"></noscript><img class="lazyload"
+                                            src='<%=process.env.URL%>/blog/wp-content/uploads/2019/05/waodate-tips.jpg'
+                                            data-src="<%=process.env.URL%>/blog/wp-content/uploads/2019/05/waodate-tips.jpg"
+                                            style="height:100%;max-width:none;width:auto;transform: translateX(-50%);position: relative;left: 50%;"
+                                            alt="waodate tips"></a></div>
+                                <div class="zm-post-dis text-white">
+                                    <h3 class="zm-post-title h3"><a
+                                            href="/blog/waodate-tips/">Waodate
+                                            Tips </a></h3>
+                                    <div class="zm-post-meta">
+                                        <ul>
+                                            <li class="s-meta"><a
+                                                    href="/blog/waodate-tips/"
+                                                    class="zm-author"></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 pd-m-0">
+                            <article class="zm-trending-post zm-lay-a1 zm-single-post" data-effict-zoom="1">
+                                <div class="zm-post-thumb"> <a
+                                        href="/blog/bi-kip-yeu/"
+                                        class="category-home-m__item" style="height:360px;overflow:hidden"
+                                        data-dark-overlay="2.5" data-scrim-bottom="9"><noscript><img
+                                                src="<%=process.env.URL%>/blog/wp-content/uploads/2019/05/bi-kip-yeu-01.jpg"
+                                                style="height:100%;max-width:none;width:auto;transform: translateX(-50%);position: relative;left: 50%;"
+                                                alt="bí kiếp yêu"></noscript><img class="lazyload"
+                                            src="<%=process.env.URL%>/blog/wp-content/uploads/2019/05/bi-kip-yeu-01.jpg"
+                                            data-src="<%=process.env.URL%>/blog/wp-content/uploads/2019/05/bi-kip-yeu-01.jpg"
+                                            style="height:100%;max-width:none;width:auto;transform: translateX(-50%);position: relative;left: 50%;"
+                                            alt="bí kiếp yêu"></a></div>
+                                <div class="zm-post-dis text-white">
+                                    <p class="zm-post-title h3"><a
+                                            href="/blog/bi-kip-yeu/">Bí
+                                            Kíp Yêu </a></p>
+                                    <div class="zm-post-meta">
+                                        <ul>
+                                            <li class="s-meta"><a
+                                                    href="/blog/bi-kip-yeu/"
+                                                    class="zm-author"></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 pd-m-0">
+                            <article class="zm-trending-post zm-lay-a1 zm-single-post" data-effict-zoom="1">
+                                <div class="zm-post-thumb"> <a
+                                        href="/blog/hen-ho-online/"
+                                        class="category-home-m__item" style="height:360px;overflow:hidden"
+                                        data-dark-overlay="2.5" data-scrim-bottom="9"><noscript><img
+                                                src="<%=process.env.URL%>/blog/wp-content/uploads/2019/05/hen-ho-online-01.jpg"
+                                                style="height:100%;max-width:none;width:auto;transform: translateX(-50%);position: relative;left: 50%;"
+                                                alt="hẹn hò online"></noscript><img class="lazyload"
+                                            src="<%=process.env.URL%>/blog/wp-content/uploads/2019/05/hen-ho-online-01.jpg"
+                                            data-src="<%=process.env.URL%>/blog/wp-content/uploads/2019/05/hen-ho-online-01.jpg"
+                                            style="height:100%;max-width:none;width:auto;transform: translateX(-50%);position: relative;left: 50%;"
+                                            alt="hẹn hò online"></a></div>
+                                <div class="zm-post-dis text-white">
+                                    <p class="zm-post-title h3"><a
+                                            href="/blog/hen-ho-online/">Hẹn
+                                            Hò Online </a></p>
+                                    <div class="zm-post-meta">
+                                        <ul>
+                                            <li class="s-meta"><a
+                                                    href="/blog/hen-ho-online/"
+                                                    class="zm-author"></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                       <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 pd-m-0">
+                            <article class="zm-trending-post zm-lay-a1 zm-single-post" data-effict-zoom="1">
+                                <div class="zm-post-thumb"> <a
+                                        href="/blog/tu-vi-trong-tinh-yeu/"
+                                        class="category-home-m__item" style="height:360px;overflow:hidden"
+                                        data-dark-overlay="2.5" data-scrim-bottom="9"><noscript><img
+                                                src="/template/user/img/tu-vi-trong-tinh-yeu.png"
+                                                style="height:100%;max-width:none;width:auto;transform: translateX(-50%);position: relative;left: 50%;"
+                                                alt="tử vi trong tình yêu"></noscript><img class="lazyload"
+                                            src="/template/user/img/tu-vi-trong-tinh-yeu.jpg"
+                                            data-src="/template/user/img/tu-vi-trong-tinh-yeu.png"
+                                            style="height:100%;max-width:none;width:auto;transform: translateX(-50%);position: relative;left: 50%;"
+                                            alt="tử vi trong tình yêu"></a></div>
+                                <div class="zm-post-dis text-white">
+                                    <h3 class="zm-post-title h3"><a
+                                            href="/blog/tu-vi-trong-tinh-yeu/">Tử
+                                            Vi Tình Yêu </a></h3>
+                                    <div class="zm-post-meta">
+                                        <ul>
+                                            <li class="s-meta"><a
+                                                    href="/blog/tu-vi-trong-tinh-yeu/"
+                                                    class="zm-author"></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 pd-m-0">
+                            <article class="zm-trending-post zm-lay-a1 zm-single-post" data-effict-zoom="1">
+                                <div class="zm-post-thumb"> <a
+                                        href="/blog/chuyen-tham-kin/"
+                                        class="category-home-m__item" style="height:360px;overflow:hidden"
+                                        data-dark-overlay="2.5" data-scrim-bottom="9"><noscript><img
+                                                src="<%=process.env.URL%>/blog/wp-content/uploads/2019/05/chuyen-tham-kin-02.jpg"
+                                                style="height:100%;max-width:none;width:auto;transform: translateX(-50%);position: relative;left: 50%;"
+                                                alt="chuyện thầm kín"></noscript><img class="lazyload"
+                                            src="<%=process.env.URL%>/blog/wp-content/uploads/2019/05/chuyen-tham-kin-02.jpg"
+                                            data-src="<%=process.env.URL%>/blog/wp-content/uploads/2019/05/chuyen-tham-kin-02.jpg"
+                                            style="height:100%;max-width:none;width:auto;transform: translateX(-50%);position: relative;left: 50%;"
+                                            alt="chuyện thầm kín"></a></div>
+                                <div class="zm-post-dis text-white">
+                                    <h3 class="zm-post-title h3"><a
+                                            href="/blog/chuyen-tham-kin/">Chuyện
+                                            Thầm Kín </a></h3>
+                                    <div class="zm-post-meta">
+                                        <ul>
+                                            <li class="s-meta"><a
+                                                href="/blog/chuyen-tham-kin/"
+                                                class="zm-author"></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 pd-m-0">
+                            <article class="zm-trending-post zm-lay-a1 zm-single-post" data-effict-zoom="1">
+                                <div class="zm-post-thumb"> <a
+                                        href="/blog/cau-chuyen-tinh-yeu/"
+                                        class="category-home-m__item" style="height:360px;overflow:hidden"
+                                        data-dark-overlay="2.5" data-scrim-bottom="9"><noscript><img
+                                                src="<%=process.env.URL%>/blog/wp-content/uploads/2019/05/chuyen-tham-kin-03.jpg"
+                                                style="height:100%;max-width:none;width:auto;transform: translateX(-50%);position: relative;left: 50%;"
+                                                alt="Câu Chuyện Tình Yêu"></noscript><img class="lazyload"
+                                            src="<%=process.env.URL%>/blog/wp-content/uploads/2019/05/chuyen-tham-kin-03.jpg"
+                                            data-src="<%=process.env.URL%>/blog/wp-content/uploads/2019/05/chuyen-tham-kin-03.jpg"
+                                            style="height:100%;max-width:none;width:auto;transform: translateX(-50%);position: relative;left: 50%;"
+                                            alt="Câu Chuyện Tình Yêu "></a></div>
+                                <div class="zm-post-dis text-white">
+                                    <h3 class="zm-post-title h3"><a
+                                            href="/blog/cau-chuyen-tinh-yeu/">Câu
+                                            Chuyện Tình Yêu </a></h3>
+                                    <div class="zm-post-meta">
+                                        <ul>
+                                            <li class="s-meta"><a
+                                                    href="/blog/cau-chuyen-tinh-yeu/"
+                                                    class="zm-author"></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 pd-m-0">
+                            <article class="zm-trending-post zm-lay-a1 zm-single-post" data-effict-zoom="1">
+                                <div class="zm-post-thumb"> <a
+                                        href="/blog/tam-su-hon-nhan-gia-dinh/"
+                                        class="category-home-m__item" style="height:360px;overflow:hidden"
+                                        data-dark-overlay="2.5" data-scrim-bottom="9"><noscript><img
+                                                src="<%=process.env.URL%>/blog/wp-content/uploads/2019/05/tinh-yeu-hon-nhan-gia-dinh-01.jpg"
+                                                style="height:100%;max-width:none;width:auto;transform: translateX(-50%);position: relative;left: 50%;"
+                                                alt="Tâm Sự Hôn Nhân - Gia Đình"></noscript><img class="lazyload"
+                                            src="<%=process.env.URL%>/blog/wp-content/uploads/2019/05/tinh-yeu-hon-nhan-gia-dinh-01.jpg"
+                                            data-src="<%=process.env.URL%>/blog/wp-content/uploads/2019/05/tinh-yeu-hon-nhan-gia-dinh-01.jpg"
+                                            style="height:100%;max-width:none;width:auto;transform: translateX(-50%);position: relative;left: 50%;"
+                                            alt="Tâm Sự Hôn Nhân - Gia Đình"></a></div>
+                                <div class="zm-post-dis text-white">
+                                    <h3 class="zm-post-title h3"><a
+                                            href="/blog/tam-su-hon-nhan-gia-dinh/">Tâm
+                                            Sự Hôn Nhân - Gia Đình </a></h3>
+                                    <div class="zm-post-meta">
+                                        <ul>
+                                            <li class="s-meta"><a
+                                                    href="/blog/tam-su-hon-nhan-gia-dinh/"
+                                                    class="zm-author"></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                        
+						 <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 pd-m-0">
+                            <article class="zm-trending-post zm-lay-a1 zm-single-post" data-effict-zoom="1">
+                                <div class="zm-post-thumb"> <a
+                                        href="/blog/goc-an-choi-giai-tri/"
+                                        class="category-home-m__item" style="height:360px;overflow:hidden"
+                                        data-dark-overlay="2.5" data-scrim-bottom="9"><noscript><img
+                                                src="<%=process.env.URL%>/blog/wp-content/uploads/2019/05/goc-an-choi-giai-tri-01.jpg"
+                                                style="height:100%;max-width:none;width:auto;transform: translateX(-50%);position: relative;left: 50%;"
+                                                alt="Góc Ăn Chơi - Giải Trí"></noscript><img class="lazyload"
+                                            src="<%=process.env.URL%>/blog/wp-content/uploads/2019/05/goc-an-choi-giai-tri-01.jpg"
+                                            data-src="<%=process.env.URL%>/blog/wp-content/uploads/2019/05/goc-an-choi-giai-tri-01.jpg"
+                                            style="height:100%;max-width:none;width:auto;transform: translateX(-50%);position: relative;left: 50%;"
+                                            alt="Góc Ăn Chơi - Giải Trí"></a></div>
+                                <div class="zm-post-dis text-white">
+                                    <h3 class="zm-post-title h3"><a
+                                            href="/blog/goc-an-choi-giai-tri/">Góc
+                                            Ăn Chơi - Giải Trí </a></h3>
+                                    <div class="zm-post-meta">
+                                        <ul>
+                                            <li class="s-meta"><a
+                                                    href="/blog/goc-an-choi-giai-tri/"
+                                                    class="zm-author"></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="zm-section  ptb-30 pt-m-0">
+    <div class="container mt-20 mt-m-0">
+        <div class="row mb-20">
+            <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12">
+                <div class="section-title">
+                    <h2 class="h6 header-color inline-block uppercase"> <a href="/blog/bi-kip-hen-ho">Bí Kíp Hẹn Hò </a></h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 col-sm-12 col-xs-12 col-lg-6">
+                <div class="zm-posts">
+                    <%if(listBlogCategory2.length > 0){%>
+                        <%let infoBlogFirst = listBlogCategory2[0]%>
+
+                        <article class="zm-post-lay-a">
+                            <div class="zm-post-thumb"> <a
+                                    href="/blog/<%=infoBlogFirst.slug%>"><noscript><img
+                                            width="750" height="465"
+                                            src="/files/blog/<%=infoBlogFirst.image%>"
+                                            class="lazyload attachment-full size-full wp-post-image"
+                                            alt="<%=infoBlogFirst.title%>"
+                                            srcset="/files/blog/<%=infoBlogFirst.image%> 750w, /files/blog/<%=infoBlogFirst.image%> 300w"
+                                            sizes="(max-width: 750px) 100vw, 750px" /></noscript><img
+                                        width="750" height="465"
+                                        src="/files/blog/<%=infoBlogFirst.image%>"
+                                        data-src="/files/blog/<%=infoBlogFirst.image%>"
+                                        class="lazyload attachment-full size-full wp-post-image"
+                                        alt="<%=infoBlogFirst.title%>"
+                                        data-srcset="/files/blog/<%=infoBlogFirst.image%> 750w, /files/blog/<%=infoBlogFirst.image%> 300w"
+                                        data-sizes="(max-width: 750px) 100vw, 750px" /></a></div>
+                            <div class="zm-post-dis">
+                                <div class="zm-post-header">
+                                    <h4 class="zm-post-title h2"><a
+                                            href="/blog/<%=infoBlogFirst.slug%>"><%=infoBlogFirst.title%></a>
+                                    </h4>
+                                    <div class="zm-post-meta">
+                                        <ul>
+                                            <li class="s-meta"> <a
+                                                    href="/blog/<%=infoBlogFirst.category.slug%>"
+                                                    class="meta-category"> <%=infoBlogFirst.category.title%></a></li>
+                                            <li class="s-meta"><%=moment(infoBlogFirst.createAt).subtract(10, 'days').calendar();%></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="zm-post-content">
+                                    <p style="overflow: visible"><%-infoBlogFirst.description.replace(/<a href=".+">/, '').replace(/<\/a>/, '').substring(0, 166);%>...</p>
+                                </div>
+                            </div>
+                        </article>
+                    <%}%>
+                    
+                </div>
+                <div class="advertisement hidden-xs">
+                    <div class="row mt-30">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center"> <a
+                                href="/dang-ky"><noscript><img
+                                        src="https://waodate.com/template/blog/images/ad/1.png"
+                                        alt=""></noscript><img class="lazyload"
+                                    src="https://waodate.com/template/blog/images/ad/1.png"
+                                    data-src="https://waodate.com/template/blog/images/ad/1.png"
+                                    alt=""></a></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7 col-sm-12 col-xs-12 col-lg-6 wd-blog-type-1">
+                <div class="zm-posts">
+                    <%listBlogCategory2.splice(0, 1)%>
+                    <%listBlogCategory2.forEach(blogInfo => {%>
+                        <%-include ./utils/item_right_with_description.ejs%>
+                    <%})%>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="zm-section  pt-20 pb-40">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8 columns">
+                <div class="row mb-20">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="section-title">
+                            <h2 class="h6 header-color inline-block uppercase"><a href="/blog/tu-vi-trong-tinh-yeu">Tử Vi Trong Tình Yêu</a></h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="zm-posts">
+                             <!-- 4 items -->
+                            <%listBlogCategory3 && listBlogCategory3.length > 0 && listBlogCategory3.forEach(blogInfo => {%>
+                                <%-include ./utils/item_center.ejs%>
+                            <%})%>
+                            <div class="advertisement">
+                                <div class="row mt-40">
+                                    <div class="col-md-12 text-center">
+                                        <a
+                                            href="/dang-ky"><noscript><img
+                                                    src="https://waodate.com/template/blog/images/ad/1.png"
+                                                    alt=""></noscript><img class="lazyload"
+                                                src="https://waodate.com/template/blog/images/ad/1.png"
+                                                data-src="https://waodate.com/template/blog/images/ad/1.png"
+                                                alt="">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-20 mt-40">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="section-title">
+                            <h2 class="h6 header-color inline-block uppercase"> <a
+                                    href="/blog/goc-tam-su"> Góc tâm sự</a></h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 wd-blog-type-1">
+                        <div class="zm-posts">
+                            <!-- 4 items -->
+                            <%listBlogCategory4 && listBlogCategory4.length > 0 && listBlogCategory4.forEach(blogInfo => {%>
+                                <%-include ./utils/item_center.ejs%>
+                            <%})%>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 sidebar-warp columns">
+                <div class="row">
+                    <aside
+                        class="zm-post-lay-e-area col-xs-12 col-sm-6 col-md-6 col-lg-12 hidden-md featured-posts">
+                        <div class="row mb-40">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="section-title">
+                                    <p class="h6 header-color inline-block uppercase">Bài viết nổi bật</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                <div class="zm-posts">
+                                    <!-- 4 items -->
+                                    <%listBlogMostViews.forEach(blogInfo => {%>
+                                        <%-include ./utils/item_right.ejs%>
+                                    <%})%>
+                                </div>
+                            </div>
+                        </div>
+                    </aside>
+                    <!-- tags -->
+                    <%-include ./utils/tags.ejs%>
+                </div>
+            </div>
+        </div>
+        <div class="advertisement">
+            <div class="row mt-30">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center"> <a
+                        href="/dang-ky"><noscript><img
+                                src="https://waodate.com/template/blog/images/ad/1.png"
+                                alt=""></noscript><img class="lazyload"
+                            src="https://waodate.com/template/blog/images/ad/1.png"
+                            data-src="https://waodate.com/template/blog/images/ad/1.png"
+                            alt=""></a></div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+ <!-- Start footer area -->
+ <div id="footer-sidebar1">
+    
+</div>
+	<%-include ./utils/widget-footer.ejs%>
+    
+    <!-- End footer area -->
+</div>

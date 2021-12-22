@@ -1,0 +1,93 @@
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <table class="content-table">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Tên menu</th>
+                                    <th>URL</th>
+                                    <th>Trạng Thái</th>
+                                    <th>Tuỳ Chọn</th>
+                                </tr>
+                            </thead>
+                                <tbody>
+                                    <% if (menus && menus.length > 0) { %>
+                                        <% menus.forEach(( menu, index ) => { %>
+                                            <% if (menu) { %>
+                                                <tr>
+                                                    <th>
+                                                        <%= index + 1 %>
+                                                    </th>
+                                                    <td>
+                                                        <i>
+                                                            <%= menu.title && menu.title %>
+                                                        </i>
+                                                    </td>
+                                                    <td>
+                                                        <i>
+                                                            <%= menu.url && menu.url%>
+                                                        </i>
+                                                    </td>
+                                                    <td>
+                                                        <% if (menu.status && menu.status) { %>
+                                                            <span class="badge badge-pill badge-success">
+                                                                Hoạt Động
+                                                            </span>
+                                                        <% }else{ %>
+                                                            <span class="badge badge-danger">
+                                                                Không Hoạt Động
+                                                            </span>
+                                                        <% } %>
+                                                    </td>
+                                                    <td>
+                                                        <div class="btn-group mb-2">
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light" id="btnDropDownmenuging_<%= menu._id && menu._id %>">
+                                                                Thao Tác
+                                                            </button>
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light dropdown-toggle-split dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <span class="sr-only">...</span>
+                                                            </button>
+                                                            <div class="dropdown-menu" x-placement="right-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(143px, 0px, 0px);">
+                                                                <a class="dropdown-item" href="/admin/update-menu/<%= menu && menu.url && menu.url %>">Sửa Thông Tin</a>
+                                                                <% if (menu && menu.status) { %>
+                                                                    <a class="dropdown-item btnBlockUser btnToggleStatus" _status="0" _url="<%= menu && menu.url && menu.url %>" >Tắt Hoạt Động</a>
+                                                                <% }else{ %>
+                                                                    <a class="dropdown-item btnBlockUser btnToggleStatus" _status="1" _url="<%= menu && menu.url && menu.url %>" >Bật Hoạt Động</a>
+                                                                <% } %>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <% } %>
+                                        <% }) %>
+                                    <% } %>
+                                </tbody>
+                                 <div class="row">
+                                    <div class="col-md-6"> 
+                                        <div class="dropdown mo-mb-2" id="dropdownMenuOptionmenuging" style="display: none">
+                                            <a class="btn btn-light dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Chọn Thao Tác
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 33px, 0px);">
+                                                <a class="dropdown-item btnUpdateStatusWithListmenuging" _status="0" href="#">Tắt Hoạt Động</a>
+                                                <a class="dropdown-item btnUpdateStatusWithListmenuging" _status="1" href="#">Mở Hoạt Động</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

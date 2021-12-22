@@ -1,0 +1,247 @@
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+            <br>
+            <div class="row">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-primary">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-verified float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Tổng <br><br></h6>
+                                <h4 class="mb-4">
+                                    <%= infoOverview.userVerifyAmount%>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tổng số user mới đăng ký (trong 24h qua) -->
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-info">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-gnome float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Mới Nhất</h6>
+                                <h4 class="mb-4">
+                                    <%= infoOverview.newUserVerify%>
+
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tổng số user bị khóa -->
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-danger">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-lock float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Chưa xác thực</h6>
+                                <h4 class="mb-4">
+                                    <%= infoOverview.userVerifyStatus0%>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tổng số user trả phí -->
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-success">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-diamond float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Đã xác thực</h6>
+                                <h4 class="mb-4">
+                                    <%= infoOverview.userVerifyStatus1%>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                 <div class="col-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <!-- <div class="col-sm-8">
+                                            <input class="form-control" type="text" placeholder="Lọc theo tiêu đề" id="txtSearch" value="">
+                                        </div> -->
+                                        <div class="col-md-4">
+                                            <h4 class="mt-0 header-title" style="padding-left: 16px">Bộ Lọc và Sắp Xếp</h4>
+
+                                            <select class="form-control" id="txtStatus">
+                                                <option value="-1">Lọc Theo Status</option>
+                                                <option value="1">Đã xác thực</option>
+                                                <option value="0">Chưa xác thực</option>
+                                            </select>
+                                        </div>
+
+                                         <div class="col-md-4">
+                                            <h4 class="mt-0 header-title" style="padding-left: 16px">Tìm kiếm theo tên người dùng</h4>
+                                           <input class="form-control"  type="text"  placeholder="Tên người dùng" id="txtKey">
+                                        </div>
+
+                                        <!--<div class="col-md-4">
+                                            <h4 class="mt-0 header-title" style="padding-left: 16px">Ngày bắt đầu</h4>
+                                           <input class="form-control"  type="Date"  placeholder="Ngày bắt đầu" id="txtStartTime">
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <h4 class="mt-0 header-title" style="padding-left: 16px">Ngày kết thúc</h4>
+                                           <input class="form-control"  type="Date" placeholder="Ngày kết thúc" id="txtEndTime">
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <span class="text-center"> 
+                                        <i>
+                                         <% if (amount) { %>
+                                                Có <strong style="color: #29bbe3"><%= amount || 0 %></strong> kết quả trả về 
+                                            <% }else{ %>
+                                                Có <strong style="color: #29bbe3"><%= amount || 0 %></strong> kết quả trả về 
+                                            <% } %>
+                                        </i>
+                                    </span>
+                                    <button class="btn btn-info float-right" id="btnSearch">Tìm Kiếm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <div class="row">
+                                    <div class="col-md-6"> 
+                                        <div class="dataTables_length" id="datatable_length">
+                                            <label> 
+                                                SL
+                                                <select name="datatable_length" aria-controls="datatable" class="custom-select custom-select-sm form-control form-control-sm" id="select_datatable_length">
+                                                    <option value="10">10</option>
+                                                    <option value="25" selected="">25</option>
+                                                    <option value="50">50</option>
+                                                    <option value="100">100</option>
+                                                    <option value="200">200</option>
+                                                    <option value="500">500</option>
+                                                    <option value="1000">1000</option>
+                                                </select> 
+                                            </label>
+                                        </div>
+                                        <div class="dropdown mo-mb-2" id="dropdownMenuOptionTagging" style="display: none">
+                                            <a class="btn btn-light dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Chọn Thao Tác
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 33px, 0px);">
+                                                <a class="dropdown-item btnUpdateStatusWithListTagging" _status="0" href="#">Tắt Hoạt Động</a>
+                                                <a class="dropdown-item btnUpdateStatusWithListTagging" _status="1" href="#">Mở Hoạt Động</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                      
+                    <!--END PAGING (WEB ADMIN) -->
+                </div>
+            </div>
+             <%- include ./utils/paging.ejs%>
+
+            <table class="content-table">
+                <thead>
+                    <tr role="row">
+                        <th>STT</th>
+                        <th>Người Dùng</th>
+                        <th>Số CMND</th>
+                        <th>Hình Ảnh</th>
+                        <th>Thời Gian</th>
+                        <th>Trạng Thái</th>
+                        <th>#</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% if (listUserVerify && listUserVerify.length) { %>
+                        <% listUserVerify.forEach((userVerify, index) => { %>
+                            <tr>
+                                <td>
+                                    <%= index + 1%>
+                                </td>
+                                <td>
+                                    <a href="/admin/view-user/<%= _lodash.get(userVerify, 'user.username') %> ">
+                                    <img class="thumb-sm mr-2 rounded-circle" src="/files/users/<%= _lodash.get(userVerify, 'user.avatar.name');%>" alt="NGuyễn VĂn AB">
+                                    </a>
+                                    <a href="/admin/view-user/<%= _lodash.get(userVerify, 'user.username') %> "> 
+                                    <%= _lodash.get(userVerify, 'user.fullname')%>
+                                    </a>
+                                    <small></small>
+                                </td>
+                                <td>
+                                    <i>
+                                        <%= _lodash.get(userVerify, 'cmnd')%>
+                                    </i>
+                                </td>
+                                <td>
+                                    
+                                    <% if (userVerify && Array.isArray(userVerify.image) && userVerify.image.length) { %>
+                                        <% userVerify.image.forEach(image => { %>
+                                            <a href="/files/cmnd/<%= image%>" class="fancybox">
+                                                <img src="/files/cmnd/<%= image%>"  alt="" width="200px" height="200px" style="object-fit: cover; object-position: center;">
+                                            </a>
+                                        <% }) %>
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <%= moment(_lodash.get(userVerify, 'createAt')).format('L') %>
+                                </td>
+                                <td>
+                                    <% if (userVerify && userVerify.status == 1) { %>
+                                        <span class="badge badge-pill badge-success"> Đã Xác Nhận</span>
+                                    <% } %>
+                                    <% if (userVerify && userVerify.status == 0) { %>
+                                        <span class="badge badge-pill badge-warning"> Chưa Xác Nhận</span>
+                                        
+                                    <% } %>
+                                </td>
+                                <td>
+                                    <a href="#" class="btn btn-outline-info btn-rounded btn-custom btn-block waves-effect waves-light btnConfirmCMND"
+                                        _CMND="<%= _lodash.get(userVerify, 'cmnd')%>"
+                                        _useID="<%=_lodash.get(userVerify, 'user._id')%>"
+                                        _userVerifyID ="<%=_lodash.get(userVerify, '_id')%>"
+                                        _status="1"
+                                    >Xác Nhận
+                                        <i style="padding-left: 10px" class="mdi mdi-forward"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-outline-warning btn-rounded btn-custom btn-block waves-effect waves-light btnCancelCMND"
+                                        _CMND="<%= _lodash.get(userVerify, 'cmnd')%>"
+                                        _useID="<%=_lodash.get(userVerify, 'user._id')%>"
+                                        _userVerifyID ="<%=_lodash.get(userVerify, '_id')%>"
+                                        _status="0"
+
+                                    >Hủy Bỏ
+                                        <i style="padding-left: 10px" class="mdi mdi-arrow-left-bold"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        <% }) %>
+                    <% } %>
+                </tbody>
+            </table>
+             <%- include ./utils/paging.ejs%>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+

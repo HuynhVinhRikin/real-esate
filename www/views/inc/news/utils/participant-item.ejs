@@ -1,0 +1,45 @@
+<% const avatarSet = participant.gender === 1 ? participant.avatar && participant.avatar.name || "image-default.jpg" : participant.avatar && participant.avatar.name || "default_women.jpg" %>
+<div class="row item" participant_id="<%=participant._id%>">
+  <div class="col-md-6 col-12 participant_info">
+    <a href="/nguoi-dung/thong-tin/<%=participant.username %> ">
+     <img class="avatar" src="/files/users/<%=avatarSet%>">
+    </a>
+    <div class="text">
+      <a href="/nguoi-dung/thong-tin/<%=participant.username %> ">
+        <h4 class="text_name">
+          <%=participant.fullname%>
+        </h4>
+      </a>
+      <p class="text_description">SĐT: <%= isUserVip ? (participant.phone[0] == '0' ? participant.phone : '0' + participant.phone) : '' %> </p>
+      <p class="text_description">Lời nhắn: <span msg_id="msg_<%=participant._id%>"  username_id="<%=participant.username %> "><%=message %></span></p>
+    </div>
+  </div>
+  <div class="col-md-6 col-12 action">
+
+    <%if(isFeature === 1) {%>
+    <button disabled class="btn_action is_feature " _participantID='<%=participant._id%>'
+      full_name='<%=participant.fullname%>' message='<%=message %>' avatar="<%=avatarSet%>">Đã ưu
+      tiên</button>
+
+      <button  class="btn_action btnUnSelectUserFeature " _participantID="<%=participant._id%>"
+      full_name="<%=participant.fullname%>"  _conceptID='<%=concept._id%>'  avatar="<%=avatarSet%>">Hủy ưu
+      tiên</button>
+
+    <% }else if( status === 1){ %>
+    <button class="btn_action importance btnSelectUserFeature " _participantID='<%=participant._id%>'
+      full_name='<%=participant.fullname%>' _conceptID='<%=concept._id%>' avatar="<%=avatarSet%>">Ưu
+      tiên</button>
+      <button  class="btn_action btnUnAcceptUser" _participantID='<%=participant._id%>'
+      _conceptID='<%=concept._id%>' full_name='<%=participant.fullname%>'avatar="<%=avatarSet%>">Hủy chấp nhận </button>
+
+
+    <% }else if( status === 0){ %>
+    <button class="btn_action accept btnAcceptUserFeature" _conceptID='<%=concept._id%>'
+      avatar="<%=avatarSet%>"  full_name='<%=participant.fullname%>' _participantID='<%=participant._id%>'>Chấp nhận</button>
+    <button class="btn_action decline btnRemoveParticipantConcept" type="submit" _conceptID='<%=concept._id%>'
+      _participantID='<%=participant._id%>'>Xoá yêu cầu</button>
+    <% } %>
+
+
+  </div>
+</div>

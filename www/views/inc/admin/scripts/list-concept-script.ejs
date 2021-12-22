@@ -1,0 +1,191 @@
+<script>
+    $(document).ready(function(){
+
+        let getFormSearchAndFilter = () => {
+            let key = $('#txtSearch').val();
+            let starttime = $('#txtStartTime').val();
+            let endtime = $('#txtEndTime').val();
+            let dateDating = $('#datepicker').val();
+            let minCost   = $('#txtMinCost').val();
+            let maxCost   = $('#txtMaxCost').val();
+            let maxAge   = $('#txtMaxAge').val();
+            let minAge   = $('#txtMinAge').val();
+            let status = $('#txtStatus').val();
+            let sort = $('#txtSort').val();
+            let amountItemShow = $('#select_datatable_length').val();
+            let gender = $('#txtGender').val();
+            let participantsNum = $('#participantsNum').val()
+
+            return { key, starttime, endtime, dateDating, minCost, maxCost, status, sort, gender,maxAge, minAge, amountItemShow, participantsNum };
+        }
+
+        let  buildAndGoURI = function(){
+            let { key, starttime, endtime, dateDating, minCost, maxCost, status, sort, gender,minAge,maxAge, amountItemShow, participantsNum } = getFormSearchAndFilter();
+            let uri = `/admin/list-concept?`;
+            if(key && key.length > 0) uri += `&key=${key}`;
+            if(starttime && endtime) uri += `&starttime=${starttime}&endtime=${endtime}`;
+            if(dateDating) uri += `&dateDating=${dateDating}`;
+            if(minCost) uri += `&minCost=${minCost}`;
+            if(maxCost) uri += `&maxCost=${maxCost}`;
+            if(minAge) uri += `&minAge=${minAge}`;
+            if(maxAge) uri += `&maxAge=${maxAge}`;
+            if(status != -1 && !Number.isNaN(Number(status))) uri +=`&status=${status}`;
+            if(sort && sort != -1) uri +=`&sort=${sort}`;
+            if(Number(gender) !== -2) uri += `&gender=${gender}`;
+            if (Number(participantsNum) >= 0) uri += `&participantsNum=${participantsNum}`;
+            <%- include ./checkPerPageCurrent.ejs %>
+            return window.location.href = uri;
+        }
+
+        $('#btnSearch').on('click', function(e){
+            e.preventDefault();
+            buildAndGoURI();
+        });
+
+        let  buildAndGoURIExportPDF = function(){
+            let { key, starttime, endtime, dateDating, minCost, maxCost, status, sort, amountItemShow } = getFormSearchAndFilter();
+            let uri = `/admin/pdf-list-concept?`;
+            if(key && key.length > 0) uri += `&key=${key}`;
+            if(starttime && endtime) uri += `&starttime=${starttime}&endtime=${endtime}`;
+            if(dateDating) uri += `&dateDating=${dateDating}`;
+            if(minCost) uri += `&minCost=${minCost}`;
+            if(maxCost) uri += `&maxCost=${maxCost}`;
+            if(status != -1 && !Number.isNaN(Number(status))) uri +=`&status=${status}`;
+            if(sort && sort != -1) uri +=`&sort=${sort}`;
+            <%- include ./checkPerPageCurrent.ejs %>
+            return window.location.href = uri;
+        }
+
+        // $('#btnSearch').on('click', function(e){
+        //     e.preventDefault();
+        //     buildAndGoURI();
+        // })
+
+        /*
+        *  CODE BEGIN CHECKBOX UPDATE STATUS CONCEPT
+        */
+        //checked item
+
+        let conceptIdArr = [];
+        $('.ckbConceptID').on('click', function(){
+            let conceptID = $(this).val();
+            if($(this).is(':checked')){
+                conceptIdArr.push(conceptID);
+            }else{
+                if(conceptIdArr.includes(conceptID)){
+                    conceptIdArr.splice(conceptIdArr.indexOf(conceptID), 1);
+                }
+            }
+
+            if(conceptIdArr.length > 0){
+                $('#dropdownMenuOptionConcept').show();
+            }else{
+                $('#dropdownMenuOptionConcept').hide();
+            }
+        })
+        //checked all
+        $('#checkAll').on('change', function(){
+            if($(this).is(':checked')){
+                $('.ckbConceptID').prop('checked', true);
+                $('.ckbConceptID:checked').each(function(){
+                    $('#dropdownMenuOptionConcept').show();
+                    conceptIdArr.push(this.value);
+                })
+            }else{
+                $('.ckbConceptID').prop('checked', false);
+                $('#dropdownMenuOptionConcept').hide();
+                conceptIdArr = []
+            }
+        })
+        /*
+        *  CODE END CHECKBOX UPDATE STATUS CONCEPT
+        */
+
+        $('.btnUpdateStatusWithListConcept').on('click', function(e){
+            e.preventDefault();
+            if (conceptIdArr.length === 0) 
+                return alert('Vui Lòng Chọn ít nhất 1 Danh Mục');
+            let status = Number($(this).attr('_status'));
+            $.ajax({
+                url: `/admin/update-status-list-concept`,
+                method: 'POST',
+                data: { arrConceptID: conceptIdArr, status },
+                success: function(resp){
+                    if(!resp.error){
+                        alert('Cập Nhật Thành Công');
+                        return window.location.reload(true);
+                    }else{
+                        alert('Cập Nhật Thất Bại');
+                    }
+                },
+                error: function(){
+                    alert('Cập Nhật Thất Bại');
+                }
+            })
+        })
+
+        $('.btnRemoveListConcept').on('click', function(e){
+            e.preventDefault();
+            if (conceptIdArr.length === 0) 
+                return alert('Vui Lòng Chọn ít nhất 1 concept');
+
+            swal({
+                title: "Bạn có chắc chắc xóa?",
+                text: "Bạn sẽ không thể khôi phục tập tin này!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Xác nhận!",
+                closeOnConfirm: false
+                },
+            function(){
+                 $.ajax({
+                    url: `/admin/remove-array-concept`,
+                    method: 'POST',
+                    data: { arrConceptID: conceptIdArr },
+                    success: function(resp){
+                        if(!resp.error){
+                            swal("Xóa thành công!", "", "success");
+                            return window.location.reload(true);
+                        }else{
+                            alert('Xóa Thất Bại');
+                        }
+                    },
+                    error: function(){
+                        alert('Xóa Thất Bại');
+                    }
+                })
+            });
+               
+        })
+
+        /*|============================================|
+          |                UPDATE STATUS CONCEPT
+          |============================================|*/
+
+        $('.btnUpdateStatus').on('click', function(e){
+            e.preventDefault();
+            let conceptID = $(this).attr('_conceptID');
+            let status = $(this).attr('_status');
+            $.ajax({
+                url: `/admin/update-status-concept/${conceptID}`,
+                method: 'POST',
+                data: { conceptID, status },
+                success: function(resp){
+                    if(resp.error)
+                        return alert('error!');
+                    location.reload();
+                },
+                error: function(error){
+                    alert('Lỗi');
+                }
+            })
+        });
+
+        $('#exportListConceptPDF').on('click', function(e){
+            e.preventDefault();
+            buildAndGoURIExportPDF();
+        })
+        
+    })
+</script>

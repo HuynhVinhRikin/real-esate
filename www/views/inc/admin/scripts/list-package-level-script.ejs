@@ -1,0 +1,172 @@
+<script>
+    $(document).ready(function(){
+            let replaceAll = function (str, find, replace) {
+                while (str.indexOf(find) > -1) {
+                    str = str.replace(find, replace);
+                }
+                return str;
+            };
+            
+            // UPDATE PERCENT_COMMISSION
+            $(".updateItemPackage_LevelSite_Commission").editable({
+                type:"text",
+                pk:1,
+                name:"username",
+                title:"Nhập Hoa Hồng",
+                mode:"inline",
+                inputclass:"form-control-sm",
+                success: function(response, newVal) {
+                    if (Number.isNaN(Number(newVal))) 
+                    {
+                        alert('Vui Lòng Nhập Số');
+                        return '';
+                    }
+
+                    if (Number(newVal) > 1) {
+                        alert('Vui lòng nhập % từ 0.1->1.0');
+                        return '';
+                    }
+
+                    let packageID = $(this).attr('__packageID');
+                    let percentCommission = Number(newVal);
+                    
+                    $.ajax({
+                        url: `/admin/update-percentcommission-package-level/${packageID}`,
+                        method: 'POST',
+                        data: { percentCommission },
+                        success: function(resp) {
+                            console.log({ resp });
+                            if (!resp.error) return alert('Cập Nhật Thành Công');
+                            return alert('Lỗi Cập Nhật, vui lòng thử lại sau!');
+                        },
+                        error: function(err){
+                            console.log(err.message)
+                            return alert('Lỗi Cập Nhật, vui lòng thử lại sau!');
+                        }
+                    });
+                    return Number(newVal);
+                }
+            });
+
+            $(".updateItemPackage_LevelSite_TimeReset").editable({
+                type:"text",
+                pk:1,
+                name:"username",
+                title:"Nhập Thời Gian Reset",
+                mode:"inline",
+                inputclass:"form-control-sm",
+                success: function(response, newVal) {
+                    if (Number.isNaN(Number(newVal))) 
+                    {
+                        alert('Vui Lòng Nhập Số');
+                        return '';
+                    }
+                   
+                    let packageID = $(this).attr('__packageID');
+                    let timeReset = Number(newVal);
+                    
+                    $.ajax({
+                        url: `/admin/update-time-reset-package-level/${packageID}`,
+                        method: 'POST',
+                        data: { timeReset },
+                        success: function(resp) {
+                            console.log({ resp });
+                            if (!resp.error) return alert('Cập Nhật Thành Công');
+                            return alert('Lỗi Cập Nhật, vui lòng thử lại sau!');
+                        },
+                        error: function(err){
+                            console.log(err.message)
+                            return alert('Lỗi Cập Nhật, vui lòng thử lại sau!');
+                        }
+                    });
+                    return Number(newVal);
+                }
+            });
+
+            $(".updateItemPackage_LevelSite_thresholdTotatlCommission").editable({
+                type:"text",
+                pk:1,
+                name:"username",
+                title:"Nhập Thời Gian Reset",
+                mode:"inline",
+                inputclass:"form-control-sm",
+                success: function(response, newVal) {
+                    newVal = replaceAll(newVal, ',', '');
+                    if (Number.isNaN(Number(newVal))) 
+                    {
+                        alert('Vui Lòng Nhập Số');
+                        return '';
+                    }
+                   
+                    let packageID = $(this).attr('__packageID');
+                    let thresholdTotatlCommission = Number(newVal);
+                    
+                    $.ajax({
+                        url: `/admin/update-thresholdTotatlCommission-user-package-level/${packageID}`,
+                        method: 'POST',
+                        data: { thresholdTotatlCommission },
+                        success: function(resp) {
+                            console.log({ resp });
+                            if (!resp.error) return alert('Cập Nhật Thành Công');
+                            return alert('Lỗi Cập Nhật, vui lòng thử lại sau!');
+                        },
+                        error: function(err){
+                            console.log(err.message)
+                            return alert('Lỗi Cập Nhật, vui lòng thử lại sau!');
+                        }
+                    });
+                    return Number(newVal);
+                }
+            });
+
+            $(".updateItemPackage_LevelSite_name").editable({
+                type:"text",
+                pk:1,
+                name:"username",
+                title:"Nhập Tiêu Đề Gói",
+                mode:"inline",
+                inputclass:"form-control-sm",
+                success: function(response, newVal) {
+                   
+                    let packageID = $(this).attr('__packageID');
+                    
+                    $.ajax({
+                        url: `/admin/update-name-package-level/${packageID}`,
+                        method: 'POST',
+                        data: { name: newVal },
+                        success: function(resp) {
+                            console.log({ resp });
+                            if (!resp.error) return alert('Cập Nhật Thành Công');
+                            return alert('Lỗi Cập Nhật, vui lòng thử lại sau!');
+                        },
+                        error: function(err){
+                            console.log(err.message)
+                            return alert('Lỗi Cập Nhật, vui lòng thử lại sau!');
+                        }
+                    });
+                    return Number(newVal);
+                }
+            });
+           
+        $('.btnRemovePackage').on('click', function(e){
+            e.preventDefault();
+
+            let packageID = $(this).attr('_packageID');
+            $.ajax({
+                url: `/admin/remove-package-level/${packageID}`,
+                method: 'GET',
+                success: function(resp) {
+                    if (!resp.error) {
+                        $(`#item_package_level_${packageID}`).remove();
+                        return alert('Xoá Thành Công');
+                    }
+                    return alert('Lỗi Xoá, vui lòng thử lại sau!');
+                },
+                error: function(err){
+                    console.log(err.message);
+                    return alert('Lỗi Xoá, vui lòng thử lại sau!');
+                }
+            })
+        })
+    });    
+</script>

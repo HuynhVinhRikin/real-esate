@@ -1,0 +1,212 @@
+<!-- ////////////// Begin Main ////////////// -->
+<style>
+    .nofication-main-container {
+        width: 90%;
+        max-width: 1480px;
+        margin: 20px auto;
+        position: relative;
+    }
+
+    .wao-header-mobile .create-date img {
+        position: absolute;
+        top: -60px;
+        left: 12.5px;
+    }
+
+    .notification-content__item--notSeen {
+        background-color: rgb(224, 230, 253);
+    }
+
+    .nofication-main-container a {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center
+    }
+
+    .avatar {
+        height: 60px !important;
+        width: 60px !important;
+        border-radius: 35%;
+    }
+
+    .notification-content__item {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+        font-size: 12px;
+        margin: 10px auto;
+        padding: 20px;
+        width: 100%;
+        height: 80px;
+        /*    border: 1px solid black; */
+        border-left: 0;
+        border-right: 0;
+        position: relative;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+    }
+
+    .notification-content__item>* {
+        float: left;
+        position: relative;
+        margin-right: 20px;
+    }
+
+    .notification-content__item img {
+        width: 100px;
+        position: relative;
+        object-fit: cover;
+        height: 60px;
+    }
+
+    .notification-content__item>a.nof-link {
+        position: relative;
+    }
+
+    .notification-content__title {
+        height: 90px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row;
+        width: 100%;
+    }
+
+    .notification-content__title p {
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+
+    .notification-content__title p>img {
+        margin: 0 20px;
+        border-radius: 20px;
+    }
+
+    .notification-content__title p button {
+        padding: 5px 10px;
+        background: slateblue;
+        color: snow;
+        outline: none;
+        border-radius: 20px;
+        cursor: pointer;
+    }
+
+    .notification-content__title p strong:first-child {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .notification-content__title p>strong:nth-child(2) {
+        width: 250px;
+        min-width: 160px;
+        margin-left: 20px;
+    }
+
+    @media screen and (max-width: 1000px) {
+        .nofication-main-container {
+            width: 95%;
+        }
+
+        .notification-content__item {
+            padding: 0;
+            height: 180px;
+        }
+
+        .notification-content__item p {
+            max-width: 100px;
+            text-align: center;
+            margin: 10px auto;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .notification-content__item p:first-child {
+            width: 130px;
+            min-height: 150px;
+        }
+
+        .notification-content__item p strong {
+            text-align: center;
+            margin: 4px 0;
+        }
+
+        .notification-content__item p img {
+            margin: 3px 0;
+        }
+
+        .notification-content__title p>strong:nth-child(2) {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100px;
+            display: none;
+        }
+    }
+</style>
+<main class="nofication-main-container">
+    <section class="notification-main">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="notification-content br-8">
+                        <div class="notification-content__header"
+                            style="display: flex;align-items: center;justify-content: center; margin: 20px;">
+                            <a href="" id="btnSeenAllNoti" style="margin-bottom: 10px; padding: 5px 10px; background: #6a68e9; color: white; font-size: 12px; width: 200px;">Đã Xem Tất Cả</a>
+                        </div>
+                        <div class="notification-content__body">
+                            <%if (notifications && notifications.length > 0) {%>
+                            <%notifications.forEach(noti => {%>
+                            <div class="notification-content__item <%if(Number(noti.status) === 0) {%> notification-content__item--notSeen"
+                                _isSeen="0" <% } else{ %> _isSeen="1" <% } %> _notificationID="<%=noti._id%>">
+                                <a class="" href="<%if(Number(noti.type) === 1){%>/buoi-hen-ho/<%= noti.concept && noti.concept.slug %>#participants<%}else if(Number(noti.type) === 2){%>/buoi-hen-ho/<%=noti.concept && noti.concept.slug%> <%} else if(Number(noti.type) === 3){%> /buoi-hen-ho/<%=noti.concept && noti.concept.slug%>
+                                          <%} else if(Number(noti.type) === 4){%>/buoi-hen-ho/<%= noti.concept && noti.concept.slug%> 
+                                          <%} else if(Number(noti.type) === 5){%> /nguoi-dung/thong-tin/<%=noti.sender && noti.sender.username%>
+                                          <%} else if(Number(noti.type) === 6){%>/buoi-hen-ho/<%= noti.concept && noti.concept.slug%> 
+                                          <%} else if(Number(noti.type) === 7){%>/ca-nhan/thong-tin?imgId=<%=noti && noti.image%>
+                                          <%} else if(Number(noti.type) === 8){%>/nguoi-dung/thong-tin/<%=noti.sender && noti.sender.username%>?imgId=<%=noti.image%>#view_image_<%=noti.image%> 
+                                          <%} else if(Number(noti.type) === 10){%>/ca-nhan/tin-nhan/<%=noti.sender && noti.sender.username%>
+                                        <%}%>" 
+                                    >
+                                    <!-- <avatar> Chúc mừng bạn ! <author.fullname> , <author.age> đã đồng ý với yêu cầu tham gia của ban buổi hẹn <concept.title>	 -->				
+
+                                        <%let objUser = noti.sender;%>
+                                        <%-include ./utils/image_RENDER-header.ejs%>
+                                        <%#= JSON.stringify(noti) %>
+                                     
+                                        <div class=" notification-content__title">
+                                          <p class="view-message" type="<%= noti.type %> " noti_id="<%=noti._id%>">
+                                              <%-noti.message && noti.message.replace(/♥️\s+/g, '').replace(/Xem\s*Ảnh/, '').replace(/tham\s*gia/i, 'tham gia buổi hẹn')%>
+                                          </p>
+                                          <p>
+                                              <%=noti && moment(noti.createAt).startOf('minus').fromNow();%>
+                                          </p>
+                                      </div>
+                            </a>
+                        </div>
+                        <%})%>
+                        <%}else{%>
+                        <strong>Bạn chưa có thông báo!</strong>
+                        <%}%>
+                        
+                        <!-- <div class="notification-content__item">
+                            <a href="#">
+                                <img src="/template/user/img/nav-01.png" alt="">
+                                <div class="notification-content__title">
+                                    <h4>Stephanie Bailey<span>26</span></h4>
+                                    <p>Aenean tincidunt scelerisque volutpat. Aliquam dignissim auctor volutpat. Phasellus vel laoreet nunc. Orci varius natoque penatibus et magnis dis parturient montes.</p>
+                                </div>
+                            </a>
+                        </div> -->
+                        </div>
+                    </div>
+                    <div class="wao-pagination br-8">
+                    <%- include ./utils/paging.ejs%>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

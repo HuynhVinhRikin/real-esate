@@ -1,0 +1,41 @@
+<main>
+    <div class="wao-wrapper">
+       <div class="container wao-container wao-container-full-width-mb wao-mb">
+          <div class="row wao-justi-center">
+             <div class="col-12 col-lg-11">
+                <div class="wao-banner-inner">
+                   <img src="./img/home/inner-banner.jpg" alt="">
+                   <p class="content">
+                      Nền tảng dẫn đầu dành riêng cho class B+
+                   </p>
+                </div>
+             </div>
+          </div>
+       </div>
+       <div class="container wao-container">
+          <div class="row wao-content-row wao-justi-center">
+             <div class="col-lg-3 wao-content-col">
+                <%let flagPageSearch  = 0;%>
+                <%- include ./utils/sidebar/search__CONCEPT_ITEM.ejs%>
+                <%- include ./utils/sidebar/image-advertisement.ejs%>
+             </div>
+             <div class="col-lg-9 wao-content-col">
+                <div class="wao-date-card-list active">
+                    <%if(listConcepts && listConcepts.length > 0){%>
+                        <%listConcepts.forEach(concept => {%>
+                            <%-include ./utils/concept/item_concept.ejs%>
+                        <%})%>
+                    <%}else{%>
+                        <strong>Không có Buổi hẹn hò phù hợp</strong>
+                    <%}%>
+                   
+                </div>
+             </div>
+          </div>
+          <div class="row">
+            <%-include ./utils/paging.ejs%>
+        </div>
+       </div>
+    </div>
+    
+ </main>

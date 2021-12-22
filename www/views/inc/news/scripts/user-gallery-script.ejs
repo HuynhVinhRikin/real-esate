@@ -1,0 +1,260 @@
+<style>
+  .wao-popup__wrapper {
+      padding: 10px 10px 0;
+      position: fixed;
+      z-index: 9999;
+  }
+  .wao-popup__backdrop {
+      visibility: hidden;
+      z-index: 11;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,.75);
+      cursor: pointer;
+      opacity: 0;
+      transition: all .4s ease-in-out;
+  }
+  .wao-popup__content {
+      display: inline-block;
+      visibility: hidden;
+      z-index: 12;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      max-width: 568px;
+      padding: 10px;
+      transform: translate(-50%,-50%) scale(.8);
+      opacity: 0;
+      transition: all .2s ease-in-out;
+  }
+  .wao-popup__content .wao-popup__container {
+      max-height: calc(100vh - 55px * 2);
+      overflow: auto;
+      background-color: #fff;
+      border-radius: 8px;
+  }
+  .wao-popup--open .wao-popup__backdrop {
+      visibility: visible;
+      opacity: 1;
+  }
+  .wao-popup--open .wao-popup__content {
+      visibility: visible;
+      transform: translate(-50%,-50%) scale(1);
+      opacity: 1;
+  }
+  .updateAccount-popup .wao-popup__container {
+      padding: 25px;
+  }
+  .updateAccount-popup .wao-popup__btnGroup {
+      margin-top: 20px;
+  }
+  .updateAccount-popup .wao-popup__btnGroup .wao-popup__btn {
+      display: block;
+      width: 100%;
+      height: 52px;
+      border: none;
+      background-color: inherit;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 52px;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+  }
+  .updateAccount-popup .wao-popup__btnGroup .wao-popup__btn-refuse {
+      border: 1px solid #081526;
+  }
+  .updateAccount-popup .wao-popup__btnGroup .wao-popup__btn-update {
+      background-color: #4e37d3;
+      color: #fff;
+  }
+  .updateAccount-popup .form-select{
+      border: none;
+      height: auto;
+      margin: 0;
+      padding: 0;
+      border-radius: 0;
+  }
+  .updateAccount-popup .thumb {
+      margin: 10px 5px 0 0;
+      width: 150px;
+  }
+  .updateAccount-popup .thumb:hover {
+      /* background-color: red!important; */
+      z-index: 100;
+  }
+  .updateAccount-popup .thumb img{
+      max-width: 100%;
+  }
+  .updateAccount-popup .form-group{
+      margin-bottom: 16px;
+  }
+  .updateAccount-popup .form-control {
+      height: 40px;
+      margin-bottom: 12px;
+      border: none;
+      border-radius: 4px;
+      background-color: #fff;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #495057;
+      padding: .375rem .75rem;
+      display: block;
+      width: 100%;
+      -webkit-appearance: auto;
+      -moz-appearance: inherit;
+      appearance: inherit;
+  }
+  .updateAccount-popup figure:hover .editImagePreview {
+      display: block!important;
+  }
+  @media (min-width: 992px){
+      .updateAccount-popup .wao-popup__container {
+          padding: 24px 32px 28px 32px;
+      }
+      .updateAccount-popup .wao-popup__btnGroup {
+          margin-top: 40px;
+      }
+  }
+  @media (prefers-reduced-motion: reduce){
+      .updateAccount-popup .form-control {
+          transition: none;
+      }
+  }
+  </style>
+  
+  <div class="wao-popup__wrapper updateAccount-popup" id="previewUserGallery">
+      <div class="wao-popup__backdrop wao-popup__backdrop--closable"></div>
+      <div class="wao-popup__content">
+        <div class="wao-popup__container br-8">
+      <div class="row">
+              <strong>
+                  Danh Sách Hình Ảnh
+              </strong>
+              <div class="col-12 form-group" id="listImagePreview" style="position: relative; display: inline-block;">
+               
+        </div>
+               <div class="row">
+                  <div class="col-md-12 form-group">
+                      <strong>Trạng Thái</strong>
+                      <div class="form-select">
+                          <select class="form-control" id="isPrivate">
+                              <option value="0" selected="selected">Công Khai</option>
+                              <option value="1">Riêng Tư</option>
+                          </select>
+                      </div>
+                  </div>
+              </div>
+      </div>
+         
+          <div class="wao-popup__btnGroup row">
+              <div class="col-6">
+                  <button class="wao-popup__btn wao-popup__btn-refuse br-8 wao-form__btn wao-form__btn--ouline" type="button" data-popup="previewUserGallery" id="btnCancelUploadGallery">Hủy</button>
+              </div>
+              <div class="col-6">
+                  <button class="wao-popup__btn wao-popup__btn-update br-8" id="btnUploadUserGallery">Đăng</button>
+              </div>
+          </div>
+        </div>
+      </div>
+  </div>
+  
+  <script>
+      $(document).ready(function(){
+          let arrInputImgs;
+          let fileArray;
+          let fileObject;
+          $('#imgUploadGallery').on('change', function(){
+          let validFileImage = /(\.|\/)(jpe?g|png)$/i;
+              arrInputImgs = $(this)[0].files;
+              for(let i = 0; i < arrInputImgs.length; i ++){
+                  if(!validFileImage.test(arrInputImgs[i].type)){
+                    return toastr['warning']('Không đúng định dạng ảnh.');
+                  }
+
+              }
+              $('#previewUserGallery').addClass('wao-popup--open');
+
+              $.each(arrInputImgs, function(index, file){ //loop though each file
+                    var fRead = new FileReader(); //new filereader
+                    fRead.onload = (function(file){ //trigger function on successful read
+                        return function(e) {
+                            var imagePreview = `<figure id="idFile_${index}" class=" thumb profile-pic" style="position: relative; display: inline-block; ">
+                                    <a data-fancybox="gallery2" href="${e.target.result}">
+                                    <img src="${e.target.result}" alt="alt"></a>
+                                    <div class="editImagePreview" _nameImage="${file.name}" _indexImage="${index}" style="position: absolute; background-color: white; right: 0;top: 0; margin: 3px 3px; display:none">
+                                        <i class="fa fa-remove" style="margin: 3px 3px;"></i>
+                                    </div>
+                                </figure>`
+                            $('#listImagePreview').prepend(imagePreview); //append image to output element
+                        };
+                    })(file);
+                    fRead.readAsDataURL(file); //URL representing the file's data.
+              })
+              fileArray = Array.from(arrInputImgs);
+              fileObject = Object.assign({}, fileArray);
+          });
+  
+          $('body').on('click', '.editImagePreview', function(){
+              let nameFile  = $(this).attr('_nameImage');
+              let indexFile = $(this).attr('_indexImage');
+              let index = fileArray.findIndex(item => item.name == nameFile);
+              $(`#idFile_${indexFile}`).remove();
+              fileArray.splice(Number(index), 1);
+              fileObject = Object.assign({}, fileArray);
+          })
+          
+          $('#btnCancelUploadGallery').on('click', function(){
+              $('#listImagePreview').empty();
+          });
+
+          $(document).on('click', '#btnUploadUserGallery' ,function (e) {
+              var fd = new FormData();
+              for (let index in fileObject) {
+                  fd.append(`image_${index}`, fileObject[index]);
+              }
+  
+              let isPrivate = $('#isPrivate').val();
+              
+              fd.append('data', JSON.stringify({ isPrivate, imageLenght: Object.getOwnPropertyNames(fileObject).length }));
+            //   var object = {};
+            //   fd.forEach(function(value, key){
+            //     object[key] = value;
+            //     });
+            //     var json = JSON.stringify(object);
+            //     console.log("json", json)
+            //   return;
+              $.ajax({
+                  url: '/ca-nhan/upload-gallery',
+                  method: 'POST',
+                  data: fd,
+                  contentType: false,
+                  processData: false,
+                  success: function(resp) {
+                      if (resp.error) {
+                          if (resp.message === 'image_update_than_5_and_not_payer') {
+                              return toastr['warning']('Số lượng Upload tối đa cho bạn: 5 Ảnh', 'Vui lòng nâng cấp gói');
+                          }
+                          return toastr['error']('Upload Thất Bại');
+                      }
+                      toastr['success']('Upload Ảnh Thành Công');
+                      setTimeout(function(){
+                          window.location.reload();
+                      }, 1000);
+                  },
+                  error: function(err) {
+                      alert('THÊM THAT BAI');
+                  }
+              })
+        });
+  
+        //   $('#btnUploadUserGallery').one('click', function(e){
+        //   })
+      });
+  </script>
+  

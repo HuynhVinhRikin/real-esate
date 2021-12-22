@@ -1,0 +1,219 @@
+
+<body>
+
+	<!--_______________________________HEADER_______________________________________-->
+	<button class="flat-btn hide-pc t-mobile-menu-btn"><img src="/template/images/mobile-menu.svg" alt="Menu" /></button>
+    <% include ../core/topbar.ejs %>
+
+
+	<!--_________________________________PRODUCT BANNER______________________________-->
+	<div class="t-home-block t-product-banner">
+		<img class="t-home-banner-footer" src="/template/images/banner-home-bg-footer4.png" alt="Banner footer" />
+		<div class="container">
+			<div class="t-home-block-content">
+				<p class="t-title">
+					<%- lang(langKey,'quan_ly_cong_viec_tien_do')%>
+					<br/>
+					<span class="color-blue"><%- lang(langKey,'va_trao_doi_thong_tin')%></span>
+				</p>
+				<p class="t-description">
+					It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+					It has survived not only five centuries, but also the leap into electronic.
+				</p>
+				<div class="t-product-banner-video">
+					<iframe id="youtubePlayer" allowfullscreen src="https://www.youtube.com/embed/HdewU9LCDMs?enablejsapi=1" allow="autoplay"></iframe>
+					<button class="flat-btn t-product-banner-video-play-btn">
+						<img class="t-product-banner-video-img" src="/template/images/product-banner.jpg" alt="Banner" />
+						<span class="t-product-banner-video-background"></span>
+						<img class="t-product-banner-video-icon" src="/template/images/icon-video.png" alt="Video" />
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--____________________________________PRODUCT SLIDER________________________________-->
+	<%if(listBlogProduct2 && listBlogProduct2.listBlogs ){%>
+	<div class="t-home-block t-product-block t-product-block-top">
+		<img class="t-home-banner-footer" src="/template/images/banner-home-bg-footer3.png" alt="Banner footer" />
+		<div class="container">
+			<div class="t-home-block-content">
+				<p class="t-title t-title-product">
+					<%- lang(langKey,'cac_san_pham_danh_cho')%>
+					<br/>
+					<span class="color-blue"><%- lang(langKey,'nha-thau-cong-trinh-xay-dung')%></span>
+				</p>
+				<div class="t-home-product-slider-container t-product-slider-container">
+					<div class="t-home-product-slider" id="t-product-slider1">
+						<%listBlogProduct2 && listBlogProduct2.listBlogs && listBlogProduct2.listBlogs.forEach(product=>{%>
+						<div class="col-12 col-lg-4 t-product-slider-item">
+							<div class="t-product-slider-item-wrapper">
+								<div class="t-product-slider-item-img">
+									<img src="<%=product.image%>" alt="Product" />
+								</div>
+								<p class="t-product-slider-item-title"><%=product.title%></p>
+								<div class="t-product-slider-item-description">
+									<%=product.description%>
+								</div>
+								<a class="t-product-slider-item-link" href="/product/details-blog-product/?slug=<%=product.slug%>&category=<%=product.category._id%>">Chi tiết <img src="/template/images/icon-arrow-right.svg" alt="Arrow" /></a>
+							</div>
+						</div>
+						<%})%>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<%}%>
+	<%if(listBlogProduct1 && listBlogProduct1.listBlogs ){%>
+	<!--____________________________________PRODUCT SLIDER________________________________-->
+	<div class="t-home-block t-product-block bg-white">
+		<img class="t-home-banner-footer" src="/template/images/banner-home-bg-footer4.png" alt="Banner footer" />
+		<div class="container">
+			<div class="t-home-block-content">
+				<p class="t-title t-title-product">
+					<%- lang(langKey,'cac_san_pham_danh_cho')%>
+					<br/>
+					<span class="color-blue"><%- lang(langKey,'nha-dau-tu-quan-ly-du-an')%></span>
+				</p>
+				<div class="t-home-product-slider-container t-product-slider-container">
+					<div class="t-home-product-slider" id="t-product-slider2">
+						<%listBlogProduct1 && listBlogProduct1.listBlogs && listBlogProduct1.listBlogs.forEach(product=>{%>
+						<div class="col-12 col-lg-4 t-product-slider-item">
+							<div class="t-product-slider-item-wrapper">
+								<div class="t-product-slider-item-img">
+									<img src="<%=product.image%>" alt="Product" />
+								</div>
+								<p class="t-product-slider-item-title"><%=product.title%></p>
+								<div class="t-product-slider-item-description">
+									<%=product.description%>
+								</div>
+								<a class="t-product-slider-item-link" href="/product/details-blog-product/?slug=<%=product.slug%>&category=<%=product.category._id%>">Chi tiết <img src="/template/images/icon-arrow-right.svg" alt="Arrow" /></a>
+							</div>
+						</div>
+						<%})%>
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<%}%>
+
+
+	<!--____________________________________PRODUCT SLIDER________________________________-->
+	<div class="t-home-block t-product-block">
+		<div class="container">
+			<div class="t-home-block-content">
+				<p class="t-title t-title-product">
+					<%- lang(langKey,'cac_san_pham_danh_cho')%>
+					<br/>
+					<span class="color-blue"><%- lang(langKey,"don_vi_tu_van")%></span>
+				</p>
+				<div class="t-home-product-slider-container t-product-slider-container">
+					<div class="t-home-product-slider" id="t-product-slider3">
+						<%listBlogProduct3 && listBlogProduct3.listBlogs && listBlogProduct3.listBlogs.forEach(product=>{%>
+							<div class="col-12 col-lg-4 t-product-slider-item">
+								<div class="t-product-slider-item-wrapper">
+									<div class="t-product-slider-item-img">
+										<img src="<%=product.image%>" alt="Product" />
+									</div>
+									<p class="t-product-slider-item-title"><%=product.title%></p>
+									<div class="t-product-slider-item-description">
+										<%=product.description%>
+									</div>
+									<a class="t-product-slider-item-link" href="/product/details-blog-product/?slug=<%=product.slug%>&category=<%=product.category._id%>"><%- lang(langKey,'details')%> <img src="/template/images/icon-arrow-right.svg" alt="Arrow" /></a>
+								</div>
+							</div>
+							<%})%>
+							
+						<!-- <div class="col-12 col-lg-4 t-product-slider-item">
+							<div class="t-product-slider-item-wrapper">
+								<div class="t-product-slider-item-img">
+									<img src="/template/images/product-img1.jpg" alt="Product" />
+								</div>
+								<p class="t-product-slider-item-title">Sản phẩm 1</p>
+								<div class="t-product-slider-item-description">
+									It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries.
+								</div>
+								<a class="t-product-slider-item-link" href="javascript:void(0)">Chi tiết <img src="/template/images/icon-arrow-right.svg" alt="Arrow" /></a>
+							</div>
+						</div>
+						<div class="col-12 col-lg-4 t-product-slider-item">
+							<div class="t-product-slider-item-wrapper">
+								<div class="t-product-slider-item-img">
+									<img src="/template/images/product-img2.jpg" alt="Product" />
+								</div>
+								<p class="t-product-slider-item-title">Sản phẩm 2</p>
+								<div class="t-product-slider-item-description">
+									It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries.
+								</div>
+								<a class="t-product-slider-item-link" href="javascript:void(0)">Chi tiết <img src="/template/images/icon-arrow-right.svg" alt="Arrow" /></a>
+							</div>
+						</div>
+						<div class="col-12 col-lg-4 t-product-slider-item">
+							<div class="t-product-slider-item-wrapper">
+								<div class="t-product-slider-item-img">
+									<img src="/template/images/product-img3.jpg" alt="Product" />
+								</div>
+								<p class="t-product-slider-item-title">Sản phẩm 3</p>
+								<div class="t-product-slider-item-description">
+									It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries.
+								</div>
+								<a class="t-product-slider-item-link" href="javascript:void(0)">Chi tiết <img src="/template/images/icon-arrow-right.svg" alt="Arrow" /></a>
+							</div>
+						</div>
+						<div class="col-12 col-lg-4 t-product-slider-item">
+							<div class="t-product-slider-item-wrapper">
+								<div class="t-product-slider-item-img">
+									<img src="/template/images/product-img1.jpg" alt="Product" />
+								</div>
+								<p class="t-product-slider-item-title">Sản phẩm 1</p>
+								<div class="t-product-slider-item-description">
+									It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries.
+								</div>
+								<a class="t-product-slider-item-link" href="javascript:void(0)">Chi tiết <img src="/template/images/icon-arrow-right.svg" alt="Arrow" /></a>
+							</div>
+						</div>
+						<div class="col-12 col-lg-4 t-product-slider-item">
+							<div class="t-product-slider-item-wrapper">
+								<div class="t-product-slider-item-img">
+									<img src="/template/images/product-img2.jpg" alt="Product" />
+								</div>
+								<p class="t-product-slider-item-title">Sản phẩm 2</p>
+								<div class="t-product-slider-item-description">
+									It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries.
+								</div>
+								<a class="t-product-slider-item-link" href="/product/details-blog-product/">Chi tiết <img src="/template/images/icon-arrow-right.svg" alt="Arrow" /></a>
+							</div>
+						</div> -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--____________________________________REGISTER & FOOTER_______________________________________-->
+
+<script type="text/javascript">
+
+	$(document).ready(function() {
+		$(".t-product-banner-video-play-btn").click(function() {
+			$(this).hide();
+		});
+		//___________________________INITIAL PRODUCT SLIDER
+		$("#t-product-slider1, #t-product-slider2, #t-product-slider3").slick({
+			dots: false,
+			infinite: true,
+			slidesToShow: 3,
+			autoplay: true,
+			autoplaySpeed: 5000,
+			responsive: [
+				{
+					breakpoint: 1200,
+					settings: "unslick",
+				}
+			],
+		});
+	});
+</script>

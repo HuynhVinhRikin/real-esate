@@ -1,0 +1,33 @@
+<article class="zm-post-lay-c zm-single-post clearfix">
+    <div class="zm-post-thumb f-left"> <a
+            href="/blog/<%=blogInfo.slug%>"><noscript><img
+                    width="750" height="465"
+                    src="/files/blog/<%=blogInfo.image%>"
+                    class="lazyload attachment-full size-full wp-post-image"
+                    alt="<%=blogInfo.title%>"
+                    srcset="/files/blog/<%=blogInfo.image%> 750w, /files/blog/<%=blogInfo.image%> 300w"
+                    sizes="(max-width: 750px) 100vw, 750px" /></noscript><img
+                width="750" height="465"
+                src="/files/blog/<%=blogInfo.image%>"
+                data-src="/files/blog/<%=blogInfo.image%>"
+                class="lazyload attachment-full size-full wp-post-image"
+                alt="<%=blogInfo.title%>"
+                data-srcset="/files/blog/<%=blogInfo.image%> 750w, /files/blog/<%=blogInfo.image%> 300w"
+                data-sizes="(max-width: 750px) 100vw, 750px" /></a></div>
+    <div class="zm-post-dis f-right">
+        <div class="zm-post-header">
+            <p class="zm-post-title"><a href="/blog/<%=blogInfo.slug%>"><%=blogInfo.title%></a></p>
+            <div class="zm-post-meta">
+                <ul>
+                    <li class="s-meta"> <a
+                            href="/blog/<%=blogInfo.category.slug%>"
+                            class="meta-category"><%=blogInfo.category.title%></a></li>
+                    <li class="s-meta"><%=moment(blogInfo.createAt).subtract(10, 'days').calendar();%></li>
+                </ul>
+            </div>
+            <div class="zm-post-content">
+                <p><%=blogInfo.yoastDescription.substring(0, 166);%> ...</p>
+            </div>
+        </div>
+    </div>
+</article>

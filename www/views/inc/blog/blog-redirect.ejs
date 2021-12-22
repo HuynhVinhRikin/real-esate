@@ -1,0 +1,8 @@
+
+<a href="nofollow"><%= redirect_  %> </a>
+<script>
+    document.addEventListener('DOMContentLoaded',() => {
+        console.log(document.querySelector('a').innerText)
+        window.location.href = document.querySelector('a').innerText;
+    })
+</script>

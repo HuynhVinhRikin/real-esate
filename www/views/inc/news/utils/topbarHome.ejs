@@ -1,0 +1,226 @@
+<%if(isLogin) {%>
+<style>
+    @media screen and (max-width: 1000px) {
+        .wao-nav-fixed {
+            z-index: 10000;
+        }
+        .wao-nav-fixed-menu.message-button {
+            display: none;
+        }
+    }
+</style>
+<div class="wao-container container wao-header-new">
+    <div class="wao-header">
+        <a href="/" class="wao-brand">
+            <img src="/template/front-end-new/img/logo_main_menu.svg" alt="">
+        </a>
+        <!-- if login add class is-login  -->
+        <nav class="wao-header-nav is-login">
+            <ul>
+                <li class="wao-header-user has-sub"><a
+                        href="/danh-sach-nguoi-dung<%= (userGenderFocus !== null && userProvince !== null) ? `?&gender=${userGenderFocus}`: ''%>"
+                        style="background-color: transparent; color: #000; font-size: 16px; font-weight: 500">Tìm bạn
+                        <img style="padding-left: 10px;" src="/template/front-end-new/img/nav/nav_icon_8.svg"
+                            alt=""></a>
+                    <ul>
+                        <li><img src="/template/front-end-new/img/nav/male.svg" alt="" style="width:20px"><a
+                                href="/tim-ban-trai">Tìm bạn trai</a></li>
+                        <li><img src="/template/front-end-new/img/nav/female.svg" alt="" style="width:20px"><a
+                                href="/tim-ban-gai">Tìm bạn gái</a></li>
+                        <!-- <li><a href="/blog">Tin tức/ Blog</a></li> -->
+                    </ul>
+                </li>
+                <li><a href="/buoi-hen-ho<%= (userGenderFocus !== null && userProvince !== null) ? `?&gender=${userGenderFocus}`: ''%>"
+                        style="color: #000; font-size: 16px; font-weight: 500">Buổi hẹn hò</a></li>
+                <!-- <li><a href="/buoi-hen-ho-mau">Cuộc hẹn mẫu</a></li> -->
+                <li class="wao-header-user has-sub"><a href="#"
+                        style="background-color: transparent; color: #000; font-size: 16px; font-weight: 500">Thư viện
+                        <img style="padding-left: 10px;" src="/template/front-end-new/img/nav/nav_icon_8.svg"
+                            alt=""></a>
+                    <ul>
+                        <li><img src="/template/front-end-new/img/nav/nav_icon_10.svg" alt="" style="width:20px"><a
+                                href="/buoi-hen-ho-mau">Cuộc hẹn mẫu</a></li>
+                        <li><img src="/template/front-end-new/img/nav/nav_icon_11.svg" alt="" style="width:20px"><a
+                                href="/blog">Tin tức/ Blog</a></li>
+                    </ul>
+                </li>
+                <%let objUser = infoUser;%>
+                <!-- <li class="is-active"><a href="/danh-sach-nguoi-dung">Tìm hồ sơ</a></li> -->
+                <li class="wao-header-user has-sub"><a
+                        href="/ca-nhan/thong-tin"><%-include ./image_RENDER-avatar.ejs%><span><%= infoUser.fullname %></span><img
+                            src="/template/front-end-new/img/nav/nav_icon_9.svg" alt=""></a>
+                    <ul>
+                        <li><%-include ./image_RENDER-avatar.ejs%><a href="/ca-nhan/thong-tin">Trang cá nhân</a></li>
+                        <li><img src="/template/front-end-new/img/nav/nav_icon_1.svg" alt=""><a
+                                href="/ca-nhan/thong-tin#updateUserProfile">Chỉnh sửa thông tin</a></li>
+                        <li><img src="/template/front-end-new/img/nav/nav_icon_2.svg" alt=""><a
+                                href="/ca-nhan/thong-tin#imageGallery">Album ảnh</a></li>
+                        <li><img src="/template/front-end-new/img/nav/nav_icon_3.svg" alt=""><a
+                                href="/ca-nhan/yeu-thich">Yêu thích của bạn</a></li>
+                        <li><img src="/template/front-end-new/img/nav/nav_icon_4.svg" alt=""><a
+                                href="/ca-nhan/danh-sach-buoi-hen-ho">Danh sách buổi hẹn hò</a></li>
+                        <li><img src="/template/front-end-new/img/nav/nav_icon_5.svg" alt=""><a href="/goi-dich-vu">Nâng
+                                cấp VIP</a></li>
+                        <li><img src="/template/front-end-new/img/nav/nav_icon_6.svg" alt=""><a
+                                href="/ca-nhan/luot-hien-thi">Mua lượt hiển thị</a></li>
+                        <li><img src="/template/front-end-new/img/nav/nav_icon_7.svg" alt=""><a href="/home"
+                                class="btnLogout">Đăng xuất</a></li>
+                    </ul>
+                </li>
+                <div class="wao-modal-backdrop" style="z-index: 2; display: none;">
+
+                </div>
+                <li id="wao-add-profile" class="wao-header-create">
+                    <a>Tạo buổi hẹn hò<img src="/template/front-end-new/img/home/add_icon.svg" alt=""></a>
+                </li>
+                <li class="wao-header-login"><a href="/dang-nhap"
+                        style="color: #000; font-size: 16px; font-weight: 500">Đăng nhập</a></li>
+                <li class="wao-header-res"><a href="/dang-ky">Đăng ký</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>
+<!-- end header destop -->
+<!-- start header mobile -->
+<!-- if login add class is-login  -->
+<div class="wao-header-mobile is-login">
+    <ul>
+        <li class="is-login"><a href="/"><img src="/template/user/img/logo_main_menu.svg"
+                    style="margin-bottom: 2px; width: 25px; height: 25px" alt="" class="icon"><img
+                    src="/template/user/img/logo_main_menu.svg" alt="" class="icon-active"
+                    style="margin-bottom: 2px">Trang chủ</a></li>
+
+        <li class="is-login wao-nav-fixed-menu">
+            <a>
+                <img src="/template/front-end-new/img/nav/nav_icon_categories.svg" alt="" class="icon"
+                    style="margin-bottom: 5px">
+                <img src="/template/front-end-new/img/nav/nav_icon_categories.svg" alt="" class="icon-active"
+                    style="margin-bottom: 5px">Danh mục
+            </a>
+            <ul class="wao-nav-fixed-subMenu" style="left: -60px; bottom: 50px; width: 160px;">
+                <li><img src="/template/front-end-new/img/nav/nav_icon_mb_1_active.svg"
+                        style="width: 20px; color: #000; font-size: 16px; font-weight: 500"><a
+                        href="/buoi-hen-ho<%= (userGenderFocus !== null && userProvince !== null) ? `?&gender=${userGenderFocus}`: ''%>">Buổi
+                        hẹn hò</a></li>
+                <li><img src="/template/front-end-new/img/nav/nav_icon_10.svg" alt="" style="width:20px"><a
+                        href="/buoi-hen-ho-mau">Cuộc hẹn mẫu</a></li>
+                <li><img src="/template/front-end-new/img/nav/nav_icon_11.svg" alt="" style="width:20px">
+                    <a href="/blog">Tin tức/ Blog</a></li>
+                <li><img src="/template/front-end-new/img/nav/male.svg" alt="" style="width:20px"><a
+                        href="/tim-ban-trai">Tìm bạn trai</a></li>
+                <li><img src="/template/front-end-new/img/nav/female.svg" alt="" style="width:20px"><a
+                        href="/tim-ban-gai">Tìm bạn gái</a></li>
+            </ul>
+        </li>
+        <li class="is-not-login"><a
+                href="/buoi-hen-ho<%= (userGenderFocus !== null && userProvince !== null) ? `?&gender=${userGenderFocus}`: ''%>"><img
+                    src="/template/front-end-new/img/nav/nav_icon_mb_1.svg" alt="" class="icon"
+                    style="margin-bottom: 5px"><img src="/template/front-end-new/img/nav/nav_icon_mb_1_active.svg"
+                    alt="" class="icon-active"
+                    style="margin-bottom: 5px; color: #000; font-size: 16px; font-weight: 500">Buổi hẹn hò</a></li>
+        <!--<li class="is-login is-active">
+            <a href="/buoi-hen-ho"><img src="/template/front-end-new/img/nav/nav_icon_mb_1.svg" alt="" class="icon"
+                    style="margin-bottom: 5px">
+                <img src="/template/front-end-new/img/nav/nav_icon_mb_1_active.svg" alt="" class="icon-active"
+                    style="margin-bottom: 5px">Cuộc hẹn
+            </a>
+        </li> -->
+        <!--         <li class="wao-nav-fixed-menu">
+            <a>
+                <img src="/template/front-end-new/img/nav/nav_icon_mb_2.svg" alt="" class="icon"
+                    style="margin-bottom: 5px">
+                <img src="/template/front-end-new/img/nav/nav_icon_mb_2_active.svg" alt="" class="icon-active"
+                    style="margin-bottom: 5px">Tìm hồ sơ
+            </a>
+            <ul class="wao-nav-fixed-subMenu" style="left: 0; bottom: 40px; width: 150px;">
+                <li><img src="/template/front-end-new/img/nav/male.svg" alt="" style="width:20px"><a
+                        href="/tim-ban-trai">Tìm bạn trai</a></li>
+                <li><img src="/template/front-end-new/img/nav/female.svg" alt="" style="width:20px"><a
+                        href="/tim-ban-gai">Tìm bạn gái</a></li>
+                <li><a href="/blog">Tin tức/ Blog</a></li>
+            </ul>
+        </li> -->
+        <li id="wao-add-profile-mobile" class="is-login create-date">
+            <a><img src="/template/front-end-new/img/home/add_icon.svg" alt="" style="width: 43px"><b>Tạo cuộc hẹn</b>
+            </a>
+        </li>
+        <li class="is-login has-message"><a href="/ca-nhan/tin-nhan"><img
+                    src="/template/front-end-new/img/nav/nav_icon_mb_3.svg" alt="" class="icon"
+                    style="margin-bottom: 5px"><img src="/template/front-end-new/img/nav/nav_icon_mb_3_active.svg"
+                    alt="" class="icon-active" style="margin-bottom: 5px">Tin nhắn
+            </a>
+        </li>
+        <li class="is-login wao-nav-fixed-menu">
+            <a><%-include ./image_RENDER-avatar-bottom.ejs%>Tài khoản</a>
+            <ul class="wao-nav-fixed-subMenu" style="right: 0; bottom: 50px;">
+                <li><%-include ./image_RENDER-avatar.ejs%><a href="/ca-nhan/thong-tin">Trang cá nhân</a></li>
+                <li><img src="/template/front-end-new/img/nav/nav_icon_1.svg" alt="">
+                    <a href="/ca-nhan/thong-tin#updateUserProfile">Chỉnh sửa thông tin</a>
+                </li>
+                <li><img src="/template/front-end-new/img/nav/nav_icon_2.svg" alt="">
+                    <a href="/ca-nhan/thong-tin#imageGallery">Album
+                        ảnh</a>
+                </li>
+                <li><img src="/template/front-end-new/img/nav/nav_icon_3.svg" alt="">
+                    <a href="/ca-nhan/yeu-thich">Yêu
+                        thích của bạn</a>
+                </li>
+                <li><img src="/template/front-end-new/img/nav/nav_icon_4.svg" alt="">
+                    <a href="/ca-nhan/danh-sach-buoi-hen-ho">Danh sách buổi hẹn hò
+                    </a></li>
+                <li><img src="/template/front-end-new/img/nav/nav_icon_5.svg" alt="">
+                    <a href="/goi-dich-vu">Nâng cấp VIP</a>
+                </li>
+                <li><img src="/template/front-end-new/img/nav/nav_icon_6.svg" alt="">
+                    <a href="/ca-nhan/luot-hien-thi">Mua lượt hiển thị</a></li>
+                <li><img src="/template/front-end-new/img/nav/nav_icon_7.svg" alt="">
+                    <a href="/home" class="btnLogout">Đăng xuất</a>
+                </li>
+            </ul>
+        </li>
+        <li class="is-not-login"><a href="/dang-nhap"><img src="/template/front-end-new/img/nav/nav_icon_mb_4.svg"
+                    alt="" class="icon"><img src="/template/front-end-new/img/nav/nav_icon_mb_4_active.svg" alt=""
+                    class="icon-active" style="color: #000; font-size: 16px; font-weight: 500">Đăng nhập</a></li>
+    </ul>
+</div>
+<!-- end header mobile -->
+
+<!-- start nav sidebar (button bên phải) -->
+<div class="wao-nav-fixed" style="margin-bottom: 250px;">
+    <div class="wao-nav-fixed-menu">
+        <a class="wao-block-notify is-has-notify notifyCheck" href="/ca-nhan/thong-bao">
+            <%if(listNotifications && listNotifications.length > 0) {%>
+            <%let listNotificationNotSeen = listNotifications.filter(item => item.status == 0 && item.type != 10)%>
+            <%if(listNotificationNotSeen.length > 0){%>
+            <div class="wao-count-notify hasNotify ">
+                <%=listNotificationNotSeen.length%>
+            </div>
+            <%}%>
+                <%}%>
+            <img src="/template/user/img/nav/main_icon_1.svg" alt="">
+        </a>
+    </div>
+    <!-- <div class="wao-nav-fixed-menu">
+            <a class="wao-block-notify is-has-notify" href="/">
+                <div class="wao-count-notify hasNotify">20</div><img src="/template/front-end-new/img/nav/main_icon_1.svg" alt="">
+            </a>
+        </div> -->
+    <div class="wao-nav-fixed-menu message-button">
+        <a class="wao-block-notify is-has-notify" href="/ca-nhan/tin-nhan">
+            <%if(listNotificationsMessage && listNotificationsMessage.length > 0) {%>
+            <%let listNotificationMessageNotSeen = listNotificationsMessage.filter(item => item.status == 0 && item.type == 10)%>
+            <%if(listNotificationMessageNotSeen.length > 0){%>
+            <!--
+                            <%=listNotificationMessageNotSeen.length%>
+                        -->
+            <div class="wao-count-notify">
+            </div>
+            <%}else{%>
+            <div class="wao-count-notify headerNumberNewMessage" style="display: none;"></div>
+            <%}%>
+                <%}%>
+            <img src="/template/user/img/nav/main_icon_3.svg" alt="">
+        </a>
+    </div>
+</div>
+<%}%>

@@ -1,0 +1,144 @@
+
+<body>
+	<!--_______________________________HEADER_______________________________________-->
+	<button class="flat-btn hide-pc t-mobile-menu-btn"><img src="/template/images/mobile-menu.svg" alt="Menu" /></button>
+    <% include ../core/topbar.ejs %>
+
+
+	<!--_________________________________BANNER_____________________________________-->
+	<div class="t-solution-banner-container">
+		<div class="container">
+			<div class="t-solution-banner">
+				<img src="/template/images/banner-solution.jpg" alt="Banner" />
+				<p>
+					<!-- <span class="color-blue">5% chi phí của dự án</span> bị tốn kém cho công tác trao đổi và quản lý thông tin. -->
+					<span class="color-blue">Không gì</span> bằng những con số biết nói
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<!--_________________________________CUSTOMER REQUIREMENT______________________________-->
+	<div class="t-home-block t-solution-need">
+		<img class="t-home-banner-footer" src="/template/images/banner-home-bg-footer3.png" alt="Banner footer" />
+		<div class="container">
+			<div class="t-home-block-content">
+				<p class="t-title">
+					<%- lang(langKey,'giai_quyet_nhu_cau')%> <span class="color-blue"><%- lang(langKey,'khach_hang')%></span>
+				</p>
+				<p class="t-description">
+					It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+					It has survived not only five centuries, but also the leap into electronic.
+				</p>
+				<div class="t-home-customer row">
+					<% listBlogReqSolution && listBlogReqSolution.listBlogs && listBlogReqSolution.listBlogs.forEach(blog=>{%>
+						<div class="t-home-customer-item col-12 col-lg-4">
+							<img src="<%=blog.image%>" alt="Customer" />
+							<p><%= blog.title%></p>
+							<span>
+								<%=blog.description%>
+							</span>
+							<div>
+								<a href="/solution-details-blog-solution/?slug=<%=blog.slug%>&category=<%=blog.category._id%>">Chi tiết <img src="/template/images/icon-arrow-right.svg" alt="Arrow" /></a>
+							</div>
+						</div>
+					<%})%>
+				</div>
+			</div>
+		</div>
+		<div class="t-home-scrolldown">
+			<button class="btn t-home-scrolldown-btn"><img src="/template/images/icon-arrow-down.png" /></button>
+		</div>
+	</div>
+
+	<!--___________________________________REAL STORY________________________________________-->
+	<!-- <div class="t-home-block t-solution-story">
+		<div class="container">
+			<div class="t-home-block-content">
+				<p class="t-title">
+					<span class="color-blue"><%- lang(langKey,'cau_chuyen')%></span> <%- lang(langKey,'thuc_te')%>
+				</p>
+				<p class="t-description">
+					It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+					It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+				</p>
+				<div class="t-solution-story-container" id="t-solution-story-slider">
+					<% listBlogSolution && listBlogSolution.listBlogs && listBlogSolution.listBlogs.forEach(blog=>{%>
+					<div class="t-solution-story-item">
+						<img src="<%=blog.image%>" alt="Union" />
+						<div class="t-solution-story-text">
+							<p> 
+								<%=blog.title%>
+							</p>
+							<div>
+								<%=blog.description%>
+							</div>
+							<a href="/solution-details-blog-solution/?slug=<%=blog.slug%>&category=<%=blog.category._id%>" _id = '<%= blog._id %>'><%- lang(langKey,'see_all')%> <img src="/template/images/icon-arrow-right.svg" alt="Arrow" /></a>
+						</div>
+						<div class="t-solution-story-img">
+							<img src="<%=blog.image%>" alt="Story" />
+						</div>
+					</div>
+					<%})%>
+
+				</div>
+			</div>
+		</div>
+	</div> -->
+
+	<!--___________________________________BUSINESS________________________________________-->
+	<!-- <div class="t-home-block t-solution-need t-solution-business">
+		<img class="t-home-banner-footer" src="/template/images/banner-home-bg-footer4.png" alt="Banner footer" />
+		<div class="container">
+			<div class="t-home-block-content">
+				<p class="t-title">
+					<span class="color-blue">+200</span> <%- lang(langKey,'doanh_nghiep_su_dung_dich_vu')%> 
+				</p>
+				<p class="t-description">
+					It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+					It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+				</p>
+				<div class="t-home-business-container">
+					<a href="javascript:void(0)"><img src="/template/images/brand1.png" alt="Brand" /></a>
+					<a href="javascript:void(0)"><img src="/template/images/brand2.png" alt="Brand" /></a>
+					<a href="javascript:void(0)"><img src="/template/images/brand3.png" alt="Brand" /></a>
+					<a href="javascript:void(0)"><img src="/template/images/brand4.png" alt="Brand" /></a>
+					<a href="javascript:void(0)"><img src="/template/images/brand5.png" alt="Brand" /></a>
+					<a href="javascript:void(0)"><img src="/template/images/brand1.png" alt="Brand" /></a>
+					<a href="javascript:void(0)"><img src="/template/images/brand2.png" alt="Brand" /></a>
+					<a href="javascript:void(0)"><img src="/template/images/brand3.png" alt="Brand" /></a>
+					<a href="javascript:void(0)"><img src="/template/images/brand4.png" alt="Brand" /></a>
+				</div>
+			</div>
+		</div>
+		<div class="t-home-scrolldown">
+			<button class="btn t-home-scrolldown-btn"><img src="/template/images/icon-arrow-down.png" /></button>
+		</div>
+	</div> -->
+
+	<!--___________________________________BUSINESS________________________________________-->
+	<div class="t-home-block t-solution-benefit">
+		<div class="container">
+			<div class="t-home-block-content">
+				<p class="t-title">
+					<%- lang(langKey,'nhung_loi_ich')%>  <span class="color-blue">TRIXGO</span>
+				</p>
+				<div class="t-solution-benefit-container">
+					<div class="t-solution-benefit-item">
+						<img src="/template/images/icon-check.png" alt="Bullet" />
+						<span>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</span>
+					</div>
+					<div class="t-solution-benefit-item">
+						<img src="/template/images/icon-check.png" alt="Bullet" />
+						<span>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</span>
+					</div>
+					<div class="t-solution-benefit-item">
+						<img src="/template/images/icon-check.png" alt="Bullet" />
+						<span>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!--____________________________________REGISTER & FOOTER_______________________________________-->

@@ -1,0 +1,28 @@
+<script>
+    $(document).ready(function(){
+        let getDataFormPricingPackage = () =>{
+            let starttime = $('#txtStartTime').val();
+            let endtime   = $('#txtEndTime').val();
+            let status    = $('#txtStatus').val();
+             /*
+            * so luong item hien thi
+            */
+            let amountItemShow = $('#select_datatable_length').val();
+            return { starttime, endtime, status, amountItemShow };
+        }
+
+        let buildAndGoURI = () =>{
+             let { starttime, endtime, status, amountItemShow } = getDataFormPricingPackage();
+            let uri  = `/admin/list-pricing-package?`;
+            if (starttime && endtime) uri += `&starttime=${starttime}&endtime=${endtime}`;
+            if (!Number.isNaN(Number(status)) && Number(status)!== 2) uri += `&status=${status}`;
+            if (!Number.isNaN(Number(amountItemShow))) uri += `&amountItemShow=${amountItemShow}`;
+            return window.location.href = uri;
+        }
+
+        $('#btnSearch').on('click', function(e){
+            e.preventDefault();
+            buildAndGoURI();
+        })
+    })
+</script>

@@ -1,0 +1,52 @@
+<ul class="wao-gender-tags">
+    <li>
+        <%-// infoUser  %> 
+        <a href="#content-male" data="content-male" class="wao-btn wao-btn-outline-b 
+            <%if(infoUser && infoUser.gender === 1){%>
+                disable
+            <%}%>
+            " >
+            Tìm bạn trai
+        </a>
+    </li>
+    <li>
+        <a href="#content-female" data="content-female" class="wao-btn wao-btn-outline-b
+        <%if(!infoUser || infoUser && infoUser.gender === 0){%>
+            disable
+          <%}%>
+        ">
+            Tìm bạn gái
+        </a>
+    </li>
+</ul>
+<div class="wao-date-card-list 
+    <%if(!infoUser || infoUser && infoUser.gender === 0){%>
+        active
+    <%}%>
+    " 
+    id="content-male"
+>
+    <%if(listConceptMale && listConceptMale.length > 0){%>
+        <%listConceptMale.forEach(concept => {%>
+            <%- include ../item_concept_in_home.ejs %>
+        <%})%>
+      <%}%>
+</div>
+<div class="wao-date-card-list
+    <%if(infoUser && infoUser.gender === 1){%>
+        active
+    <%}%>
+" id="content-female"
+>
+    <%if(listConceptFemale && listConceptFemale.length > 0){%>
+        <%listConceptFemale.forEach(concept => {%>
+            <%- include ../item_concept_in_home.ejs %>
+        <%})%>
+      <%}%>
+</div>
+<div class="wao-date-card-more">
+    
+    <a href="/buoi-hen-ho<%if(infoUser){%>?gender=<%-infoUser.gender === 0 ? 1 : 0%><%}%>" class="wao-btn wao-btn-outline-b">
+        Xem tất cả
+    </a>
+</div>

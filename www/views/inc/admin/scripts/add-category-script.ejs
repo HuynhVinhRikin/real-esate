@@ -1,0 +1,113 @@
+<script>
+    $(document).ready(function(){
+
+        let getFormCategory = () => {
+            let title, description, parent;
+            title = $('#txtTitle').val();
+            description = $('#txtDescription').val();
+            parent = $('#selectParentCategory option:selected').val();
+            if(Number(parent) == -1)
+                return { title, description };
+            return { title, description, parent };
+        }
+
+        let checkValidate = () =>{
+            let title;
+            title = $('#txtTitle').val();
+            if(title == null || title == "")
+                return false;
+            return true;
+        }
+
+        function change_alias(alias) {
+            var str = alias;
+            str = str.toLowerCase();
+            str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g,"a"); 
+            str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g,"e"); 
+            str = str.replace(/ì|í|ị|ỉ|ĩ/g,"i"); 
+            str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g,"o"); 
+            str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g,"u"); 
+            str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g,"y"); 
+            str = str.replace(/"/g, '')
+            str = str.replace(/đ/g,"d");
+            str = str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g," ");
+            str = str.replace(/ + /g," ");
+            str = str.trim(); 
+            return str;
+        }
+        
+        let convertToSlug = function (plainText){
+            const text_converted_alias = change_alias(plainText);
+            const text_split_with_space = text_converted_alias.split(' ');
+            const text_joined = text_split_with_space.join('-');
+            return text_joined;
+        }
+
+        $('#txtTitle').on('keyup', function(){
+            let title = $(this).val();
+            let slug = convertToSlug(title);
+            $('#txtSlug').val(slug);
+        })
+
+        $('#btnAdd').on('click', async function(){
+            if(!checkValidate())
+                return alert('Vui lòng nhập tiêu đề');
+            let data = getFormCategory();
+            
+            let dataCallAjax  = {
+                url        : `/admin/add-category`,
+                method     : 'POST',
+                data       : data,
+            }
+            let resultAddCategory  = await ajax_HV({dataCallAjax});
+            console.log({resultAddCategory});
+            if(!resultAddCategory.error){
+                return alert('THÊM DANH MỤC THÀNH CÔNG');
+            }
+            return alert('THÊM THẤT BẠI');
+            // $.ajax({
+            //     url        : `/admin/add-category`,
+            //     method     : 'POST',
+            //     data       : data,
+            //     // beforeSend: function (xhr) {
+            //     //     xhr.setRequestHeader("Authorization", 'Bearer '+ token);
+            //     // },
+            //     success    : function(resp) { 
+            //         console.log({resp})
+            //         if (!resp.error) 
+            //            return alert('THÊM DANH MỤC THÀNH CÔNG');
+            //         return alert('THÊM THẤT BẠI');
+            //     },
+            //     error: function(err) {
+            //         return alert('THÊM THẤT BẠI');
+            //     }
+            // });
+        });
+
+         $('#btnUpdate').on('click', function(){
+            if(!checkValidate())
+                return alert('Vui lòng nhập tiêu đề');
+            let data = getFormCategory();
+            let slug = $(this).attr('_slug');
+            let cateID = $(this).attr('_cateID');
+            data.cateID =cateID;
+            $.ajax({
+                url        : `/admin/update-category/${slug}/${cateID}`,
+                method     : 'POST',
+                data       : data,
+                // beforeSend: function (xhr) {
+                //     xhr.setRequestHeader("Authorization", 'Bearer '+ token);
+                // },
+                success    : function(resp) { 
+                    if (!resp.error) 
+                       return alert('CẬP NHẬT DANH MỤC THÀNH CÔNG');
+                    return alert('CẬP NHẬT THẤT BẠI');
+                },
+                error: function(err) {
+                    return alert('CẬP NHẬT THẤT BẠI');
+                }
+            });
+        });
+
+    });    
+</script>

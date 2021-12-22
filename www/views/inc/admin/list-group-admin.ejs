@@ -1,0 +1,83 @@
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <div class="alert alert-info" role="alert"
+                                ><h4 class="alert-heading font-18"><strong>Lưu Ý Quản Lý Group Admin</strong>!</h4>
+                                <p>
+                                    Các Nhóm Tài Khoản Hiện Tại Hỗ Trợ (3)
+                                </p>
+                                <p class="mb-0">
+                                    0. SuperAdmin (Root Admin)
+                                </p>
+                                <p class="mb-0">
+                                    1. Admin
+                                </p>
+                                <p class="mb-0">
+                                    2. Editor
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <table class="content-table">
+                            <thead >
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Tên Danh Mục</th>
+                                    <th>Mô Tả Ngắn</th>
+                                    <th>Tuỳ Chọn</th>
+                                </tr>
+                            </thead>
+                                <tbody>
+                                    <% if (groupAdmins && groupAdmins.length > 0) { %>
+                                        <% groupAdmins.forEach(( groupAdmin, index ) => { %>
+                                            <% if (groupAdmin) { %>
+                                                <tr>
+                                                    <th><%= index + 1 %></th>
+                                                    <td>
+                                                        <i>
+                                                            <%= groupAdmin.name && groupAdmin.name %>
+                                                        </i>
+                                                    </td>
+                                                    <td>
+                                                        <i>
+                                                            <%= groupAdmin.description && groupAdmin.description%>
+                                                        </i>
+                                                    </td>
+                                                    <td>
+                                                        <div class="btn-group mb-2">
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light" id="btnDropDownTagging_<%= groupAdmin._id && groupAdmin._id %>">
+                                                                Thao Tác
+                                                            </button>
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light dropdown-toggle-split dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <span class="sr-only">...</span>
+                                                            </button>
+                                                            <div class="dropdown-menu" x-placement="right-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(143px, 0px, 0px);">
+                                                                <a class="dropdown-item" href="/admin/update-group-admin/<%= groupAdmin && groupAdmin._id %>">Sửa Thông Tin</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <% } %>
+                                        <% }) %>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,221 @@
+<style>
+    .p-main {
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+  
+    .p-main  .wrap_item {
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+  
+    .p-main .wrap_title {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+  
+    .p-main .title {
+      font-family: "NolanNext";
+      font-style: normal;
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 24px;
+      display: flex;
+      align-items: center;
+      margin-left: 10px;
+      margin-bottom: 0;
+    }
+  
+    .p-main .participant_info {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+  
+    .p-main .avatar {
+      vertical-align: middle;
+      width: 77px;
+      height: 77px;
+      border-radius: 50%;
+    }
+  
+    .p-main .text_description {
+      font-family: "NolanNext";
+      font-style: normal;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 22px;
+      letter-spacing: 0.04em;
+      margin: 5px 0;
+      color: #828282;
+    }
+  
+    .p-main .text_name {
+      margin: 5px 0;
+      font-family: "NolanNext";
+      font-style: normal;
+      font-weight: bold;
+      font-size: 18px;
+      line-height: 24px;
+      display: flex;
+      align-items: center;
+      color: #000000;
+    }
+  
+    .p-main .text {
+      margin-left: 20px;
+    }
+  
+    .p-main .action {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-evenly;
+      padding-top: 10px;
+      padding-bottom: 10px;
+    }
+  
+    .p-main .btn_action {
+      width: 141.69px;
+      height: 43px;
+      border-radius: 45px;
+      border: none;
+    }
+  
+    .p-main .importance {
+      background: #000000;
+      color: #fff;
+    }
+  
+    .p-main .is_feature {
+      background-color: brown;
+      opacity: 0.7;
+      color: #fff;
+    }
+  
+    .p-main .accept {
+      background: #4E37D3;
+      color: #fff;
+    }
+  
+    .p-main .decline {
+      background: #E5E5E5;
+      color: #828282;
+    }
+  
+    .p-main .item {
+      padding: 31px 10px;
+      border-radius: 20px;
+      background-color: #FBFBFB;
+      margin-bottom: 26px;
+    }
+  
+    .p-main .wrap_bottom {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .p-main .text_center {
+      text-align: center;
+    }
+  
+    .p-main .btn_view_list {
+      width: 344px;
+      height: 51px;
+      border: none;
+      color: #fff;
+      background: #4E37D3;
+      border-radius: 30px;
+      margin-top: 26px;
+      margin-bottom: 26px;
+      cursor: pointer;
+    }
+  
+  
+    @media (min-width: 768px) {
+      .p-main .wrap_list {
+        padding: 43px 48px;
+      }
+  
+    }
+  
+    @media (max-width: 768px) {
+      .p-main .action {
+        margin-top: 10px;
+      }
+  
+    }
+</style>
+
+<main>
+    <div class="wao-container container">
+        <div class="wao-list-by-user" style="min-height: 400px;">
+            <h1><img src="/template/front-end-new/img/list-by-user/calendar_icon.svg" alt=""> <span>Danh sách buổi hẹn hò</span></h1>
+            <div class="wao-date-list">
+                <%if(concepts && concepts.length > 0){%>
+                <%concepts.forEach(concept => {%>
+                <div class="wao-date-item <%= concept.status === 1 ? 'is-close' : '' %>">
+                    <div class="is-close-bg" style="height: 55%; top: 45%;">
+                        <p class="wao-modal-add-item" onClick="detail_user('<%=concept.slug%>')"><img src="/template/front-end-new/img/list-by-user/lock_icon.svg" alt=""> Đã đóng</p>
+                    </div>
+                    <div class="wao-date-item-img">
+                        <%if(concept.image && concept.image.length > 0){%>
+                            <img style="object-fit: cover;" src="/files/users/<%=concept.image[0]%>" alt="">
+                        <%} else {%>
+                            <img src="/template/front-end-new/img/list-by-user/item-1.jpg" alt="">
+                        <%}%>
+                        <div class="top-meta">
+                            <div class="wao-modal-add-item" onClick="detail_user('<%=concept.slug%>')"><a><img src="/template/front-end-new/img/list-by-user/edit_icon.svg" alt=""></a></div>
+                            <a class="btnRemoveConceptUser" _conceptID='<%=concept && concept._id%>' href=""><img src="/template/front-end-new/img/list-by-user/trash_icon.svg" alt=""></a>
+                        </div>
+                        <span class="bottom-meta">
+                            <img src="/template/front-end-new/img/nav/nav_icon_6.svg" alt=""> 
+                            <%if(concept.amountView){%>
+                                <%=concept.amountView%>
+                            <%}%>
+                        </span>
+                    </div>
+                    <div class="wao-date-item-content">
+                        <%if(concept.title){%>
+                        <p> <a href="/buoi-hen-ho/<%=concept.slug%>"><%=concept.title%></a> </p>
+                        <%}%>
+                        <ul>
+                            <li><img src="/template/front-end-new/img/list-by-user/location_icon.svg" alt="">
+                                <%if(concept.address){%>
+                                <span><b>Địa điểm</b><br><%=concept.address[0]%></span>
+                                <%}%>
+                            </li>
+                            <li><img src="/template/front-end-new/img/list-by-user/calendar_icon_2.svg" alt="">
+                                <%if(concept.time){%>
+                                <span><b>Thời gian</b><br><%=moment(concept.time).format('L')%></span>
+                                <%}%>
+                            </li>
+                            <li>
+                              <a href="/buoi-hen-ho/<%=concept.slug %>#participants" style="display: flex">
+                                <img src="/template/front-end-new/img/list-by-user/person_icon.svg" alt="">
+                                  <%if(concept.participants){%>
+                                  <span><b>Số người đăng ký</b><br><%=concept.participants.length > 0 ? concept.participants.length : 0 %> (click chọn người tham gia)</span>
+                                  <%}%>
+                              </a>
+                            </li>
+                            <hr>
+                            <li><img src="/template/front-end-new/img/list-by-user/tag_icon.svg" alt="">
+                                <%if(concept.cost){%>
+                                <span><b><%= formatCurrency('###,###.', concept.cost)%> VNĐ</b></span>
+                                <%}%>
+                                <%if(constants.prayers && !Number.isNaN(Number(concept.prayer))){%>
+                                    <%var indexPrayer = constants.prayers.findIndex(prayer => Object.is(Number(concept.prayer), Number(prayer.value)))%>
+                                <span class="wao-order-tag"><%=constants.prayers[indexPrayer].text%></span>
+                                <%}%>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <%})%>
+                <%}%>
+            </div>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,101 @@
+<body>
+ 
+	<!--_______________________________HEADER_______________________________________-->
+	<button class="flat-btn hide-pc t-mobile-menu-btn"><img src="images/mobile-menu.svg" alt="Menu" /></button>
+    <% include ../core/topbar.ejs %>
+    	<!--__________________________________MAIN CONTENT____________________________________-->
+	<div class="t-banner">
+		<img class="t-banner-bg" src="/template/images/subpage-banner-bg.png" alt="Banner" />
+		<div class="container">
+			<div class="t-banner-text">
+				<h1 class="t-banner-title">
+					<%- lang(langKey, 'detail_blog')%>
+				</h1>
+				<div class="t-breadcrumbs">
+					<a href="/"><%- lang(langKey, 'home')%></a>
+					<span>/</span>
+					<a href="/solution/"><%- lang(langKey, 'solution')%></a>
+					<span>/</span>
+					<p><%=infoBlog.title%></p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--_________________________________NEWS CONTENT______________________________-->
+	<div class="t-news t-news-detail-container">
+		<div class="container">
+            <%if(infoBlog){%>
+            <%
+            let imageAuthor  = infoBlog.author && infoBlog.author.image || '/template/images/icon-people.png'
+            let nameAuthor = infoBlog.author && infoBlog.author.fullname || "Ẩn danh" ;
+            let  {title, content} = infoBlog
+            %>
+			<p class="t-title">
+                <%=title%>
+				<!-- Lorem Ipsum is <span class="color-blue">simply <br /> dummy</span> text of the printing. -->
+			</p>
+			<div class="t-news-detail-author">
+				<img src="<%=imageAuthor%>" alt="Author" />
+				    <%=nameAuthor%>
+			</div>
+			<div class="t-news-detail">
+                <%-content%>
+				<!-- <p>
+					Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+				</p>
+				<p style="text-align: center;">
+					<img style="width: 600px;" src="images/product-img1.jpg" alt="News" />
+				</p>
+				<p>
+					The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.
+				</p>
+				<p style="text-align: center;">
+					<img src="images/banner-solution.jpg" alt="News" />
+				</p>
+				<p>
+					Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+				</p> -->
+            </div>
+            <%}%>
+		</div>
+	</div>
+
+	<!--_________________________________OTHER NEWS______________________________-->
+	<div class="t-related-news">
+		<div class="container">
+			<p class="t-related-news-title"><%- lang(langKey, 'other_story')%></p>
+			<div class="t-news-item-container row">
+                <%listBothCategory && listBothCategory.forEach(blog=>{%>
+                <%
+                let imageAuthor  = infoBlog.author && infoBlog.author.image || '/template/images/icon-people.png'
+                let nameAuthor = infoBlog.author && infoBlog.author.fullname || "Ẩn danh" ;
+                let  {title, content, description, image} = infoBlog
+                %>
+
+				<div class="col-12 col-xl-3 col-lg-4 col-md-6 t-news-item">
+					<div class="t-product-slider-item-wrapper">
+						<div class="t-product-slider-item-img">
+                            <img src="<%=image%>" alt="Customer" />
+						</div>
+						<p class="t-product-slider-item-title">
+                            <%=title%>
+							<!-- Lorem Ipsum is <span class="color-blue">simply dummy</span> text of the printing. -->
+						</p>
+						<div class="t-news-author">
+							<img src="<%=imageAuthor%>" alt="Author" />
+							<%=nameAuthor%>
+						</div>
+						<div class="t-product-slider-item-description">
+                            <%=description%>
+							<!-- It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.It has survived not only five centuries. -->
+						</div>
+						<a class="t-product-slider-item-link" href="/solution-details-blog-solution/?slug=<%=blog.slug%>&category=<%=blog.category._id%>" tabindex="-1"><%- lang(langKey, 'details')%><img src="/template/images/icon-arrow-right.svg" alt="Arrow"></a>
+					</div>
+                </div>
+                <%})%>
+			</div>
+		</div>
+	</div>
+
+<script type="text/javascript">
+</script>

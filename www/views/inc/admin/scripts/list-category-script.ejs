@@ -1,0 +1,103 @@
+<script>
+    $(document).ready(function(){
+        $('.btnToggleStatus').on('click', function(){
+            let slug   = $(this).attr('_slug');
+            let status = $(this).attr('_status');
+            $.ajax({ 
+                url: `/admin/update-status-category/${slug}`,
+                method: 'POST',
+                data: { status },
+                // beforeSend: function (xhr) {
+                //     xhr.setRequestHeader("Authorization", 'Bearer '+ token);
+                // },
+                success: function(resp){
+                    location.reload();
+                },
+                error: function(){
+                    alert('ERROR');
+                }
+            })
+        })
+
+        let getFormSearchAndFilter = ()=>{
+            let key = $('#txtSearch').val();
+            let status = $('#txtStatus').val();
+            let amountItemShow = $('#select_datatable_length').val();
+
+            return { key, status, amountItemShow };
+        }
+
+        $('#btnSearch').on('click', function(e){
+            e.preventDefault();
+            let { key, status, amountItemShow } = getFormSearchAndFilter();
+            let uri = `/admin/list-category?`;
+            if(key && key.length > 0) uri += `&key=${key}`;
+            if(status != -1 && !Number.isNaN(Number(status))) uri += `&status=${status}`;
+            <%- include ./checkPerPageCurrent.ejs %>
+
+            return window.location.href = uri;
+        })
+        /*
+        *  CODE BEGIN CHECKBOX UPDATE STATUS CATEGORY
+        */
+        //checked item
+
+        let categoryIdArr = [];
+        $('.ckbCategoryID').on('click', function(){
+            let categoryID = $(this).val();
+            if($(this).is(':checked')){
+                categoryIdArr.push(categoryID);
+            }else{
+                if(categoryIdArr.includes(categoryID)){
+                    categoryIdArr.splice(categoryIdArr.indexOf(categoryID), 1);
+                }
+            }
+
+            if(categoryIdArr.length > 0){
+                $('#dropdownMenuOptionCategory').show();
+            }else{
+                $('#dropdownMenuOptionCategory').hide();
+            }
+        })
+        //checked all
+        $('#checkAll').on('change', function(){
+            if($(this).is(':checked')){
+                $('.ckbCategoryID').prop('checked', true);
+                $('.ckbCategoryID:checked').each(function(){
+                    $('#dropdownMenuOptionCategory').show();
+                    categoryIdArr.push(this.value);
+                })
+            }else{
+                $('.ckbCategoryID').prop('checked', false);
+                $('#dropdownMenuOptionCategory').hide();
+                categoryIdArr = []
+            }
+        })
+
+        /*
+        *  CODE END CHECKBOX UPDATE STATUS CATEGORY
+        */
+        $('.btnUpdateStatusWithListCategory').on('click', function(e){
+            e.preventDefault();
+            if (categoryIdArr.length === 0) 
+                return alert('Vui Lòng Chọn ít nhất 1 Danh Mục');
+            let status = Number($(this).attr('_status'));
+            $.ajax({
+                url: `/admin/update-status-list-category`,
+                method: 'POST',
+                data: { arrCategoryID: categoryIdArr, status },
+                success: function(resp){
+                    if(!resp.error){
+                        alert('Cập Nhật Thành Công');
+                        return window.location.reload(true);
+                    }else{
+                        alert('Cập Nhật Thất Bại');
+                    }
+                },
+                error: function(){
+                    alert('Cập Nhật Thất Bại');
+                }
+            })
+        })
+    })
+</script>

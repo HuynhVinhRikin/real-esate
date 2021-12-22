@@ -1,0 +1,46 @@
+<div class="content-page">
+    <!-- Start content -->
+    <div class="content">
+        <div class="container-fluid">
+            <br><br>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="example-text-input" class="col-sm-2 col-form-label">Tiêu Đề Shortcode</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="text"placeholder="Nhập tiêu đề shortcode" id="txtTitle" <% if (shortcode) { %>
+                                        value="<%= shortcode.title && shortcode.title %>"
+                                    <% } %>>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="example-text-input" class="col-sm-2 col-form-label">Slug</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="text" id="txtSlug" disabled <% if (shortcode) { %>
+                                        value="<%= shortcode.slug && shortcode.slug %>"
+                                    <% } %>>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Mô Tả</label>
+                                <div>
+                                    <textarea required="" class="form-control" id="txtDescription" rows="5"><% if (shortcode) { %><%= shortcode.description && shortcode.description %><% } %></textarea>
+                                </div>
+                            </div>
+                            <% if (shortcode) { %>
+                                <button type="button" class="btn btn-success waves-effect waves-light" style="margin: 0 auto; display: block" id="btnUpdate" _slug="<%= shortcode.slug && shortcode.slug%>" >Cập Nhật</button>
+                            <% }else{ %>
+                                <button type="button" class="btn btn-success waves-effect waves-light" style="margin: 0 auto; display: block" id="btnAdd" >Thêm Mới</button>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- container-fluid -->
+    </div>
+    <!-- content -->
+    <%include ./utils/footer.ejs%>
+</div>

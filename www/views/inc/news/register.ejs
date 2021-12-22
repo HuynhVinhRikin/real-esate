@@ -1,0 +1,386 @@
+<main class="page-layout-1" id="newRegister">
+    <!-- <section class="sign-up-page active"> -->
+    <section class="register-page active">
+        <section class="register-welcome-logo">
+            <a href="/"><img class="wao-welcome-logo-desktop"
+                    src="/template/front-end-new/img/login_register/login_register_logo_page.png"
+                    alt="waodate logo" /></a>
+            <!-- <a href="/"><img class="wao-welcome-logo-mobile"
+                    src="/template/front-end-new/img/login_register/login_register_logo_page_2.png"
+                    alt="waodate logo" /></a> -->
+        </section>
+        <section class="register-welcome-sign-up">
+            <h1>Chào mừng bạn đến với <br> bước đăng ký hẹn hò online</h1>
+            <div class="register-welcome-sign-up-form">
+                <a class="register-welcome-sign-up-input" id="register-facebook" 
+                    href="/facebook">
+                    <img src="/template/front-end-new/img/login_register/facebook-logo.png"
+                        style="vertical-align: bottom;margin-right: 2px;" alt="facebook">
+                    Đăng ký bằng tài khoản facebook
+                </a>
+
+                <a class="register-welcome-sign-up-input google" id="register-google" href="/google">
+                    <img src="/template/front-end-new/img/login_register/google-logo.png"
+                        style="vertical-align: bottom;margin-right: 2px;" alt="google">
+                    Đăng ký bằng tài khoản google
+                </a>
+               <!--  <p>hoặc</p>
+                <input class="wao-welcome-input" type="text" id="emailFormRegister" placeholder="Nhập email của bạn">
+                <span class="wao-form-error-message">Có lỗi xảy ra</span>
+                <div class="block-btn-step-1">
+                    <span class="wao-form-button wao-button-wao-welcome-button" id="step-first">
+                        Tiếp theo
+                    </span>
+                </div> -->
+            </div>
+            <div class="register-welcome-policy">
+                <p style="margin-bottom: 5px;">Bạn đã có tài khoản Waodate? <a href="/dang-nhap"
+                        style="font-weight: 700; color: #4e37d3; text-decoration: underline">Đăng nhập</a></p>
+                <p style="font-size: 14px; color: #3a3847">Tôi đồng ý với <a href="/chinh-sach-bao-mat" target="_blank"
+                        style="color: #3a3847; font-weight: 700">Chính Sách Bảo Mật</a> và <a
+                        href="/chinh-sach-va-quy-dinh" target="_blank" style="color: #3a3847; font-weight: 700">Điều
+                        Khoản Hoạt Động</a> của Waodate.</p>
+            </div>
+        </section>
+    </section>
+    <section class="register-sign-up-page">
+        <section class="register-sign-up-navigation">
+            <div class="register-sign-up-step-header">
+                <a href="/">
+                    <img src="/template/front-end-new/img/login_register/logo-step.png" alt="">
+                </a>
+                <h3 id="step-header" class="step-header">Đăng ký - Bước 1</h3>
+            </div>
+            <nav id="progressSignUpRegister" style="position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 250px;">
+                <ul>
+                    <li class="is-active"><span>1</span>
+                        <p>Thông tin đăng nhập</p>
+                    </li>
+                    <li><span>2</span>
+                        <p>Chọn giới tính</p>
+                    </li>
+                    <li><span>3</span>
+                        <p>Hồ sơ cá nhân</p>
+                    </li>
+                    <li><span>4</span>
+                        <p>Hoàn tất hồ sơ</p>
+                    </li>
+                </ul>
+            </nav>
+        </section>
+        <form action="#" id="formSignUp">
+
+            <section class="register-sign-up-step ">
+                <h2 class="register-sign-up-title">Đây là cách bạn xuất hiện trên <b>Waodate</b></h2>
+                <div class="register-form-step">
+                    <div class="register-form-item">
+                        <label>Username (Tên đăng nhập)</label>
+                        <input class="register-form-input" id="usernameForm" type="text"><span
+                            class="register-form-error-message">Có lỗi xảy ra</span>
+                    </div>
+                    <div class="register-form-item">
+                        <label>Mật khẩu</label>
+                        <input class="register-form-input" id="passwordForm" type="password"><span
+                            class="register-form-error-message">Có lỗi xảy ra</span>
+                    </div>
+                    <div class="register-form-item">
+                        <label>Nhập lại mật khẩu</label>
+                        <input class="register-form-input" id="confirmPasswordForm" type="password"
+                            style="margin-bottom: 0"><span class="register-form-error-message">Có lỗi xảy ra</span>
+                    </div>
+                    <div class="wao-sign-up-action">
+                        <span class="wao-form-button wao-button-next" id="sign-up-step-2">Tiếp theo</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="register-sign-up-step">
+                <h2 class="register-sign-up-title">Người quan trọng ơi!<b>Bạn là ...</b></h2>
+                <div class="register-item-select">
+                    <input class="register-input-select male" type="radio" name="gender" id="male" checked value="1">
+                    <label class="register-label-select check-box-male" for="male" id="check-box-male">
+                        <figure class="check-box-gender"></figure>
+                        <figcaption>Nam</figcaption>
+                    </label>
+                    <input class="register-input-select female" type="radio" name="gender" id="female" value="0">
+                    <label class="register-label-select check-box-female" for="female" id="check-box-female">
+                        <figure class="check-box-gender"></figure>
+                        <figcaption>Nữ</figcaption>
+                    </label>
+                </div>
+                <div class="register-sign-up-action">
+                    <span class="register-form-button" id="sign-in-step-4"> Tiếp theo</span>
+                </div>
+            </section>
+
+            <section class="register-sign-up-step">
+                <h2 class="register-sign-up-title">Bạn sẽ được rất nhiều người ái mộ, <br>thêm thông tin để kết nối với họ
+                    tốt hơn</h2>
+                <div class="register-form-step register-form-step-2">
+                    <div class="register-form-selects register-form-date">
+                        <div class="register-form-item">
+                            <label>Ngày</label>
+                            <div class="register-wrapper-select">
+                                <select class="register-form-input" id="dayForm">
+                                    <option>01</option>
+                                    <option>02</option>
+                                    <option>03</option>
+                                    <option>04</option>
+                                    <option>05</option>
+                                    <option>06</option>
+                                    <option>07</option>
+                                    <option>08</option>
+                                    <option>09</option>
+                                    <option>10</option>
+                                    <option>11</option>
+                                    <option>12</option>
+                                    <option>13</option>
+                                    <option>14</option>
+                                    <option>15</option>
+                                    <option>16</option>
+                                    <option>17</option>
+                                    <option>18</option>
+                                    <option>19</option>
+                                    <option>20</option>
+                                    <option>21</option>
+                                    <option>22</option>
+                                    <option>23</option>
+                                    <option>24</option>
+                                    <option>25</option>
+                                    <option>26</option>
+                                    <option>27</option>
+                                    <option>28</option>
+                                    <option>29</option>
+                                    <option>30</option>
+                                    <option>31</option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="register-form-item">
+                            <label>Tháng</label>
+                            <div class="register-wrapper-select">
+                                <select class="register-form-input" id="monthForm">
+                                    <option>01</option>
+                                    <option>02</option>
+                                    <option>03</option>
+                                    <option>04</option>
+                                    <option>05</option>
+                                    <option>06</option>
+                                    <option>07</option>
+                                    <option>08</option>
+                                    <option>09</option>
+                                    <option>10</option>
+                                    <option>11</option>
+                                    <option>12</option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <div class="register-form-item">
+                            <label>Năm</label>
+                            <div class="register-wrapper-select">
+                                <select class="register-form-input" id="yearForm">
+                                    <option class="female-only">2002</option>
+                                    <option class="female-only">2001</option>
+                                    <option class="female-only">2000</option>
+                                    <option class="female-only">1999</option>
+                                    <option class="female-only">1998</option>
+                                    <option class="female-only">1997</option>
+                                    <option>1996</option>
+                                    <option>1995</option>
+                                    <option>1994</option>
+                                    <option>1993</option>
+                                    <option>1992</option>
+                                    <option>1991</option>
+                                    <option>1990</option>
+                                    <option>1989</option>
+                                    <option>1988</option>
+                                    <option>1987</option>
+                                    <option>1986</option>
+                                    <option>1985</option>
+                                    <option>1984</option>
+                                    <option>1983</option>
+                                    <option>1982</option>
+                                    <option>1981</option>
+                                    <option>1980</option>
+                                    <option>1979</option>
+                                    <option>1978</option>
+                                    <option>1977</option>
+                                    <option>1976</option>
+                                    <option>1975</option>
+                                    <option>1974</option>
+                                    <option>1973</option>
+                                    <option>1972</option>
+                                    <option>1971</option>
+                                    <option>1970</option>
+                                    <option>1969</option>
+                                    <option>1968</option>
+                                    <option>1967</option>
+                                    <option>1966</option>
+                                    <option>1965</option>
+                                    <option>1964</option>
+                                    <option>1963</option>
+                                    <option>1962</option>
+                                    <option>1961</option>
+                                    <option>1960</option>
+                                    <option>1959</option>
+                                    <option>1958</option>
+                                    <option>1957</option>
+                                    <option>1956</option>
+                                    <option>1955</option>
+                                    <option>1954</option>
+                                    <option>1953</option>
+                                    <option>1952</option>
+                                    <option>1951</option>
+                                    <option>1950</option>
+                                    <option>1949</option>
+                                    <option>1948</option>
+                                    <option>1947</option>
+                                    <option>1946</option>
+                                    <option>1945</option>
+                                    <option>1944</option>
+                                    <option>1943</option>
+                                    <option>1942</option>
+                                    <option>1941</option>
+                                    <option>1940</option>
+                                </select>
+                            </div>
+
+                        </div>
+                        <span class="wao-form-error-message">Ngày tháng không hợp lệ </span>
+                    </div>
+                    <div class="register-form-number">
+                        <h3>Cập nhật số điện thoại để bảo mật tài khoản tốt hơn</h3>
+                        <div class="register-form-number-container">
+                            <div class="register-form-item">
+                                <input class="register-form-input" type="text" value="+84"><span
+                                    class="wao-form-error-message">Có lỗi xảy ra</span>
+                            </div>
+                            <div class="register-form-item">
+                                <input class="register-form-input" id="phoneForm" type="number"
+                                    value=""><span class="wao-form-error-message">Có lỗi xảy ra</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="register-form-number">
+                        <h3>Nhà bạn ở đâu thế?</h3>
+                        <div class="register-form-number-container" style="flex-direction: column;">
+                            <div class="register-wrapper-select after">
+                                <select class="register-form-select" id="cityForm" style="color:#828282;font-size:1rem">
+                                    <option value="-1">Chọn tỉnh/thành phố</option>
+                                    <%for(let index in provinces) {%>
+                                    <option value="<%=provinces[index].code && provinces[index].code%>">
+                                        <%=provinces[index].name && provinces[index].name%></option>
+                                    <%}%>
+                                </select>
+                                <span class="wao-form-error-message">Có lỗi xảy ra</span>
+                            </div>
+                    
+                            <div class="register-wrapper-select after">
+                                <select class="register-form-select" id="districtForm" style="color:#828282;font-size:1rem">
+                                    <option value="-1">Quận/huyện</option>
+                                </select>
+                                <span class="wao-form-error-message">Có lỗi xảy ra</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="register-sign-up-action">
+                        <span class="register-form-button" id="sign-in-step-3">Tiếp theo</span>
+                    </div>
+                </div>
+            </section>  
+            <section class="register-sign-up-step is-active">
+                <h2 class="register-sign-up-title">Hãy chọn ảnh (có mặt) của bạn<br>để làm hình đại diện</h2>
+                <div class="register-step__content">
+                    <input type="file" id="avatarForm" class="register-form-img" accept="image/png,image/jpeg">
+                    <img id="avatarFormImg" src="" style="position: absolute;visibility: hidden;" alt="">
+                    <div class="register-block-avatar" id="btn-avatar-form" style="display: flex; flex-direction: column; align-items: center;">
+                        <label class="block-avatar__img" style="margin-top: -20px; width: 230px; height: 230px;">
+                            <span class="block-avatar__btn"></span>
+                        </label>
+
+                        <div class="block-avatar__txt">
+                            <p style="color: #585858; margin: 15px 0 30px; padding: 0 10px">
+                                Lưu ý: Để đảm bảo về chất lượng người dùng trên nền tảng, xin vui lòng <strong>không chọn</strong> những bức ảnh
+                                về động vật, nhân vật chính trị, nhân vật tưởng tượng, ảnh nhạy cảm, ảnh có hai người trở lên, hoặc ảnh không
+                                phải là chính bạn. Điều đấy có thể khiến tài khoản của bạn <strong>bị khóa</strong> hoặc <strong>xóa vĩnh viễn</strong>.
+                            </p>
+                        </div>
+
+                    </div>
+                    <span class="wao-form-error-message">Vui lòng upload avatar</span>
+                </div>
+                <div class="wao-sign-up-action">
+                    <input type="submit" class="wao-form-button wao-button-submit" id="btn-register-submit" value="Hoàn tất đăng ký"></input>
+                </div>
+            </section>
+        </form>
+    </section>
+
+    <div class="wao-modal-container waodate-modal js-wao-modal wao-modal-sign-in-up-state" id="wao-modal-sign-up-success">
+        <div class="wao-modal-content">
+            <div class="wao-modal-img-container">
+                <figure>
+                    <img src="/template/front-end-new/img/login_register/success.svg" alt=""/>
+                    <figcaption>
+                        <h2>Kích hoạt tài khoản (!)</h2>
+                        <p>Đăng ký đã thành công, bạn hãy kiểm tra thông báo trên email để bắt đầu nhé. <br>Nhớ ghé xem những cuộc hẹn khác để khám phá thêm nhiều điều bất ngờ.</p>
+                    </figcaption>   
+                </figure>
+                <div class="modal-alert-action"><a class="wao-button wao-button-primary wao-button-fixed-width" href="https://mail.google.com/" target="_blank">Mở email kích hoạt</a><a class="close-modal-latter modal-close-button" href="/">Để khi khác</a>
+                </div>
+                <div class="modal-close-button modal-close-button-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation">
+                        <path d="M12 10.586L6.707 5.293a1 1 0 0 0-1.414 1.414L10.586 12l-5.293 5.293a1 1 0 0 0 1.414 1.414L12 13.414l5.293 5.293a1 1 0 0 0 1.414-1.414L13.414 12l5.293-5.293a1 1 0 1 0-1.414-1.414L12 10.586z" fill="currentColor"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wao-modal-container waodate-modal js-wao-modal wao-modal-sign-in-up-state" id="wao-modal-sign-up-success-social">
+        <div class="wao-modal-content">
+            <div class="wao-modal-img-container">
+                <figure>
+                    <img src="/template/front-end-new/img/login_register/success.svg" alt=""/>
+                    <figcaption>
+                        <h2>Wao, tuyệt vời!</h2>
+                        <p>Cật nhật thông tin thành công <br>Nhớ ghé xem những cuộc hẹn khác để khám phá thêm nhiều điều bất ngờ.</p>
+                    </figcaption>   
+                </figure>
+                <div class="modal-alert-action"><a class="wao-button wao-button-primary wao-button-fixed-width" href="/dang-nhap">Đăng nhập ngay</a><a class="close-modal-latter modal-close-button" href="/">Để khi khác</a>
+                </div>
+                <div class="modal-close-button modal-close-button-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation">
+                        <path d="M12 10.586L6.707 5.293a1 1 0 0 0-1.414 1.414L10.586 12l-5.293 5.293a1 1 0 0 0 1.414 1.414L12 13.414l5.293 5.293a1 1 0 0 0 1.414-1.414L13.414 12l5.293-5.293a1 1 0 1 0-1.414-1.414L12 10.586z" fill="currentColor"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wao-modal-container waodate-modal js-wao-modal wao-modal-sign-in-up-state" id="wao-modal-sign-up-fail">
+        <div class="wao-modal-content">
+            <div class="wao-modal-img-container">
+                <figure>
+                    <img src="/template/front-end-new/img/login_register/error.svg" alt=""/>
+                    <figcaption>
+                        <h2>Ôi, rất tiếc!!</h2>
+                        <p>Đăng ký thất bại, hiện có lỗi không xác định xảy ra trong quá trình đăng ký. <br> Bạn vui lòng hãy thử lại trong ít phút nữa nhé!</p>
+                    </figcaption>
+                </figure>
+                <div class="modal-alert-action"><a class="wao-button wao-button-primary wao-button-fixed-width" href="/dang-ky">Đăng ký lại</a>
+                    <a class="close-modal-latter modal-close-button" href="/">Để khi khác</a>
+                </div>
+                <div class="modal-close-button modal-close-button-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation">
+                        <path d="M12 10.586L6.707 5.293a1 1 0 0 0-1.414 1.414L10.586 12l-5.293 5.293a1 1 0 0 0 1.414 1.414L12 13.414l5.293 5.293a1 1 0 0 0 1.414-1.414L13.414 12l5.293-5.293a1 1 0 1 0-1.414-1.414L12 10.586z" fill="currentColor"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

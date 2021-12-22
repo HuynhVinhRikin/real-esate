@@ -1,0 +1,309 @@
+<style>
+    div#tawkchat-container.active {
+        transform: translateY(2000px) !important;
+    }
+    .popupPay, .popupPayKhac {
+        display: none;
+        width: 100%;
+        z-index: 999999;
+        position: absolute;
+        top : 50%;
+        left: 50%;
+        width : 987px;
+        height: 519px;
+        transform: translate(-50%, -50%);
+        justify-content: center;
+        align-items: center;
+    }
+    .popupPay.active, .popupPayKhac.active {
+        display: block;
+    }
+    .popupPay .wrapContentPay, .popupPayKhac .wrapPopupPayKhac {
+        display: flex;
+        flex-direction: column;
+        padding: 2rem;
+        width : 100%;
+        height: 100%;
+        font-size: 1.5rem;
+        background-color: #f6f6f6;
+        border-radius: 20px;
+        position: relative;
+    }
+    .popupPay h2, .popupPayKhac h2 {
+        text-align: center;
+    }
+    .popupPay .wrapOption {
+        display: flex;
+        height: 100%;
+        align-items: center;
+        justify-content: space-evenly;
+    }
+    .popupPay .wrapOption .payItem {
+        width: 250px;
+        height: 250px;
+        cursor: pointer;
+        border-radius: 20px;
+        border: 1px solid transparent;
+    }
+    .popupPay .wrapOption .payItem:hover {
+        border: 1px solid #4e37d3 !important;
+    }
+    .popupPay .wrapOption .payItem.payKhac {
+        position: relative;
+        color: #828282;
+        font-size: 21px;
+        text-align: center;
+        background-color: #ffffff;
+    }
+    .popupPay .wrapOption .payItem.payKhac .icoyPayKhac {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 5px;
+        border-radius: 50%;
+        border: 2px dashed #828282;
+        position: relative;
+    }
+    .popupPay .wrapOption .payItem img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 20px;
+    }
+    .popupPay .wrapOption .payItem.payKhac img {
+        width: 50%;
+        height: 50%;
+        position : absolute;
+        top: 40px;
+        left: 50%;
+        z-index: 1;
+        transform: translateX(-50%);
+    }
+    .popupPay .wrapOption .payItem.payKhac p {
+        position: absolute;
+        z-index: 2;
+        width : 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 50px;
+    }
+    #backPopupPay img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    #closePopupPay, #closePopupPayKhac, #backPopupPay {
+        display: flex;
+        position: absolute;
+        top: 10px;
+        right: 20px;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        border-radius: 50%;
+        color: #505f79;
+    }
+    #backPopupPay {
+        width: 24px;
+        height: 24px;
+        left: 20px;
+    }
+    .overlayPopupPay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+    }
+    .overlayPopupPay.active {
+        display: block;
+    }
+    .popupPayKhac .popupTxtContent {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    .popupPayKhac .popupTxtContent p {
+        margin: 10px 0;
+        font-size: 17px;
+    }
+    .popupPayKhac .popupTxtContent p span {
+        font-style: italic;
+        font-size: 17px;
+    }
+    .popupPayKhac .popupTxtContent p:nth-child(2) {
+        font-weight: bold;
+        font-size: 22px;
+        padding:10px 0 10px 100px;
+        background-color: #ffffff;
+    }
+    .popupPayKhac .popupTxtContent p:nth-child(2) span {
+        font-weight: normal;
+        font-style: italic;
+        font-size: 15px;
+    }
+    .popupPayKhac .popupTxtContent p:nth-child(3) {
+        padding-left: 100px;
+    }
+    .popupPayKhac .popupTxtContent p:nth-child(5) {
+        text-align: end;
+        font-style: italic;
+        font-size: 16px;
+    }
+    @media screen and (max-width : 992px) {
+        .popupPay, .popupPayKhac {
+            width : 700px;
+            height: 435px;
+        }
+        .popupPay .wrapContentPay, .popupPayKhac .wrapPopupPayKhac {
+            font-size: 1rem;
+        }
+        .popupPay .wrapOption .payItem {
+            width: 180px;
+            height: 180px;
+        }
+        .popupPay .wrapOption .payItem.payKhac {
+            font-size: 16px;
+        }
+        .popupPay .wrapOption .payItem.payKhac img {
+            top: 25px;
+        }
+        .popupPay .wrapOption .payItem.payKhac p {
+            bottom: 35px;
+        }
+        .popupPayKhac .popupTxtContent p {
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        .popupPayKhac .popupTxtContent p span {
+            font-size: 14px;
+        }
+        .popupPayKhac .popupTxtContent p:nth-child(2) {
+            font-size: 19px;
+            padding:5px 0 5px 50px;
+        }
+        .popupPayKhac .popupTxtContent p:nth-child(2) span {
+            font-size: 12px;
+        }
+        .popupPayKhac .popupTxtContent p:nth-child(3) {
+            padding-left: 50px;
+        }
+        .popupPayKhac .popupTxtContent p:nth-child(5) {
+            font-size: 14px;
+        }
+    }
+    @media screen and (max-width : 750px) {
+        .popupPay, .popupPayKhac {
+        width : 90%;
+        height: auto;
+        }
+        .popupPay .wrapContentPay{
+            height: auto;
+        }
+        .popupPay h2 {
+            margin-bottom: 15px;
+        }
+        .popupPay .wrapOption .payItem {
+            width: 80px;
+            height: 80px;
+        }
+        .popupPay .wrapOption .payItem.payKhac {
+            font-size: 8px;
+        }
+        .popupPay .wrapOption .payItem.payKhac img {
+            width: 50%;
+            height: 50%;
+            top: 2px;
+        }
+        .popupPay .wrapOption .payItem.payKhac p {
+            width: 80px;
+            bottom: 2px;
+        }
+        .popupPayKhac .popupTxtContent p {
+            margin: 6px 0;
+            font-size: 12px;
+        }
+        .popupPayKhac .popupTxtContent p span {
+            font-size: 12px;
+        }
+        .popupPayKhac .popupTxtContent p:nth-child(2) {
+            font-size: 14px;
+            padding:5px 0 5px 30px;
+        }
+        .popupPayKhac .popupTxtContent p:nth-child(2) span {
+            font-size: 10px;
+        }
+        .popupPayKhac .popupTxtContent p:nth-child(3) {
+            padding-left: 30px;
+        }
+        .popupPayKhac .popupTxtContent p:nth-child(5) {
+            font-size: 10px;
+        }
+    }
+</style>
+
+<div class="popupPay">
+    <div class="wrapContentPay">
+        <h2>Chọn cổng thanh toán</h2>
+        <div class="wrapOption">
+            <!-- <div class="payItem payBaoKim">
+                <img src="/template/front-end-new/img/buy/logoBaoKim.png" alt="Avatar Bảo Kim">
+            </div> -->
+
+            <div class="payItem payBaoKim">
+                <img src="/template/front-end-new/img/buy/logoVnPage.png" alt="Avatar VN Pay">
+            </div>
+
+            <div class="payItem payKhac">
+                <img src="/template/front-end-new/img/buy/icon_transfer.svg" alt="icon transfer money"/>
+                <p>Chuyển khoản trực tiếp</p>
+            </div>
+
+            <div id="closePopupPay">
+                <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation">
+                    <path
+                        d="M12 10.586L6.707 5.293a1 1 0 0 0-1.414 1.414L10.586 12l-5.293 5.293a1 1 0 0 0 1.414 1.414L12 13.414l5.293 5.293a1 1 0 0 0 1.414-1.414L13.414 12l5.293-5.293a1 1 0 1 0-1.414-1.414L12 10.586z"
+                        fill="currentColor"></path>
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="popupPayKhac">
+    <div class="wrapPopupPayKhac">
+        <h2>Hướng dẫn chuyển khoản trực tiếp</h2>
+      <div class="popupTxtContent">
+            <p>
+                Quý khách khi chuyển khoản thanh toán mua gói dịch vụ Waodate qua tài khoản Ngân hàng, xin vui lòng điền thông tin chuyển khoản với nội dung cú pháp như sau: 
+            </p>
+            <p>
+            "Tên gói dịch vụ - Họ tên người gửi - SĐT - Email (Nếu có)" <br>
+            <span>Ví dụ: "Goi Silver - Nguyen Van A - 09xxxxxxxx - nguyenvana@gmail.com"</span>
+            </p>
+            <p>
+            <span>Tài khoản</span>: 19134852563017<br>
+            <span>Chủ tài khoản</span>: CTY TNHH MTV NGUYEN DINH NGHIA <br>
+            Ngân hàng Techcombank - Chi nhánh Phong Phú
+            </p>
+            <p>
+            Waodate sẽ ngay lập tức liên hệ lại để xác nhận thông tin với quý khách thông qua số điện thoại quý khách cung cấp cho chúng tôi và tiến hành nâng cấp tài khoản hoặc cộng điểm nổi bật ngay cho quý khách. 
+            </p>
+            <p class="txtTks">Waodate xin chân thành cám ơn quý khách! 
+            </p>
+      </div>
+        <div id="closePopupPayKhac">
+            <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation">
+                <path
+                    d="M12 10.586L6.707 5.293a1 1 0 0 0-1.414 1.414L10.586 12l-5.293 5.293a1 1 0 0 0 1.414 1.414L12 13.414l5.293 5.293a1 1 0 0 0 1.414-1.414L13.414 12l5.293-5.293a1 1 0 1 0-1.414-1.414L12 10.586z"
+                    fill="currentColor"></path>
+            </svg>
+        </div>
+        <div id="backPopupPay">
+            <img src="/template/front-end-new/img/buy/icon_back.svg" alt="iconback">
+        </div>
+    </div>
+</div>
+
+<div class="overlayPopupPay"></div>

@@ -1,0 +1,133 @@
+<script>
+    $(document).ready(function(){
+        let getFormUserBlog = () => {
+            let name, slug, desc, age, status, shortcode;
+            name = $('#txtName').val();
+            slug = $('#txtSlug').val();
+            desc = $('#txtDesc').val();
+            age = $('#txtAge').val();
+            shortcode = $('#txtShortCode').select2().val();
+			$('#switchStatus')[0].checked ? status = 1: status = 0 ;
+            return { name, slug, desc, age, status, shortcode }
+        }
+
+        let checkValidate = () =>{
+            let name, slug, desc, age, status, shortcode;
+            name = $('#txtName').val();
+            slug   = $('#txtSlug').val(); 
+            desc = $('#txtDesc').val();
+            age = $('#txtAge').val();
+            url = $('#txtUrl').val();
+            shortcode = $('#txtShortCode').val();
+            status = $('#switchStatus').val();
+            if(shortcode.length == 0 || name.length == 0 || slug.length === 0 || desc.length === 0 || age.length === 0 || status.length === 0 )
+                return false;
+            return true;
+        }
+
+        function change_alias(alias) {
+            var str = alias;
+            str = str.toLowerCase();
+            str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g,"a"); 
+            str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g,"e"); 
+            str = str.replace(/ì|í|ị|ỉ|ĩ/g,"i"); 
+            str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g,"o"); 
+            str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g,"u"); 
+            str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g,"y"); 
+            str = str.replace(/đ/g,"d");
+            str = str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g," ");
+            str = str.replace(/ + /g," ");
+            str = str.trim(); 
+            return str;
+        }
+        
+        let convertToSlug = function (plainText){
+            const text_converted_alias = change_alias(plainText);
+            const text_split_with_space = text_converted_alias.split(' ');
+            const text_joined = text_split_with_space.join('-');
+            return text_joined;
+        }
+
+        // $('#txtTitle').on('keyup', function(){
+        //     let title = $(this).val();
+        //     let url = convertToSlug(title);
+        //     $('#txtUrl').val(url);
+        // })
+		function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#imagePreview').css('background-image', 'url('+e.target.result +')');
+                    $('#imagePreview').hide();
+                    $('#imagePreview').fadeIn(650);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }	
+		$("#imageUpload").change(function() {
+            readURL(this);
+        });
+        $('#btnAdd').on('click', function(){
+            if(!checkValidate())
+                return alert('Vui lòng nhập thông tin');
+            let data = getFormUserBlog();
+
+			var vd = new FormData();
+            var image = $('#imageUpload')[0].files[0];
+
+            vd.append('image',image);
+            vd.append('data', JSON.stringify(data));
+				$.ajax({
+					url        : `/admin/add-user-blog`,
+					method     : 'POST',
+					data       : vd,
+					contentType: false,
+					processData: false,
+					// beforeSend: function (xhr) {
+					//     xhr.setRequestHeader("Authorization", 'Bearer '+ token);
+					// },
+					success    : function(resp) { 
+						 
+						if (!resp.error) 
+                            alert('THÊM THÀNH CÔNG');
+                            return window.location.href = "/admin/list-user-blog";
+						return alert('THÊM THẤT BẠI');
+					},
+					error: function(err) {
+						return alert('THÊM THẤT BẠI');
+					}
+				});
+        });
+
+        $('#btnUpdate').on('click', function(){
+            if(!checkValidate())
+                return alert('Vui lòng nhập tiêu đề');
+            let data = getFormUserBlog();
+            let url = $(this).attr('_url');
+			 var fd = new FormData();
+            var image = $('#imageUpload')[0].files[0];
+            fd.append('image', image);
+            fd.append('data', JSON.stringify(data));
+            $.ajax({
+                url        : `/admin/update-user-blog/${url}`,
+                method     : 'POST',
+                data       : fd,
+				contentType: false,
+                processData: false,
+                // beforeSend: function (xhr) {
+                //     xhr.setRequestHeader("Authorization", 'Bearer '+ token);
+                // },
+                success    : function(resp) { 
+                    if (!resp.error) 
+                       return window.location.href = "/admin/list-user-blog";
+                    return alert('CẬP NHẬT THẤT BẠI');
+                },
+                error: function(err) {
+                    return alert('CẬP NHẬT THẤT BẠI');
+                }
+            });
+        });
+
+      
+    });    
+</script>

@@ -1,0 +1,76 @@
+<div class="wrapper">
+    <!-- header -->
+    <%-include ./utils/header_BLOG.ejs%>
+	<section id="page-content" class="page-wrapper">
+		<div class="zm-section  xs-pt-30 sm-pt-30 pt-30 pb-40">
+		<div class="container">
+		<div class="row pb-40">
+			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 columns">
+			<div class="row mb-40">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+				<div class="section-title">
+					<h1 class="h6 header-color inline-block uppercase">
+						<%= infoContent.title%>
+					</h1>
+				</div>
+				<% if (infoContent && infoContent.description) { %>
+					<div class="category-parent__description">
+						<p><%=infoContent && infoContent.description %></p>
+					</div>
+				<% } %>
+				</div>
+			</div>
+			<div class="row">
+				<div class="zm-posts clearfix">
+					<!-- 8 items -->
+					<%listBlogs && listBlogs.length > 0 && listBlogs.forEach((blogInfo,index) => {%>
+						<%if(index == 0){%>
+							 <div class="col-xs-12">
+								<article class="zm-post-lay-a1" data-mh="block-archive">
+									<div class="zm-post-thumb">
+										<a href="/blog/<%=blogInfo.slug%>">
+										<noscript><img alt="<%= _lodash.get(blogInfo, 'title', 'image category') %>" width="750" height="465" src="/files/blog/<%=blogInfo.image%> 300w" sizes="(max-width: 750px) 100vw, 750px" /></noscript>
+										<img width="750" alt="<%= _lodash.get(blogInfo, 'title', 'image category')%>" height="465" src='/files/blog/<%=blogInfo.image%>' data-src="/files/blog/<%=blogInfo.image%> 300w" data-sizes="(max-width: 750px) 100vw, 750px" /> 
+										</a>
+									</div>
+									<div class="zm-post-dis">
+										<div class="zm-post-header">
+										<h2 class="zm-post-title h2" style="min-height:auto"><a href="/blog/<%=blogInfo.slug%>"><%=blogInfo.title%></a></h2>
+										<div class="zm-post-meta">
+											<ul>
+											<li class="s-meta"> <a href="/blog/<%=blogInfo.category.slug%>" class="meta-category"><%=blogInfo.category.title%></a></li>
+											<li class="s-meta"><%=moment(blogInfo.createAt).subtract(10, 'days').calendar();%></li>
+											</ul>
+										</div>
+										</div>
+										<div class="zm-post-content">
+										<p><%=blogInfo.yoastDescription.substring(0, 166);%> ...</p>
+										</div>
+									</div>
+								</article>
+							</div>
+						<%}else{%>  
+							<%-include ./utils/item_CATEGORY.ejs%>
+						<%}%>
+					<%})%>
+				</div>
+			</div>
+			<div class="row">
+				<!-- PAGGINATIONS -->
+				<%- include ./utils/pagination_BLOG.ejs%>
+			</div>
+			<style>.zm-pagination {
+				border:none;
+				}
+			</style>
+			</div>
+			<%-include ./utils/right_bar__BLOG_DETAIL.ejs%>
+		</div>
+	</section>
+    <!-- Start footer area -->
+    <div id="footer-sidebar1">
+    
+</div>
+    <%-include ./utils/widget-footer.ejs%>
+    <!-- End footer area -->
+</div>

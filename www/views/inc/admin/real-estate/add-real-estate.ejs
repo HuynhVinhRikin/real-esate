@@ -1,0 +1,254 @@
+<style>
+    .avatar-upload {
+        position: relative;
+        max-width: 205px;
+        margin: 35px auto;
+        }
+        .avatar-upload .avatar-edit {
+        position: absolute;
+        right: 12px;
+        z-index: 1;
+        top: 10px;
+        }
+        .avatar-upload .avatar-edit input {
+        display: none;
+        }
+        .avatar-upload .avatar-edit input + label {
+        display: inline-block;
+        width: 34px;
+        height: 34px;
+        margin-bottom: 0;
+        border-radius: 100%;
+        background: #FFFFFF;
+        border: 1px solid transparent;
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+        cursor: pointer;
+        font-weight: normal;
+        transition: all 0.2s ease-in-out;
+        }
+        .avatar-upload .avatar-edit input + label:hover {
+        background: #f1f1f1;
+        border-color: #d6d6d6;
+        }
+        .avatar-upload .avatar-edit input + label:after {
+        content: "\f040";
+        font-family: 'FontAwesome';
+        color: #757575;
+        position: absolute;
+        top: 10px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        margin: auto;
+        }
+        .avatar-upload .avatar-preview {
+        width: 192px;
+        height: 192px;
+        position: relative;
+        border-radius: 100%;
+        border: 6px solid #F8F8F8;
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+        }
+        .avatar-upload .avatar-preview > div {
+        width: 100%;
+        height: 100%;
+        border-radius: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        }
+        .qrcode-preview {
+            width: 190px;
+            height: 190px;
+            position: relative;
+            border: 6px solid #F8F8F8;
+            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+            margin: 30px auto;
+        }
+        .qrcode-preview > img {
+            width: 100%
+        }
+    }
+</style>
+<div class="content-page">
+    <!-- Start content -->
+    <div class="content">
+        <div class="container-fluid">
+            <br><br>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="example-text-input" class="col-sm-2 col-form-label">Tên Đất</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="text"placeholder="Nhập tên đất" id="txtTitle">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="example-text-input" class="col-sm-2 col-form-label">Số Lô</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="text" id="txtSlug" >
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="example-text-input" class="col-sm-2 col-form-label">Diện Tích</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="text" id="txtSlug" >
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Mô Tả</label>
+                                <div>
+                                    <textarea required="" class="form-control" id="txtDescription" rows="5">Mô tả gì đó</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="card m-b-20">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label">Tên Khách</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text"placeholder="Nhập tên đất" id="txtTitle">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label">SĐT</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" id="txtSlug" >
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label">Ghi Chú</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text" id="txtSlug" >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+				<div class="col-md-4">
+                    <div class="card m-b-20">
+                       <div class="card-body">
+                            <h4 class="mt-0 header-title">Vị trí</h4>
+                            <div>
+                                <label class="col-form-label">Thành phố/Tỉnh</label>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <select class="form-control" id="txtLangBlog">
+                                                <option > Đăk Lăk</option>
+                                        </select>
+                                    </div>
+                                </div>
+                              
+                                <label class="col-form-label">Quận/Huyện</label>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <select class="form-control" id="txtAuthorOrigin">
+                                            <option value="" selected>Huyện</option>
+                                            <option value="">item2</option>
+                                            <option value="">item2</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <label class="col-form-label">Phường/Xã</label>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <select class="form-control" id="txtCategory">
+                                            <option value="" selected>Phường</option>
+                                            <option value="">item3</option>
+                                            <option value="">item3</option>
+                                        </select>
+                                    </div>
+                                </div> 
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <label class="col-form-label">Số nhà</label>
+                                        <input class="form-control" type="text" id="txtSlug" >
+                                    </div>
+                                </div> 
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Thổ cư</label>
+                                            <div>
+                                                <div class="input-group">
+                                                    <input id="switchStatus" switch="dark" type="checkbox" >
+                                                            checked
+                                                    <label for="switchStatus" data-on-label="On" data-off-label="Off"></label> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- <div class="card m-b-20">
+                       <div class="card-body">
+                            <h4 class="mt-0 header-title">Yoast</h4>
+                            <br>
+                            <div>
+                                <label class="col-form-label">Yoast Title</label>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <input class="form-control" type="text"placeholder="Nhập Yoast Title" id="txtYoastTitle" >
+                                    </div>
+                                </div> 
+
+                                <label class="col-form-label">Yoast Description</label>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <textarea required="" class="form-control" id="txtYoastDescription" rows="5">sss</textarea>
+                                    </div>
+                                </div> 
+
+                                <label class="col-form-label">Yoast Focus</label>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <input class="form-control" type="text"placeholder="Nhập Yoast Focus" id="txtYoastFocus" >
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <div class="card m-b-20">
+                       <div class="card-body">
+                            <h4 class="mt-0 header-title">Hình Ảnh</h4>
+                            <br>
+                            <div class="container">
+                                <div class="avatar-upload">
+                                    <div class="avatar-edit">
+                                        <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
+                                        <label for="imageUpload"></label>
+                                    </div>
+                                    <div class="avatar-preview">
+                                            <!-- <div id="imagePreview" style=""></div> -->
+                                            <div id="imagePreview" style="background-image: url(https://via.placeholder.com/500x500);"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                        <button type="button" class="btn btn-success waves-effect waves-light btn-lg" style="margin: 0 auto; display: block; padding: 10px 100px;" id="btnAdd" >Thêm Mới</button>
+                </div>
+            </div>
+        </div>
+        <!-- container-fluid -->
+    </div>
+    <!-- content -->
+    <%include ../utils/footer.ejs%>
+</div>

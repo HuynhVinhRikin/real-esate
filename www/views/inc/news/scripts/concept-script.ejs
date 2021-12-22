@@ -1,0 +1,72 @@
+<script>
+    $(document).ready(function(){
+        $('#province_concept').on('change', function(e) {
+            const provinceID = $(this).val();
+            console.log('abc')
+            $.ajax({
+                url: `/get-district/${provinceID}`,
+                method: 'GET',
+                success: function(listDistricts) {
+                    if (listDistricts) {
+                        $('#district_concept').empty();
+
+                        $('#district_concept').append(`
+                            <option value="null">Tất Cả</option>
+                        `);
+
+                        for (let index in listDistricts) {
+                            $('#district_concept').append(`
+                                <option value="${listDistricts[index].code}">${listDistricts[index].name_with_type}</option>
+                            `);
+                        }
+                    } else {
+                        alert('Tỉnh Không Có Huyện');
+                    }
+                },
+                error: function(err){
+                    console.log(err.message)
+                }
+            })
+        });
+        const getDataSearch = () => {
+            let sort    = $('#sort_concept').val(); //
+            let prayer  = $('#prayer_concept').val(); //
+            let gender  = $("input.gender_concept[name=gender]:checked").val(); //
+            let fromAge = $('#fromAge_concept').text(); //
+            let toAge   = $('#toAge_concept').text(); //
+            let province   = $('#province_concept').val(); //
+            let district   = $('#district_concept').val(); //
+            let key        = $('#text_search').val(); //
+            return { sort, prayer, gender, fromAge, toAge, province, district, key };
+        }
+
+        const buildURISearch = () => {
+            const { sort, prayer, gender, fromAge, toAge, province, district, key } = getDataSearch();
+            let uri = ``;
+            if (!sort)
+                uri = `/buoi-hen-ho?sort=${sort}`;
+            else
+                uri = `/buoi-hen-ho?`;
+            
+            
+            if (!Number.isNaN(Number(prayer))) uri += `&prayer=${prayer}`;
+            if (!Number.isNaN(Number(gender))) uri += `&gender=${gender}`;
+
+            if (!Number.isNaN(Number(fromAge)) && !Number.isNaN(Number(toAge))) uri += `&fromAge=${fromAge}&toAge=${toAge}`;
+
+            if (!Number.isNaN(Number(province))) uri += `&province=${province}`;
+
+            if (!Number.isNaN(Number(province)) && !Number.isNaN(Number(district)) && district != null) uri += `&district=${district}`;
+            console.log('DISTRIC : ', district)
+            if (key && key.length > 2)
+                uri += `&key=${key}`;
+            
+            
+            return window.location.href = uri
+        }
+        $('.btnSearchNormal').on('click', function(e){
+            e.preventDefault();
+            buildURISearch();
+        })
+    })
+</script>

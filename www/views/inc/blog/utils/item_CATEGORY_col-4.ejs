@@ -1,0 +1,28 @@
+<div class="col-md-4 col-lg-4 col-sm-6 col-xs-12">
+    <article class="zm-post-lay-a1" data-mh="block-archive">
+    <div class="zm-post-thumb">
+        <a href="/blog/<%=blogInfo.slug%>">
+        <noscript><img  alt="<%= _lodash.get(blogInfo, 'title', 'No')%>" width="750" height="465" src="/files/blog/<%=blogInfo.image%> 300w" sizes="(max-width: 750px) 100vw, 750px" /></noscript>
+        <img  alt="<%= _lodash.get(blogInfo, 'title', 'No')%>" width="750" height="465" src='/files/blog/<%=blogInfo.image%>' data-src="/files/blog/<%=blogInfo.image%> 300w" data-sizes="(max-width: 750px) 100vw, 750px" /> 
+        </a>
+    </div>
+    <div class="zm-post-dis">
+        <div class="zm-post-header">
+        <h4 class="zm-post-title h2"><a href="/blog/<%=blogInfo.slug%>"><%=blogInfo.title%></a></h4>
+        <div class="zm-post-meta">
+            <ul>
+            <% if (blogInfo.category[0]) { %>
+                <li class="s-meta"> <a href="/blog/<%=blogInfo.category.slug%>" class="meta-category"><%=blogInfo.category[0].title%></a></li>
+            <% }else{ %>
+                <li class="s-meta"> <a href="/blog/<%=blogInfo.category.slug%>" class="meta-category"><%=blogInfo.category.title%></a></li>
+            <% } %>
+            <li class="s-meta"><%=moment(blogInfo.createAt).subtract(10, 'days').calendar();%></li>
+            </ul>
+        </div>
+        </div>
+        <div class="zm-post-content">
+        <p><%=blogInfo.yoastDescription.substring(0, 166);%> ...</p>
+        </div>
+    </div>
+    </article>
+</div>

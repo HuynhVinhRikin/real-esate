@@ -1,0 +1,19 @@
+<script>
+ $(document).ready(function(){
+    $('#select_datatable_length').on('click', function(){
+        
+        let amountItemShow = $(this).val();
+        
+        if (!Number.isNaN(Number(amountItemShow))) uri += `&amountItemShow=${amountItemShow}`;
+        return window.location.href = uri;
+    })
+
+    $('#btnSearch').on('click', function(){
+        let key = $('#txtSearch').val();
+        let uri  = `/admin/list-report-concept?`;
+        if(key) uri += `&key=${key}`;
+        return window.location.href = uri;
+
+    });
+ })
+</script>

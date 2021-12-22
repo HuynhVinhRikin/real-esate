@@ -1,0 +1,319 @@
+<style>
+    .avatar-upload {
+        position: relative;
+        max-width: 205px;
+        margin: 35px auto;
+        }
+        .avatar-upload .avatar-edit {
+        position: absolute;
+        right: 12px;
+        z-index: 1;
+        top: 10px;
+        }
+        .avatar-upload .avatar-edit input {
+        display: none;
+        }
+        .avatar-upload .avatar-edit input + label {
+        display: inline-block;
+        width: 34px;
+        height: 34px;
+        margin-bottom: 0;
+        border-radius: 100%;
+        background: #FFFFFF;
+        border: 1px solid transparent;
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+        cursor: pointer;
+        font-weight: normal;
+        transition: all 0.2s ease-in-out;
+        }
+        .avatar-upload .avatar-edit input + label:hover {
+        background: #f1f1f1;
+        border-color: #d6d6d6;
+        }
+        .avatar-upload .avatar-edit input + label:after {
+        content: "\f040";
+        font-family: 'FontAwesome';
+        color: #757575;
+        position: absolute;
+        top: 10px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        margin: auto;
+        }
+        .avatar-upload .avatar-preview {
+        width: 192px;
+        height: 192px;
+        position: relative;
+        border-radius: 100%;
+        border: 6px solid #F8F8F8;
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+        }
+        .avatar-upload .avatar-preview > div {
+        width: 100%;
+        height: 100%;
+        border-radius: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        }
+        .qrcode-preview {
+            width: 190px;
+            height: 190px;
+            position: relative;
+            border: 6px solid #F8F8F8;
+            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+            margin: 30px auto;
+        }
+        .qrcode-preview > img {
+            width: 100%
+        }
+    }
+</style>
+<div class="content-page">
+    <!-- Start content -->
+    <div class="content">
+        <div class="container-fluid">
+            <br><br>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="example-text-input" class="col-sm-2 col-form-label">Tên bài viết</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="text"placeholder="Nhập tên bài viết" id="txtTitle" <% if (blog) { %>
+                                        value="<%= blog.title && blog.title %>"
+                                    <% } %>>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="example-text-input" class="col-sm-2 col-form-label">Slug</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" type="text" id="txtSlug" <% if (blog) { %>
+                                        value="<%= blog.slug && blog.slug %>"
+                                    <% } %>>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Mô Tả</label>
+                                <div>
+                                    <textarea required="" class="form-control" id="txtDescription" rows="5"><% if (blog) { %><%= blog.description && blog.description %><% } %></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="card m-b-20">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label class=" col-form-label">Chi tiết</label>
+                                 <!-- <div id="contentSummernote"></div> -->
+                                 <div id="tinytable"></div>
+
+                                 <!-- <textarea name="editor1" id="contentSummernote" rows="620" cols="80">
+                                    This is my textarea to be replaced with CKEditor.
+                                </textarea> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+				<div class="col-md-4">
+                    <div class="card m-b-20">
+                       <div class="card-body">
+                            <h4 class="mt-0 header-title">Tùy Chọn</h4>
+                            <div>
+                                <label class="col-form-label">Ngôn ngữ</label>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <select class="form-control" id="txtLangBlog">
+                                            <%languageSettingSys.forEach(lang=>{%>
+                                                <%
+                                                let isSelect  = ""
+                                                if(blog && blog.lang  && lang.lang.toString() == blog.lang.toString()){
+                                                     isSelect  = 'selected'
+                                                }%>
+                                                <option <%=isSelect%>  value="<%=lang.lang%>" ><%= lang.lang %></option>
+                                            <%})%>
+                                        </select>
+                                    </div>
+                                </div>
+                              
+                                <label class="col-form-label">Tác Gỉa</label>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <select class="form-control" id="txtAuthorOrigin">
+                                            <% if ( listAdmins && listAdmins.length > 0 ) { %>
+                                                <% listAdmins.forEach(authorOrigin => { %>
+                                                    <% if (blog && blog.authorOrigin) { %> 
+                                                        <% if (blog.authorOrigin.toString() == authorOrigin._id.toString() ) { %>
+                                                            <option value="<%=authorOrigin._id && authorOrigin._id%>" selected><%= authorOrigin.fullname && authorOrigin.fullname %></option>
+                                                        <% }else{ %>
+                                                            <option value="<%=authorOrigin._id && authorOrigin._id%>"><%= authorOrigin.fullname && authorOrigin.fullname %></option>
+                                                        <% } %>
+                                                    <% }else{ %>
+                                                        <option value="<%=authorOrigin._id && authorOrigin._id%>"><%= authorOrigin.fullname && authorOrigin.fullname %></option>
+                                                    <% } %>
+                                                <% }) %>
+                                            <% } %>
+                                            
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <label class="col-form-label">Danh Mục</label>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <select class="form-control" id="txtCategory">
+                                            <% if ( categories && categories.length > 0 ) { %>
+                                                <% categories.forEach(category => { %>
+                                                    <% if (blog) { %>
+                                                        <% if (JSON.stringify(blog.category && blog.category._id ) == JSON.stringify(category._id && category._id ) ) { %>
+                                                            <option value="<%=category._id && category._id%>" selected><%= category.title && category.title %>(<%= category.parent && category.parent.title %>)</option>
+                                                        <% }else{ %>
+                                                            <option value="<%=category._id && category._id%>"><%= category.title && category.title %>(<%= category.parent  && category.parent.title %>)</option>
+                                                        <% } %>
+                                                    <% }else{ %>
+                                                        <option value="<%=category._id && category._id%>"><%= category.title && category.title %>(<%= category.parent  && category.parent.title %>)</option>
+                                                    <% } %>
+                                                <% }) %>
+                                            <% } %>
+                                        </select>
+                                    </div>
+                                </div> 
+
+                                <label class="col-form-label">Thẻ</label>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <select class="select2 form-control select2-multiple" multiple="multiple"  data-placeholder="Thẻ" id="txtTag">
+                                                <optgroup label="thẻ">
+                                                    <% if (tags && tags.length > 0) { %>
+                                                        <% tags.forEach(tag => { %>
+                                                            <% if (blog) { %>
+                                                                <% if (blog.tags.length > 0) { %>
+                                                                    <% if (blog.tags.includes(tag.toString())) { %>
+                                                                        <option value="<%= tag._id && tag._id %>" selected><%= tag.title && tag.title %></option>
+                                                                    <% }else{ %>
+                                                                        <option value="<%= tag._id && tag._id %>"><%= tag.title && tag.title %></option>
+                                                                    <% } %>
+                                                                <% }else{ %>
+                                                                        <option value="<%= tag._id && tag._id %>"><%= tag.title && tag.title %></option>
+                                                                <% } %>
+                                                            <% }else{ %>
+                                                                <option value="<%= tag._id && tag._id %>"><%= tag.title && tag.title %></option>
+                                                            <% } %>
+                                                        <% }) %>
+                                                    <% } %>
+                                                </optgroup>
+                                            </select>
+                                        </div>
+                                    </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Trạng Thái</label>
+                                            <div>
+                                                <div class="input-group">
+                                                    <input id="switchStatus" switch="dark" type="checkbox" <% if (blog) { %>
+                                                        <% if (blog.status) { %>
+                                                            checked
+                                                        <% } %>
+                                                    <% } %> > 
+                                                    <label for="switchStatus" data-on-label="On" data-off-label="Off"></label> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Nỗi Bật</label>
+                                            <div>
+                                                <div class="input-group">
+                                                    <input id="switchIsFuture" switch="dark" type="checkbox" <% if (blog) { %>
+                                                        <% if (blog.isFeature) { %>
+                                                            checked
+                                                        <% } %>
+                                                    <% } %> > 
+                                                    <label for="switchIsFuture" data-on-label="On" data-off-label="Off"></label> 
+                                                </div>
+                                                <!-- input-group -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card m-b-20">
+                       <div class="card-body">
+                            <h4 class="mt-0 header-title">Yoast</h4>
+                            <br>
+                            <div>
+                                <label class="col-form-label">Yoast Title</label>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <input class="form-control" type="text"placeholder="Nhập Yoast Title" id="txtYoastTitle" <% if (blog) { %>
+                                            value = "<%= blog.yoastTitle && blog.yoastTitle %>"
+                                        <% } %> >
+                                    </div>
+                                </div> 
+
+                                <label class="col-form-label">Yoast Description</label>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <textarea required="" class="form-control" id="txtYoastDescription" rows="5"><% if (blog) { %><%= blog.yoastDescription && blog.yoastDescription %><% } %></textarea>
+                                    </div>
+                                </div> 
+
+                                <label class="col-form-label">Yoast Focus</label>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <input class="form-control" type="text"placeholder="Nhập Yoast Focus" id="txtYoastFocus" <% if (blog) { %>
+                                            value = "<%= blog.yoastFocus && blog.yoastFocus %>"
+                                        <% } %> >
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card m-b-20">
+                       <div class="card-body">
+                            <h4 class="mt-0 header-title">Hình Ảnh</h4>
+                            <br>
+                            <div class="container">
+                                <div class="avatar-upload">
+                                    <div class="avatar-edit">
+                                        <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
+                                        <label for="imageUpload"></label>
+                                    </div>
+                                    <div class="avatar-preview">
+                                        <% if (blog) { %>
+                                            <div id="imagePreview" style="background-image: url(<%= blog.image && blog.image %>);"></div>
+                                        <% }else{ %>
+                                            <div id="imagePreview" style="background-image: url(https://via.placeholder.com/500x500);"></div>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <% if (blog) { %>
+                        <button type="button" class="btn btn-success waves-effect waves-light btn-lg" style="margin: 0 auto; display: block; padding: 10px 100px;" id="btnUpdate" _slug="<%=blog.slug%>" >Cập Nhật</button>
+                    <% }else{ %>
+                        <button type="button" class="btn btn-success waves-effect waves-light btn-lg" style="margin: 0 auto; display: block; padding: 10px 100px;" id="btnAdd" >Thêm Mới</button>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+        <!-- container-fluid -->
+    </div>
+    <!-- content -->
+    <%include ./utils/footer.ejs%>
+</div>

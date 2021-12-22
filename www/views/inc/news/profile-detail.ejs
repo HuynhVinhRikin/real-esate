@@ -1,0 +1,496 @@
+<main>
+  <div class="wao-wrapper">
+    <div class="wao-user">
+      <div class="container wao-container wao-user-get-container">
+        <div class="wao-user-wrapper">
+          <!-- <a href="" class="back-btn wao-mb">
+                      <img src="/template/front-end-new/img/user-detail/back_icon.svg" alt="">
+                  </a> -->
+          <h1 class="title_icon wao-pc">
+            <i class="icon">
+              <img src="/template/front-end-new/img/user-detail/title_icon.svg" alt="">
+            </i> Trang cá nhân
+          </h1>
+          <% const isPayer = Date.now() - new Date(infoUserGuest.dateExpired) < 0 %>
+          <% const urlCover =_lodash.get(infoUserGuest, "cover.name", "") %>
+          <% const urlCoverResult = urlCover ? `/files/users/${urlCover}` :  "/template/front-end-new/img/background-avatar/new-cover.png"%>
+          <% let cmnd = infoUserGuest.cmnd %>
+          <div class="background-avatar"
+            style="background-position: center; background-image: url('<%=urlCoverResult%>');">
+            <div class="wrapper-avatar">
+              <div class="avatar<%= (isPayer) ? ' avatar-vip' : '' %>">
+                <%if(infoUserGuest){%>
+                <%let objUser = infoUserGuest;%>
+                <%-include ./utils/image_RENDER.ejs%>
+                <%}%>
+                          <% if(cmnd) {%>
+                <img class="tick-verify" src="/template/front-end-new/img/favorite/verified_icon.svg" alt="">
+                <% }%>
+              </div>
+            </div>
+          </div>
+          <div class="user-info-header">
+            <ul>
+              <li>
+                <span><%=infoUserGuest.amountConcept%></span>
+                <a href="/nguoi-dung/buoi-hen-ho/<%=infoUserGuest.username %>">Buổi hẹn
+                  <span style="color: rgb(62, 62, 206); font-size: 10px;line-height: normal;">(Xem ngay)
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a class="user-like likeGuest
+                              <%if(infoUser){%>
+                                <%var listUserLikeGuest = infoUser.usersMeLike.join(',');%>
+                                <%if(listUserLikeGuest.includes(infoUserGuest._id)){%>
+                                    active
+                                <%}else{%>
+                                <%}%>
+                              <%}else{%>
+                              <%}%>
+                            " 
+                            style='cursor: pointer;' _guestID='<%=infoUserGuest._id%>'  data=" wao-favorite-popup">
+                  <span>
+                    <i class="wd-icon fa fa-heart-o"></i>
+                    <i class="wd-icon fa fa-heart"></i>
+                  </span>
+                </a>
+                Yêu thích
+              </li>
+              <li>
+                <a _guestID='<%=infoUserGuest._id%>' href="/ca-nhan/tin-nhan/<%=infoUserGuest.username%>" rel="nofollow"
+                  class="wao-message-btn has-message sendMessageGuest">
+                  <img src="/template/front-end-new/img/nav/nav_icon_mb_3.svg" alt=""></a>
+                Gửi tin nhắn
+              </li>
+            </ul>
+          </div>
+          <div class="user-info-body user-info-body__no-boder">
+            <p class="user-name">
+              <%if(infoUserGuest && infoUserGuest.fullname){%>
+              <%= infoUserGuest.fullname%>,
+              <%}%>
+                      <%if(infoUserGuest && infoUserGuest.age){%>
+              <%= infoUserGuest.age%>
+              <%}%>
+                    </p>
+                    <p class="desc">
+                      <%if(!infoUserGuest.intro){%>
+              <strong>Chưa Có Thông Tin.</strong>
+              <%}else{%>
+              <%=infoUserGuest.intro%>
+              <%}%>
+                    </p>
+                  </div>
+                  <div class="user-info-body">
+                      <p class="title">
+                          Thông tin cá nhân
+                      </p>
+                      <div class="content has-list">
+                          <ul>
+                              <li>
+                                  <i class="icon">
+                                      <img src="/template/front-end-new/img/user-detail/gender_icon.svg" alt="">
+                                  </i>
+                                  <span class="label">Giới tính</span>
+                                  <span>
+                                    <%= Number(_lodash.get(infoUserGuest, "gender", 0  )) == 1 ? "Nam" : "Nữ" %>
+              </span>
+              </li>
+              <li>
+                <i class="icon">
+                  <img src="/template/front-end-new/img/user-detail/job_icon.svg" alt="">
+                </i>
+                <span class="label">Nghề nghiệp</span>
+                <span>
+                  <%if(infoUserGuest && !Number.isNaN(Number(infoUserGuest.job))){%>
+                  <%var indexJob = constants.jobs.findIndex(job => Object.is(Number(infoUserGuest.job), Number(job.value)));%>
+                  <%= _lodash.get(constants.jobs[indexJob], 'text', 'Chưa cập nhật') %>
+                  <%}else{%>
+                  <b>Chưa cập nhật</b>
+                  <%}%>
+                                  </span>
+                              </li>
+                              <li>
+                                  <i class="icon">
+                                      <img src="/template/front-end-new/img/user-detail/major_icon.svg" alt="">
+                                  </i>
+                                  <span class="label">Học vấn</span>
+                                  <span>
+                                    <%if(infoUserGuest && !Number.isNaN(Number(infoUserGuest.education))){%>
+                  <%var indexEducation = constants.educations.findIndex(education => Object.is(Number(education.value), Number(infoUserGuest.education)));%>
+                  <%= _lodash.get(constants.educations[indexEducation], 'text', 'Chưa cập nhật')%>
+                  <%}else{%>
+                  <b>Chưa cập nhật</b>
+                  <%}%>
+                                  </span>
+                              </li>
+                              <li>
+                                  <i class="icon">
+                                      <img src="/template/front-end-new/img/user-detail/height_icon.svg" alt="">
+                                  </i>
+                                  <span class="label">Chiều cao</span>
+                                  <span> <%= Number(_lodash.get(infoUserGuest, "height", 150 )) %> cm</span>
+              </li>
+              <li>
+                <i class="icon">
+                  <img src="/template/front-end-new/img/user-detail/body_icon.svg" alt="">
+                </i>
+                <span class="label">Thân hình</span>
+                <span>
+                  <%if(infoUserGuest && !Number.isNaN(Number(infoUserGuest.body))){%>
+                  <%var indexBody = constants.bodys.findIndex(body => Object.is(Number(infoUserGuest.body), Number(body.value)));%>
+                  <%= _lodash.get(constants.bodys[indexBody], 'text', 'Chưa cập nhật')%>
+                  <%}else{%>
+                  <b>Chưa cập nhật</b>
+                  <%}%>
+                                  </span>
+                              </li>
+                          </ul>
+                          <ul>
+                              <li>
+                                  <i class="icon">
+                                      <img src="/template/front-end-new/img/user-detail/location_icon.svg" alt="">
+                                  </i>
+                                  <span class="label">Sinh sống</span>
+                                  <span>
+                                    <%if(provinces){%>
+                  <%if(infoUserGuest && !Number.isNaN(Number(infoUserGuest.province))){%>
+                  <% var infoProvince = infoUserGuest.province < 10 ? provinces['0'+infoUserGuest.province] : provinces[infoUserGuest.province]%>
+                  <%if(infoProvince){%>
+                  <%if(infoUserGuest && !Number.isNaN(Number(infoUserGuest.district))  && Number(infoUserGuest.district) != -1 && infoUserGuest.district != null){%>
+                  <% if(infoUserGuest.district < 100) { %>
+                  <% if(infoUserGuest.district < 10){ %>
+                  <%=districts["00"+infoUserGuest.district].name_with_type%><%=", "  %>
+                  <%=infoProvince.name%>
+                  <% }else{ %>
+                  <%=districts["0"+infoUserGuest.district].name_with_type%><%=", "  %>
+                  <%=infoProvince.name%>
+                  <%}%>
+                                                  <% }else{  %>
+                  <%=districts[infoUserGuest.district].name_with_type%><%=", "  %>
+                  <%=infoProvince.name%>
+                  <%}%>
+                                              <%}else{%>
+                  <%=infoProvince.name%>
+                  <%}%>
+                                          <%}else{%>
+                  <b>Chưa cập nhật</b>
+                  <%}%>
+                                      <%}else{%>
+                  <b>Chưa cập nhật</b>
+                  <%}%>
+                                    <%}%>
+                </span>
+              </li>
+              <li>
+                <i class="icon">
+                  <img src="/template/front-end-new/img/user-detail/maried_icon.svg" alt="">
+                </i>
+                <span class="label">Tình trạng hôn nhân</span>
+                <span>
+                  <%if(infoUserGuest && !Number.isNaN(Number(infoUserGuest.marital))){%>
+                  <%var indexMarital = constants.maritals.findIndex(marital => Object.is(Number(infoUserGuest.marital), Number(marital.value)));%>
+                  <%= _lodash.get(constants.maritals[indexMarital], 'text', 'Chưa cập nhật')%>
+                  <%}else{%>
+                  <b>Chưa cập nhật</b>
+                  <%}%>
+                                  </span>
+                              </li>
+                              <li>
+                                  <i class="icon">
+                                      <img src="/template/front-end-new/img/user-detail/smoke_icon.svg" alt="">
+                                  </i>
+                                  <span class="label">Hút thuốc</span>
+                                  <span>
+                                    <%if(infoUserGuest && !Number.isNaN(Number(infoUserGuest.smoking))){%>
+                  <%var indexSmoking = constants.smokings.findIndex(smoking => Object.is(Number(smoking.value), Number(infoUserGuest.smoking)));%>
+                  <%= _lodash.get(constants.smokings[indexSmoking], 'text', 'Chưa cập nhật')%>
+                  <%}else{%>
+                  <b>Chưa cập nhật</b>
+                  <%}%>
+                                  </span>
+                              </li>
+                              <li>
+                                  <i class="icon">
+                                      <img src="/template/front-end-new/img/user-detail/drink_icon.svg" alt="">
+                                  </i>
+                                  <span class="label">Rượu bia</span>
+                                  <span>
+                                      <%if(infoUserGuest && !Number.isNaN(Number(infoUserGuest.drink))){%>
+                  <%var indexDrink = constants.drinks.findIndex(drink => Object.is(Number(drink.value), Number(infoUserGuest.drink)));%>
+                  <%= _lodash.get(constants.drinks[indexDrink], 'text', 'Chưa cập nhật')%>
+                  <%}else{%>
+                  <b>Chưa cập nhật</b>
+                  <%}%>
+                                  </span>
+                              </li>
+                              <li>
+                                  <i class="icon">
+                                      <img src="/template/front-end-new/img/user-detail/save-money_icon.svg" alt="">
+                                  </i>
+                                  <span class="label">Thu nhập hàng tháng</span>
+                                  <span>
+                                    <%if(infoUserGuest && !Number.isNaN(Number(infoUserGuest.revenue))){%>
+                  <%var indexRevenue = constants.revenues.findIndex(revenue => Object.is(Number(revenue.value), Number(infoUserGuest.revenue)));%>
+                  <%= _lodash.get(constants.revenues[indexRevenue], 'text', 'Chưa cập nhật')%>
+                  <%}else{%>
+                  <b>Chưa cập nhật</b>
+                  <%}%>
+                                  </span>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+                  <div class="user-info-body">
+                      <p class="title">
+                          Sở thích
+                      </p>
+                      <div class="content">
+                          <p>
+                            <%if(infoUserGuest){%>
+                  <%= _lodash.get(infoUserGuest, 'hobies', 'Chưa cập nhật')%>
+                  <%}else{%>
+                  Chưa Có Sở Thích
+                  <%}%>
+                          </p>
+                      </div>
+                  </div>
+                  <div class="user-info-body">
+                      <p class="title">
+                          Mong muốn hẹn hò cùng
+                      </p>
+                      <div class="content has-list">
+                          <ul>
+                              <li>
+                                  <i class="icon">
+                                      <img src="/template/front-end-new/img/user-detail/gender_icon.svg" alt="">
+                                  </i>
+                                  <span class="label">Giới tính</span>
+                                  <span>
+                                    <%if(infoUserGuest && !Number.isNaN(infoUserGuest.focusGender)){%>
+                  <%if(Number(infoUserGuest.focusGender) == 1) {%>
+                  Nam
+                  <%}else{%>
+                  Nữ
+                  <%}%>
+                                    <%} else{%>
+                  ...
+                  <%}%>
+                                  </span>
+                              </li>
+                              <li>
+                                  <i class="icon">
+                                      <img src="/template/front-end-new/img/user-detail/cake_icon.svg" alt="">
+                                  </i>
+                                  <span class="label">Tuổi</span>
+                                  <span>
+                                    <%if(!infoUserGuest.focusAge.from || !infoUserGuest.focusAge.to){%>
+                  Chưa Có Thông Tin.
+                  <%}else{%>
+
+                  <p>Từ
+                    <%=infoUserGuest.focusAge.from%> - <%=infoUserGuest.focusAge.to%></p>
+                  <%}%>
+                                  </span>
+                              </li>
+                          </ul>
+                          <ul>
+                              <li>
+                                  <i class="icon">
+                                      <img src="/template/front-end-new/img/user-detail/location_icon.svg" alt="">
+                                  </i>
+                                  <span class="label">Sinh sống</span>
+                                  <span>
+                                    <%if(provinces){%>
+                  <%if(infoUserGuest && !Number.isNaN(Number(infoUserGuest.focusProvince))){%>
+                  <% var infoProvince = provinces[infoUserGuest.focusProvince]%>
+                  <%if(infoProvince){%>
+                  <%=infoProvince.name%>
+                  <%}else{%>
+                  Chưa Cập Nhật
+                  <%}%>
+                                      <%}else{%>
+                  Chưa Cập Nhật
+                  <%}%>
+                                    <%}%>
+                </span>
+              </li>
+              <li>
+                <i class="icon">
+                  <img src="/template/front-end-new/img/user-detail/maried_icon.svg" alt="">
+                </i>
+                <span class="label">Tình trạng hôn nhân</span>
+                <span>
+                  <%if(infoUserGuest && !Number.isNaN(Number(infoUserGuest.focusMarital))){%>
+                  <%var indexMarital = constants.maritals.findIndex(marital => Object.is(Number(infoUserGuest.focusMarital), Number(marital.value)));%>
+                  <%= _lodash.get(constants.maritals[indexMarital], 'text', 'Chưa cập nhật')%>
+                  <%}else{%>
+                  Chưa cập nhật
+                  <%}%>
+                                  </span>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+                  <div class="user-info-body">
+                      <p class="title">
+                          Hình ảnh của tôi
+                      </p>
+                      <div class="user-gallery is-edit">
+                        <%let isExistsPrivateImage = listImages.filter(item => item.isPrivate != 1);%>
+                  <div class="gallery-item gallery-item__private">
+                    <div class="gallery-img">
+                      <a href="" class="btn-gallery-private gallery-item__private-label">Ảnh riêng tư</a>
+                      <img src="/template/front-end-new/img/user-detail/bg-private-image.svg" alt="alt">
+                    </div>
+                  </div>
+                  <%listImages && listImages.length > 0 && listImages.filter(item => Number(item.isPrivate) !== 1).forEach(imageItem => {%>
+                  <div class="gallery-item">
+                    <div class="gallery-img">
+                      <%if(imageItem && imageItem.name && imageItem.name.includes('http')){%>
+                      <a class="fancybox-gallery" data-fancybox-group="gallery" href="<%=imageItem.name%>">
+                        <img src="<%=imageItem.name%>" alt="">
+                      </a>
+                      <%}else{%>
+                      <a class="fancybox-gallery" data-fancybox-group="gallery" href="/files/users/<%=imageItem.name%>">
+                        <img src="/files/users/<%=imageItem.name%>" alt="alt">
+                      </a>
+                      <%}%> 
+                            </div>
+                          </div>
+                        <%})%>
+                    </div>
+                    <div
+                      class="wao-popup-edit wao-popup-view-gallery-private wao-popup-not-stopPropagation wao-popup-gallery-private">
+                      <a href="" class="btn-close-gallery-private btn-close-dt">
+                        <img class="icon-close" src="/template/front-end-new/img/date-detail/close_icon.svg" alt="">
+                      </a>
+                      <div class="wao-popup-edit__wrapper">
+                        <p class="title">
+                          <span class="close-edit-btn btn-close-gallery-private">
+                            <span></span><span></span>
+                          </span>
+                          Ảnh riêng tư
+                        </p>
+                        <div class="user-gallery row">
+                          <%listImages && listImages.length > 0 && listImages.filter(item => Number(item.isPrivate) == 1).forEach(imageItem => {%>
+                          <div class="col-md-3 col-sm-4 col-12" style="padding-bottom: 25px">
+                            <% let isViewedImage = (imageItem.accessList || []).includes(currentUserId) %>
+                            <div class="gallery-img <%=isViewedImage ? "" : "gallery-img-private-guest" %> ">
+                              <% if(isViewedImage){ %>
+                              <a href="/files/users/<%=imageItem.name%>" class="fancybox-gallery"
+                                data-fancybox-group="one" id="view_image_<%=imageItem._id %>">
+                                <% } %>
+                                <%if(imageItem.name.includes('http')){%>
+                                <img src="<%=imageItem.name%>" alt="">
+                                <%}else{%>
+                                <img src="/files/users/<%=imageItem.name%>" alt="alt">
+                                <%}%>
+                                          <% if(!isViewedImage){ %>
+                                <a href="" class="btn-request-image-private btnRequestViewImagePrivate"
+                                  _imageID="<%=imageItem.id%>">Yêu cầu xem</a>
+                                <% } %>
+                                <% if(isViewedImage){ %>
+                              </a>
+                              <% } %>
+                            </div>
+                          </div>
+                          <%})%>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="user-info-body" style="padding-bottom: 0;"></div>
+          </div>
+          <div class="user-suggest-list">
+            <p class="title">
+              Đề xuất cuộc hẹn phù hợp cho bạn
+            </p>
+            <div class="suggest-date-row row">
+              <%if(listConceptsRandom && listConceptsRandom.length > 0){%>
+              <%listConceptsRandom.forEach(concept => {%>
+              <div class="suggest-date-col col-lg-4">
+                <div class="wao-suggest-date-item">
+                  <div class="img">
+                    <a href="/buoi-hen-ho/<%=concept.slug&& concept.slug%>">
+                      <img class="img-thumbnail" src="/files/users/<%if(concept && concept.image[0]){%><%=concept.image[0]%><%}%>
+                                            " alt="
+                                            <%if(concept && concept.title){%>
+                                                <%=concept.title%>
+                                            <%}%>
+                                        ">
+                                    </a>
+                                    <div class="user-info">
+                                        <div class="avatar">
+                                            <img src="/template/front-end-new/img/date-detail/crow.svg" alt="" class="crow">
+                                            <%let objUser = concept%>
+                                            <a href=" /nguoi-dung/thong-tin/<%= objUser.author.username %>">
+                      <%-include ./utils/image_RENDER-random.ejs%>
+                    </a>
+                  </div>
+                  <div class=" user-content">
+                    <p class="name">
+                      <%if(concept && concept.author && concept.author.fullname){%>
+                      <a style="color: white;" href="/nguoi-dung/thong-tin/<%=concept.author.username%>">
+                        <%=concept.author.fullname%>
+                      </a>
+                      <%}%>, 
+                                                <%if(concept && concept.author && concept.author.age){%>
+                      <%=concept.author.age%>
+                      <%}%>
+                                            </p>
+                                            <p class="meta"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="content">
+                                    <p class="wao-justi-space">
+                                        
+                                          <%if(constants && constants.prayers){%>
+                      <span class="wao-label">
+                        <%var indexPrayer = constants.prayers.findIndex(prayer => Object.is(Number(concept.prayer), Number(prayer.value)))%>
+                        <%=indexPrayer !== -1 && constants.prayers[indexPrayer].text%>
+                      </span>
+                      <%}%>
+                                        <span class="wao-label">
+                                        <%if(concept && concept.cost){%>
+                      <%= formatCurrency('###,###.', concept.cost)%> VNĐ
+                      <%}%>
+                                        </span>
+                                    </p>
+                                    <p class="desc" style="overflow: hidden;
+                                        text-overflow: ellipsis;
+                                        display: -webkit-box;
+                                        -webkit-line-clamp: 2;
+                                        -webkit-box-orient: vertical;">
+                                        <a style="color: black;" href="/buoi-hen-ho/<%=concept.slug&& concept.slug%>">
+                      <%if(concept && concept.title){%>
+                      <%=concept.title%>
+                      <%}%>
+                                        </a>
+                                    </p>
+                                    <p class="meta">
+                                        <%var genderFocus = null;%>
+                      <%if(concept && concept.author && !Number.isNaN(Number(concept.author.focusGender)) && Object.is(Number(concept.author.focusGender), 1)){%>
+                      <%genderFocus = 'Cuộc hẹn dành cho Nam. '%>
+                      <%}else{%> <%genderFocus = 'Cuộc hẹn dành cho Nữ. '%>
+                      <%}%>
+                                        <%if(concept && concept.author && concept.author.focusAge && concept.author.focusAge.from && concept.author.focusAge.to){%>
+                    <p> <%=genderFocus%> Từ <%=concept.author.focusAge.from%> -
+                      <%=concept.author.focusAge.to%> </p>
+                    <%}else{%>
+                    Chưa Có Thông Tin.
+                    <%}%>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <%})%>
+                    <%}%>
+                </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</main>

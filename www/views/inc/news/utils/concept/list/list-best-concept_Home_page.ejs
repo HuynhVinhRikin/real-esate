@@ -1,0 +1,38 @@
+<nav class="wao-user-slider">
+    <div class="wao-user-slider-nav">
+        <button class="prev"><img src="/template/front-end-new/img/home/left-arrow.svg" alt=""></button>
+        <button class="next"><img src="/template/front-end-new/img/home/right-arrow.svg" alt=""></button>
+    </div>
+    <ul class="owl-carousel owl-theme"  id="sync2">
+        <%if (listConceptBestFeature && listConceptBestFeature.length > 0){%>
+            <%listConceptBestFeature.forEach((itemUserRefConcept,index) => {%>
+                <li>
+                    <div class="sync2__nav">
+                        <div class="sync2__name">
+                            <%let objUser = itemUserRefConcept;%>
+                            <%- include ../../image_RENDER-header.ejs%>
+                            <span>
+                                <%let user = itemUserRefConcept;%>
+                                <%- include ../../fullname_SPLIT.ejs%>
+                            </span>
+                        </div>
+                    </div>
+                </li>
+            <%})%>
+        <%}else{%>
+            ...
+        <%}%>
+    </ul>
+</nav>
+<div class="wao-date-slider owl-carousel owl-theme" id="sync1">
+    <%if (listConceptBestFeature && listConceptBestFeature.length > 0){%>
+        <%listConceptBestFeature.forEach((itemUserRefConcept,index) => {%>
+            <%if(itemUserRefConcept && itemUserRefConcept.concept){%>
+                <%- include ../item-best-concept_Home_page.ejs%>
+            <%}%>
+        <%})%>
+    <%}else{%>
+        ...
+    <%}%>
+    
+</div>

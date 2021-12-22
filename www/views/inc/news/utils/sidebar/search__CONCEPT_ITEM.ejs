@@ -1,0 +1,144 @@
+<%let formAge %>
+<%let toAge %>
+<%if(search && search.fromAge){%>
+<% formAge = search.fromAge %>
+<%}else{%>
+<% formAge = 18 %>
+<%}%> 
+<%if(search && search.toAge){%>
+<% toAge = search.toAge %>
+<%}else{%>
+<% toAge = 65 %>
+<%}%> 
+
+<div class="wao-filer-widget">
+    <p class="title" >
+       Bộ lọc<img src="/template/front-end-new/img/home/title-arrow-down.svg" alt="" class="wao-mb">
+    </p>
+    <div class="filter-content">
+       <div class="filter-content-warrper">
+          <div class="form-group gender">
+             Giới tính
+             <p>
+                <label for="sidebarmale">
+                <input type="radio" class="gender_concept"  name="gender" value="1" id="sidebarmale" <%if(search && search.gender){%>
+<%if(Object.is(Number(search.gender), 1)){%>
+checked
+<%}%>
+            <%}%> >
+<span>Nam</span>
+</label>
+<label for="sidebarfemale">
+    <input type="radio" class="gender_concept" value="0" name="gender" id="sidebarfemale"
+        <%if(search && search.gender){%> <%if(Object.is(Number(search.gender), 0)){%> checked <%}%>
+            <%}%>>
+    <span>Nữ</span>
+</label>
+</p>
+</div>
+<div class="form-group">
+    Tiêu đề
+    <input class="form-control" type="text" id="text_search" placeholder="VD: hẹn hò đà nẵng, ..(lớn hơn 2 kí tự)"
+        <%if(search && search.key){%> <%if(search.key.length > 2) {%> value='<%=search.key%>' <%}else{%>
+        value='Nhập key hơn 2 kí tự' <%}%> 
+                  <%}%>>
+</div>
+<div class="form-group">
+    Sắp xếp theo
+    <div class="select-group">
+        <i><img src="/template/front-end-new/img/home/select-arrow-down.svg" alt=""></i>
+        <select name="" class="select2" id="sort_concept">
+            <option value="0">Tuỳ Chọn</option>
+            <option value="-createAt" <%if(search && search.sort){%> <%if(Object.is(search.sort, '-createAt')){%>
+                selected="selected" <%}%>
+                      <%}%>>Mới nhất
+            </option>
+            <option value="createAt" <%if(search && search.sort){%> <%if(Object.is(search.sort, 'createAt')){%>
+                selected="selected" <%}%>
+                      <%}%>>Cũ nhất</option>
+            <option value="-amountView" <%if(search && search.sort){%> <%if(Object.is(search.sort, '-amountView')){%>
+                selected="selected" <%}%>
+                      <%}%>>Quan Tâm Nhiều Nhất</option>
+        </select>
+    </div>
+</div>
+<div class="form-group range-slider-filter">
+    <p>Độ tuổi</p>
+
+    <p class="text-rigth">
+        <label for="">
+            <span class="min-value" id="fromAge_concept"><%= formAge %></span> - <span id="toAge_concept"
+                class="max-value"><%= toAge %></span>
+        </label>
+    </p>
+    <div id="age-slider" class="age-slider" data-min="<%=formAge%>" data-max="<%=toAge%>">
+    </div>
+</div>
+<div class="form-group">
+    Địa chỉ
+    <div class="select-group">
+        <i><img src="/template/front-end-new/img/home/select-arrow-down.svg" alt=""></i>
+        <select name="" class="select2" id="province_concept">
+            <option value="null">Tỉnh/Thành phố</option>
+            <%for(let index in provinces) {%>
+                <option value="<%=provinces[index].code && provinces[index].code%>" <%if(search && search.province){%>
+                    <%if(!Number.isNaN(Number(search.province))){%>
+                    <%if(Object.is(Number(search.province), Number(provinces[index].code))){%> selected="selected" <%}%>
+                                <%}%> <%}%>
+                        ><%=provinces[index].name && provinces[index].name%></option>
+                    <%}%>
+                </select>
+    </div>
+    <div class="select-group">
+        <i><img src="/template/front-end-new/img/home/select-arrow-down.svg" alt=""></i>
+        <select name="" class="select2" id="district_concept">
+            <option value="null">Tất Cả</option>
+        <%if(listDistricts){%>
+        <%for(let index in listDistricts){%>
+        <option value="<%=listDistricts[index].code && listDistricts[index].code%>" <%if(infoUser){%>
+        <%if(!Number.isNaN(Number(infoUser.district))  && Number(infoUser.district) != -1){%>
+        <%if(Object.is(Number(infoUser.district), Number(listDistricts[index].code))){%> selected="selected" <%}%>
+                            <%}%> <%}%>
+                    ><%=listDistricts[index].name_with_type && listDistricts[index].name_with_type%></option>
+        <%}%>
+            <%}%>
+
+        <%if(listDistricts){%>
+        <%for(let index in listDistricts){%>
+        <option value="<%=listDistricts[index].code && listDistricts[index].code%>" <%if(search){%>
+        <%if(search.district){%> <%if(!Number.isNaN(Number(search.district))){%>
+        <%if(Object.is(Number(search.district), Number(listDistricts[index].code))){%> selected="selected" <%}%>
+                                <%}%> <%}%>
+                        <%}%>><%=listDistricts[index].name_with_type && listDistricts[index].name_with_type%>
+        </option>
+        <%}%>
+                <%}%>
+        </select>
+    </div>
+</div>
+<div class="form-group">
+    Thỏa Thuận chi phí
+    <div class="select-group">
+        <i><img src="/template/front-end-new/img/home/select-arrow-down.svg" alt=""></i>
+        <select name="" class="select2" id="prayer_concept">
+            <option value="null">Tất Cả</option>
+            <%if(constants.prayers){%>
+            <%constants.prayers.forEach(prayer => {%>
+            <option value="<%=prayer.value%>" <%if(search && search.prayer){%>
+                <%if(Object.is(Number(search.prayer), Number(prayer.value))){%> selected="selected" <%}%>
+                              <%}%>><%=prayer.text%></option>
+            <%})%>
+            <%}%>
+                </select>
+             </div>
+          </div>
+          <%if (!flagPageSearch || flagPageSearch !== 1){%>
+            <div class="form-submit form-group text-center">
+                <button class="btn-submit btnSearchNormal wao-btn" type="submit">Áp dụng</button>
+            </div>
+            <%}%>
+         
+       </div>
+    </div>
+ </div>
+ 

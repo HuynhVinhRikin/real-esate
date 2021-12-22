@@ -1,0 +1,110 @@
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <div class="alert alert-info" role="alert"
+                                ><h4 class="alert-heading font-18"><strong>Lưu Ý Quản Lý Group Admin</strong>!</h4>
+                                <p>
+                                    Các Nhóm Tài Khoản Hiện Tại Hỗ Trợ (3)
+                                </p>
+                                <p class="mb-0">
+                                    0. SuperAdmin (Root Admin)
+                                </p>
+                                <p class="mb-0">
+                                    1. Admin
+                                </p>
+                                <p class="mb-0">
+                                    2. Editor
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <table class="content-table">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Họ Tên</th>
+                                    <th>Tài Khoản</th>
+                                    <th>Group</th>
+                                    <th>Trạng Thái</th>
+                                    <th>Tuỳ Chọn</th>
+                                </tr>
+                            </thead>
+                                <tbody>
+                                    <% if (admins && admins.length > 0) { %>
+                                        <% admins.forEach(( admin, index ) => { %>
+                                            <% if (admin) { %>
+                                                <tr>
+                                                    <th><%= index + 1 %></th>
+                                                    <td>
+                                                        <i>
+                                                            <%= admin.fullname && admin.fullname %>
+                                                        </i>
+                                                    </td>
+                                                    <td>
+                                                        <i>
+                                                            @<%= admin.username && admin.username%>
+                                                        </i>
+                                                    </td>
+                                                    <td>
+                                                        <%if(admin.group){%>
+                                                            <%if(Object.is(Number(admin.group.key), 0)){%>
+                                                                <i class="mdi mdi-checkbox-blank-circle text-success"></i>  Super Admin
+                                                            <%}else if(Object.is(Number(admin.group.key), 1)){%>
+                                                                <i class="mdi mdi-checkbox-blank-circle text-info"></i>  Admin
+                                                            <%}else if(Object.is(Number(admin.group.key), 2)){%>
+                                                                <i class="mdi mdi-checkbox-blank-circle text-danger"></i>  Editor
+                                                            <%}%>
+                                                        <%}%>
+                                                    </td>
+                                                    <td>
+                                                        <%if(!Number.isNaN(Number(admin.status))){%>
+                                                            <%if(Number(admin.status) === 1) {%>
+                                                                <span class="badge badge-pill badge-success">Đang Hoạt Động</span>
+                                                            <%} else if (Number(admin.status) === 0) {%>
+                                                                <span class="badge badge-pill badge-danger">Không Hoạt Động</span>
+                                                            <%}%>
+                                                        <%}%>
+                                                    </td>
+                                                    <td>
+                                                        <div class="btn-group mb-2">
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light" id="btnDropDownTagging_<%= admin._id && admin._id %>">
+                                                                Thao Tác
+                                                            </button>
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light dropdown-toggle-split dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <span class="sr-only">...</span>
+                                                            </button>
+                                                            <div class="dropdown-menu" x-placement="right-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(143px, 0px, 0px);">
+                                                                <a class="dropdown-item" href="/admin/update-admin/<%= admin && admin._id %>">Sửa Thông Tin</a>
+                                                                <% if (Number(admin.status) === 1) { %>
+                                                                    <a class="dropdown-item btnBlockUser btnToggleStatus" _status="0" _adminID="<%= admin._id && admin._id %>" >Tắt Hoạt Động</a>
+                                                                <% }else{ %>
+                                                                    <a class="dropdown-item btnBlockUser btnToggleStatus" _status="1" _adminID="<%= admin._id && admin._id %>" >Bật Hoạt Động</a>
+                                                                <% } %>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <% } %>
+                                        <% }) %>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

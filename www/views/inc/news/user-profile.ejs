@@ -1,0 +1,1818 @@
+<style>
+    .eventFocus::placeholder {
+        color: #828282 !important;
+    }
+</style>
+
+<main>
+
+    <div class="wao-wrapper">
+        <div class="wao-user wao-user-edit">
+            <div class="container wao-container wao-user-get-container">
+                <div class="wao-user-edit-wrapper">
+                    <div class="wao-user-wrapper">
+                        <!-- <a href="" class="back-btn wao-mb">
+                          <img src="/template/front-end-new/img/user-detail/back_icon.svg" alt="">
+                      </a> -->
+                        <h1 class="title_icon wao-pc">
+                            <i class="icon">
+                                <img src="/template/front-end-new/img/user-detail/title_icon.svg" alt="">
+                            </i> Trang cá nhân (lượt hiển thị còn lại:
+                            <%= formatCurrency('###,###.', infoUser && infoUser.isFeature ) || 0%>)
+                        </h1>
+                        <!-- start -->
+                        <% const isPayer = Date.now() - new Date(infoUser.dateExpired) < 0 %>
+                        <% const urlCover =_lodash.get(infoUser, "cover.name", "") %>
+                        <% const urlCoverResult = urlCover ? `/files/users/${urlCover}` :  "/template/front-end-new/img/background-avatar/new-cover.png"%>
+
+                        <div style="position: relative;">
+                            <div class="wrapper-add-cover" style="z-index: 1;">
+                                <input type="file" hidden id="upload-cover-image" value="" accept="image/*">
+                                <div class="wrapper-icon-cover" id="add-cover">
+                                    <img class="cover-icon" src="/template/user/img/icon/camera.svg">
+                                </div>
+                                <span class="cover-text">Thêm ảnh bìa</span>
+                            </div>
+                            <div class="wrapper-avatar" style="z-index: 1;">
+                                <div class="avatar<%= (isPayer) ? ' avatar-vip' : '' %>">
+                                    <%let objUser = infoUser;%>
+                                    <%-include ./utils/image_RENDER.ejs%>
+                                    <input type="file" hidden id="avatar_upload" value="" accept="image/*">
+                                    <img class="icon-add" src="/template/front-end-new/img/favorite/add_icon.svg"
+                                        alt="">
+                                </div>
+                            </div>
+                            <div class="background-avatar fancybox-gallery" href="#inline"
+                                style="background-position:center; background-image: url('<%=urlCoverResult%>'); cursor: pointer;">
+                                <div style="display:none">
+                                    <img src="<%=urlCoverResult%>" id="inline" style="width: 100%; height: 100%;"></img>
+                                </div>
+
+
+                            </div>
+
+                        </div>
+                        <div class="user-info-header">
+                            <ul>
+                                <li>
+                                    <a href="/ca-nhan/danh-sach-buoi-hen-ho">
+                                        <span><%=infoUser.amountConcept%>
+                                        </span>
+                                        Buổi hẹn <span
+                                            style="color: rgb(62, 62, 206); font-size: 10px;line-height: normal;">(Xem
+                                            ngay)
+                                        </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/ca-nhan/yeu-thich">
+                                        <span>
+                                            <%=amountConceptLiked || 0  %>
+                                        </span>
+                                        Buổi hẹn đã yêu thích
+                                    </a>
+                                </li>
+                                <li>
+                                    <% let remainDays = moment(infoUser.dateExpired).diff(moment(), 'days') %>
+                                    <a href="/goi-dich-vu" class="wao-message-btn has-message">
+                                        <% if(isPayer) {%>
+                                        <img src="/template/front-end-new/img/date-detail/crow.svg" alt="">
+                                        <% } else { %>
+                                        <img src="/template/front-end-new/img/nav/nav_icon_5.svg" alt="">
+                                        <% } %>
+                                    </a>
+                                    (Còn lại: <%= remainDays < 0 ? 0 :  remainDays%> ngày)
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- end -->
+                        <div class="user-info-body user-info-body__no-boder">
+                            <p class="user-name">
+                                <span data-default="fullname__update_site"
+                                    value-default="<%=infoUser.fullname%>"><%=infoUser.fullname%></span>,
+                                <span data-default="age__update_site"
+                                    value-default="<%=infoUser.age%>"><%=infoUser.age%></span>
+                            </p>
+                            <p class="desc" data-default="intro__update_site" value-default="<%=infoUser.intro%>">
+                                <%if(!infoUser.intro){%>
+                                <strong>Chưa Có Thông Tin.</strong>
+                                <%}else{%>
+                                <%=infoUser.intro%>
+                                <%}%>
+                          </p>
+                          <div class="edit-btn">
+                              <img src="/template/front-end-new/img/user-detail/edit_icon.svg" alt="">
+                          </div>
+                          <div class="wao-popup-edit">
+                              <div class="wao-popup-edit__wrapper">
+                                  <div class="form-group form-user-edit">
+                                      <p class="title wao-mb">
+                                          <span class="close-edit-btn">
+                                              <span></span><span></span>
+                                          </span>
+                                          Thông tin chung
+                                      </p>
+                                      <div class="row">
+                                          <div class="col-lg-4">
+                                              <div class="control-group">
+                                                  <label for="">Tên</label>
+                                                  <input type="text" value="<%=infoUser.fullname%>"
+                                name="fullname__update_site" id="fullname__update_site">
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="control-group">
+                            <label for="">Tuổi</label>
+                            <input class="age-input field-input" type="number" value="<%=infoUser.age%>" min="18"
+                                max="100" name="age__update_site" id="age__update_site">
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="control-group">
+                            <label for="">Bio</label>
+                            <textarea name="intro__update_site" id="intro__update_site"><%=infoUser.intro%></textarea>
+                        </div>
+                    </div>
+                    <a href="" class="submit btnUpdateSiteBio">Lưu</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="user-info-body" id="updateUserProfile">
+        <p class="title">
+            Thông tin cá nhân
+        </p>
+        <div class="content has-list">
+            <ul>
+                <li>
+                    <i class="icon">
+                        <img src="/template/front-end-new/img/user-detail/gender_icon.svg" alt="">
+                    </i>
+                    <span class="label">Giới tính</span>
+                    <span data-default="gender__update_site" value-default="<%=infoUser.gender%>">
+                        <%= Number(_lodash.get(infoUser, "gender", 0  )) == 1 ? "Nam" : "Nữ" %>
+                    </span>
+                </li>
+                <li>
+                    <i class="icon">
+                        <img src="/template/front-end-new/img/user-detail/job_icon.svg" alt="">
+                    </i>
+                    <span class="label">Nghề nghiệp</span>
+                    <span data-default="job__update_site" value-default="<%=infoUser.job%>">
+                        <%if(infoUser && infoUser.job!== null && !Number.isNaN(Number(infoUser.job))  && Number(infoUser.job) != -1){%>
+                        <%var indexJob = constants.jobs.findIndex(job => Object.is(Number(infoUser.job), Number(job.value)));%>
+                        <%= constants.jobs[indexJob].text%>
+                        <%}else{%>
+                        <b class="not-update">Chưa cập nhật</b>
+                        <%}%>
+                                      </span>
+                                  </li>
+                                  <li>
+                                      <i class="icon">
+                                          <img src="/template/front-end-new/img/user-detail/major_icon.svg" alt="">
+                                      </i>
+                                      <span class="label">Học vấn</span>
+                                      <span data-default="education__update_site" value-default="<%=infoUser.education%>">
+                        <%if(infoUser && infoUser.education!== null && !Number.isNaN(Number(infoUser.education))  && Number(infoUser.education) != -1){%>
+                        <%var indexEducation = constants.educations.findIndex(education => Object.is(Number(education.value), Number(infoUser.education)));%>
+                        <%= constants.educations[indexEducation].text%>
+                        <%}else{%>
+                        <b class="not-update">Chưa cập nhật</b>
+                        <%}%>
+                                      </span>
+                                  </li>
+                                  <li>
+                                      <i class="icon">
+                                          <img src="/template/front-end-new/img/user-detail/height_icon.svg" alt="">
+                                      </i>
+                                      <span class="label">Chiều cao</span>
+                                      <span data-default="height__update_site" value-default="<%=infoUser.height%>">
+                        <% if(infoUser.height) {%>
+                        <%=infoUser.height %>
+                        <% } else {%>
+                        <b class="not-update">Chưa cập nhật</b>
+                        <%}%>   
+                                  </li>
+                                  <li>
+                                      <i class="icon">
+                                          <img src="/template/front-end-new/img/user-detail/body_icon.svg" alt="">
+                                      </i>
+                                      <span class="label">Thân hình</span>
+                                      <span data-default="body__update_site" value-default="<%=infoUser.body%>">
+                        <%if(infoUser && infoUser.body !== null && !Number.isNaN(Number(infoUser.body))  && Number(infoUser.body) != -1){%>
+                        <%var indexBody = constants.bodys.findIndex(body => Object.is(Number(infoUser.body), Number(body.value)));%>
+                        <%= constants.bodys[indexBody].text%>
+                        <%}else{%>
+                        <b class="not-update">Chưa cập nhật</b>
+                        <%}%>
+                                      </span>
+                                  </li>
+                                <li>
+                                    <i class="icon">
+                                        <img src="/template/front-end-new/img/user-detail/religion_icon.svg" alt="">
+                                    </i>
+                                    <span class="label">Tôn giáo</span>
+                                    <span data-default="religion__update_site"  value-default="<%=infoUser.religion%>">
+                        <%if(infoUser && infoUser.religion !== null && !Number.isNaN(Number(infoUser.religion))  && Number(infoUser.religion) != -1){%>
+                        <%var indexReligion = constants.religions.findIndex(religion => Object.is(Number(religion.value), Number(infoUser.religion)));%>
+                        <%= constants.religions[indexReligion].text%>
+                        <%}else{%>
+                        <b class="not-update">Chưa cập nhật</b>
+                        <%}%>
+                                    </span>
+                                </li>
+                                <li>
+                                    <i class="icon">
+                                        <img src="/template/front-end-new/img/user-detail/phone_icon.svg" alt="">
+                                    </i>
+                                    <span class="label">Điện thoại</span>
+                                    <span data-default="phone__update_site"  value-default="<%=infoUser.phone%>">
+                        <%if(infoUser.phone){%>
+                        <%=infoUser.phone %>
+                        <%}else{%>
+                        <b class="not-update">Chưa cập nhật</b>
+                        <%}%>
+                                    </span>
+                                </li>
+                              </ul>
+
+                              <ul>
+                                <li>
+                                  <i class="icon">
+                                      <img src="/template/front-end-new/img/user-detail/location_icon.svg" alt="">
+                                  </i>
+                                  <span class="label">Sinh sống</span>
+                                  <span data-default="province__update_site" value-default="<%=infoUser.province && Number(infoUser.province) != -1 && infoUser.province < 10 ? '0' + infoUser.province : infoUser.province%>">
+                                    <%if(provinces){%>
+                                    <%if(infoUser && !Number.isNaN(Number(infoUser.province))  && Number(infoUser.province) != -1 && infoUser.province != null){%>
+                                    <% var infoprovince = infoUser.province < 10 ? provinces[`0${infoUser.province}`] : provinces[infoUser.province]%>
+                                    <%if(infoprovince){%>
+                                        <%if(infoUser && !Number.isNaN(Number(infoUser.district))  && Number(infoUser.district) != -1  && infoUser.district != null){%>
+                                            <% if(infoUser.district < 100) { %>
+                                                <% if(infoUser.district < 10){ %>
+                                                    <%=districts["00"+infoUser.district].name_with_type +", "+ infoprovince.name%>
+                                                <% }else{ %> 
+                                                    <%=districts["0"+infoUser.district].name_with_type +", "+ infoprovince.name%>
+                                                <%}%>
+                                            <% }else{  %>
+                                                <%=districts[infoUser.district].name_with_type +", "+ infoprovince.name%>
+                                            <% } %>
+                                        <%}else{%>
+                                            <%=infoprovince.name%>
+                                        <%}%> 
+                                    <%}else{%>
+                                    <b class="not-update">Chưa cập nhật</b>
+                                    <%}%>
+                                                <%}else{%>
+                                    <b class="not-update">Chưa cập nhật</b>
+                                    <%}%>
+                                                <%}%>
+                    </span>
+                </li>
+                <li>
+                    <i class="icon">
+                        <img src="/template/front-end-new/img/user-detail/maried_icon.svg" alt="">
+                    </i>
+                    <span class="label">Tình trạng hôn nhân</span>
+                    <span data-default="marital__update_site" value-default="<%=infoUser.marital%>">
+                        <%if(infoUser && infoUser.marital !== null && !Number.isNaN(Number(infoUser.marital)) && Number(infoUser.marital) != -1){%>
+                        <%var indexMarital = constants.maritals.findIndex(marital => Object.is(Number(infoUser.marital), Number(marital.value)));%>
+                        <p><%= constants.maritals[indexMarital].text%></p>
+                        <%}else{%>
+                        <b class="not-update">Chưa cập nhật</b>
+                        <%}%>
+                                    </span>
+                                </li>
+                                <li>
+                                    <i class="icon">
+                                        <img src="/template/front-end-new/img/user-detail/smoke_icon.svg" alt="">
+                                    </i>
+                                    <span class="label">Hút thuốc</span>
+                                    <span data-default="smoking__update_site" value-default="<%=infoUser.smoking%>">
+                        <%if(infoUser && infoUser.smoking !== null && !Number.isNaN(Number(infoUser.smoking))  && Number(infoUser.smoking) != -1){%>
+                        <%var indexSmoking = constants.smokings.findIndex(smoking => Object.is(Number(smoking.value), Number(infoUser.smoking)));%>
+                        <%= constants.smokings[indexSmoking].text%>
+                        <%}else{%>
+                        <b class="not-update">Chưa cập nhật</b>
+                        <%}%>
+                                    </span>
+                                </li>
+                                <li>
+                                    <i class="icon">
+                                        <img src="/template/front-end-new/img/user-detail/drink_icon.svg" alt="">
+                                    </i>
+                                    <span class="label">Rượu bia</span>
+                                    <span data-default="drink__update_site" value-default="<%=infoUser.drink%>">
+                        <%if(infoUser && infoUser.drink !== null && !Number.isNaN(Number(infoUser.drink))  && Number(infoUser.drink) != -1){%>
+                        <%var indexDrink = constants.drinks.findIndex(drink => Object.is(Number(drink.value), Number(infoUser.drink)));%>
+                        <%= constants.drinks[indexDrink].text%>
+                        <%}else{%>
+                        <b class="not-update">Chưa cập nhật</b>
+                        <%}%>
+                                    </span>
+                                </li>
+                                <li>
+                                    <i class="icon">
+                                        <img src="/template/front-end-new/img/user-detail/save-money_icon.svg" alt="">
+                                    </i>
+                                    <span class="label">Thu nhập hàng tháng</span>
+                                    <span data-default="revenue__update_site"  value-default="<%=infoUser.revenue%>">
+                        <%if(infoUser && infoUser.revenue !== null && !Number.isNaN(Number(infoUser.revenue))  && Number(infoUser.revenue) != -1){%>
+                        <%var indexRevenue = constants.revenues.findIndex(revenue => Object.is(Number(revenue.value), Number(infoUser.revenue)));%>
+                        <%= constants.revenues[indexRevenue].text%>
+                        <%}else{%>
+                        <b class="not-update">Chưa cập nhật</b>
+                        <%}%>
+                                    </span>
+                                </li>
+                                <li>
+                                    <i class="icon">
+                                        <img src="/template/front-end-new/img/user-detail/email_icon.svg" alt="">
+                                    </i>
+                                    <span class="label">Địa chỉ mail</span>
+                                    <span data-default="email__update_site"  value-default="<%=infoUser.email%>"
+                        style="text-align: right;">
+                        <%if(infoUser.email){%>
+                        <%=infoUser.email %>
+                        <%}else{%>
+                        <b class="not-update">Chưa cập nhật</b>
+                        <%}%>
+                                    </span>
+                                </li>
+                              </ul>
+                          </div>
+                          <div class="edit-btn">
+                              <img src="/template/front-end-new/img/user-detail/edit_icon.svg" alt="">
+                          </div>
+                          <div class="wao-popup-edit">
+                              <div class="wao-popup-edit__wrapper">
+                                  <div class="form-group form-user-edit">
+                                      <p class="title">
+                                          <span class="close-edit-btn">
+                                              <span></span><span></span>
+                                          </span>
+                                          Thông tin cá nhân
+                                      </p>
+                                      <div class="content has-list">
+                                          <ul>
+                                              <li>
+                                                  <i class="icon">
+                                                      <img src="/template/front-end-new/img/user-detail/gender_icon.svg" alt="">
+                                                  </i>
+                                                  <span class="label">Giới tính</span>
+                                                  <span class="select">
+                                                    <select dir="rtl" name="gender__update_site" id="gender__update_site">
+                                                        <%if(infoUser && !Number.isNaN(Number(infoUser.gender))){%>
+                        <option value="">Chưa cập nhật</option>
+                        <%}%>
+                                                      <option value="1"
+                                                          <%if(infoUser){%>
+                        <%if(!Number.isNaN(Number(infoUser.gender))  && Number(infoUser.gender) != -1){%>
+                        <%if(Object.is(Number(infoUser.gender), 1)){%>
+                        selected="selected"
+                        <%}%>
+                                                              <%}%>
+                        <%}%>
+                                                          >Nam</option>
+                                                      <option value="0"
+                                                          <%if(infoUser){%>
+                        <%if(!Number.isNaN(Number(infoUser.gender))  && Number(infoUser.gender) != -1){%>
+                        <%if(Object.is(Number(infoUser.gender),0)){%>
+                        selected="selected"
+                        <%}%>
+                                                              <%}%>
+                        <%}%>  
+                                                      >Nữ</option>
+                                                    </select>
+                                                  </span>
+                                              </li>
+                                              <li>
+                                                  <i class="icon">
+                                                      <img src="/template/front-end-new/img/user-detail/job_icon.svg" alt="">
+                                                  </i>
+                                                  <span class="label">Nghề nghiệp</span>
+                                                  <span class="select">
+                                                      <select dir="rtl" name="job__update_site" id="job__update_site">
+                                                        <%if(infoUser && !Number.isNaN(Number(infoUser.job))  && Number(infoUser.job) != -1){%>
+                        <% var infojob = constants.jobs[infoUser.job]%>
+                        <%if(!infojob){%>
+                        <option value="">Chưa cập nhật</option>
+                        <%}%>
+                                                        <%}else{%>
+                        <option value="">Chưa cập nhật</option>
+                        <%}%>
+                                                          <%if(constants.jobs){%>
+                        <%constants.jobs.forEach(job => {%>
+                        <option value="<%=job.value%>"
+                            <%if(infoUser.job && Object.is(Number(job.value), Number(infoUser.job))){%>
+                            selected="selected" <%}%>   
+                                                                  ><%=job.text%></option>
+                            <%})%>
+                            <%}%>
+                                                      </select>
+                                                  </span>
+                                              </li>
+                                              <li>
+                                                  <i class="icon">
+                                                      <img src="/template/front-end-new/img/user-detail/major_icon.svg" alt="">
+                                                  </i>
+                                                  <span class="label">Học vấn</span>
+                                                  <span class="select">
+                                                      <select dir="rtl" name="education__update_site" id="education__update_site">
+                                                        <%if(infoUser && !Number.isNaN(Number(infoUser.education))  && Number(infoUser.education) != -1){%>
+                            <% var infoeducation = constants.educations[infoUser.education]%>
+                            <%if(!infoeducation){%>
+                        <option value="">Chưa cập nhật</option>
+                        <%}%>
+                                                        <%}else{%>
+                        <option value="">Chưa cập nhật</option>
+                        <%}%>
+                                                          <%if(constants.educations){%>
+                        <%constants.educations.forEach(education => {%>
+                        <option value="<%=education.value%>"
+                            <%if(infoUser.education && Object.is(Number(education.value), Number(infoUser.education))){%>
+                            selected="selected" <%}%>    
+                                                                  ><%=education.text%></option>
+                            <%})%>
+                            <%}%>
+                                                      </select>
+                                                  </span>
+                                              </li>
+                                              <li>
+                                                  <i class="icon">
+                                                      <img src="/template/front-end-new/img/user-detail/height_icon.svg" alt="">
+                                                  </i>
+                                                  <span class="label">Chiều cao</span>
+                                                  <input class="age-input field-input" type="number" max="300" min="150" name="height__update_site" id="height__update_site"
+                                                    <%if(infoUser && !infoUser.height){%>
+                            placeholder='Chưa cập nhật'
+                            <%}%>
+                                                      <%if(infoUser && infoUser.height){%>
+                            value='<%=infoUser.height%>'
+                            <%}%>
+                                                  >cm
+                                              </li>
+                                              <li>
+                                                  <i class="icon">
+                                                      <img src="/template/front-end-new/img/user-detail/body_icon.svg" alt="">
+                                                  </i>
+                                                  <span class="label">Thân hình</span>
+                                                  <span class="select">
+                                                      <select dir="rtl" name="body__update_site" id="body__update_site">
+                                                        <%if(infoUser && !Number.isNaN(Number(infoUser.body))  && Number(infoUser.body) != -1){%>
+                            <% var infobody = constants.bodys[infoUser.body]%>
+                            <%if(!infobody){%>
+                        <option value="">Chưa cập nhật</option>
+                        <%}%>
+                                                        <%}else{%>
+                        <option value="">Chưa cập nhật</option>
+                        <%}%>
+                                                          <%if(constants.bodys){%>
+                        <%constants.bodys.forEach(body => {%>
+                        <option value="<%=body.value%>"
+                            <%if(infoUser.body && Object.is(Number(body.value), Number(infoUser.body))){%>
+                            selected="selected" <%}%>    
+                                                                  ><%=body.text%></option>
+                            <%})%>
+                            <%}%>
+                                                      </select>
+                                                  </span>
+                                              </li>
+                                              <li>
+                                                <i class="icon">
+                                                    <img src="/template/front-end-new/img/user-detail/religion_icon.svg" alt="">
+                                                </i>
+                                                <span class="label">Tôn giáo</span>
+                                                <span class="select">
+                                                    <select dir="rtl" name="religion__update_site" id="religion__update_site">
+                                                      <%if(infoUser && !Number.isNaN(Number(infoUser.religion))  && Number(infoUser.religion) != -1){%>
+                            <% var inforeligion = constants.religions[infoUser.religion]%>
+                            <%if(!inforeligion){%>
+                        <option value="">Chưa cập nhật</option>
+                        <%}%>
+                                                      <%}else{%>
+                        <option value="">Chưa cập nhật</option>
+                        <%}%>
+                                                        <%if(constants.religions){%>
+                        <%constants.religions.forEach(religion => {%>
+                        <option value="<%=religion.value%>"
+                            <%if(infoUser.religion && Object.is(Number(religion.value), Number(infoUser.religion))){%>
+                            selected="selected" <%}%>       
+                                                                ><%=religion.text%></option>
+                            <%})%>
+                            <%}%>
+                                                    </select>
+                                                </span>
+                                            </li>
+                                            <li>
+                                                <i class="icon">
+                                                    <img src="/template/front-end-new/img/user-detail/phone_icon.svg" alt="">
+                                                </i>
+                                                <span class="label">Điện thoại</span>
+                                                <input class="field-input" type="text" name="phone__update_site" id="phone__update_site"
+                                                  <%if(infoUser && !infoUser.phone){%>
+                            placeholder='Chưa cập nhật'
+                            <%}%>
+                                                    <%if(infoUser && infoUser.phone){%>
+                            value='<%=infoUser.phone%>'
+                            <%}%>
+                                                >
+                                            </li>
+                                          </ul>
+                                              
+                                          <ul>
+                                            <li>
+                                              <i class="icon">
+                                                  <img src="/template/front-end-new/img/user-detail/location_icon.svg" alt="">
+                                              </i>
+                                              <span class="label">Sinh sống</span>
+                                              <span class="select">
+                                                  <select dir="rtl" name="province__update_site" id="province__update_site">
+                                                    <%if(infoUser && !Number.isNaN(Number(infoUser.province))  && Number(infoUser.province) != -1){%>
+                                                        <% var infoprovince = infoUser.province < 10 ? provinces[`0${infoUser.province}`] : provinces[infoUser.province]%>
+                                                        <%if(!infoprovince){%>
+                                                    <option value="">Chưa cập nhật</option>
+                                                    <%}%>
+                                                                                <%}else{%>
+                                                    <option value="">Chưa cập nhật</option>
+                                                    <%}%>
+                                                                                <%for(let index in provinces) {%>
+                                                    <option value="<%=provinces[index].code && provinces[index].code%>" <%if(infoUser){%>
+                                                        <%if(infoUser.province && !Number.isNaN(Number(infoUser.province))  && Number(infoUser.province) != -1){%>
+                                                        <%if(Object.is(Number(infoUser.province), Number(provinces[index].code))){%>
+                                                        selected="selected" <%}%>
+                                                                                            <%}%> <%}%>
+                                                                                    ><%=provinces[index].name && provinces[index].name%></option>
+                                                        <%}%>
+                                                </select>
+                                                </span>
+                                            </li>
+
+                                            <li>
+                                                <i class="icon">
+                                                    <img src="/template/front-end-new/img/user-detail/location_icon.svg" alt="">
+                                                </i>
+                                              <span class="label">Quận/Huyện</span>
+                                              <span class="select">
+                                                <select dir="rtl" name="district__update_site" id="district__update_site" >
+                                                         <% function filterObject(obj, filter, filterValue){%>
+                                                            <% 
+                                                            return  Object.keys(obj).reduce((acc, val) =>
+                                                                (obj[val][filter] === filterValue ? {
+                                                                    ...acc,
+                                                                    [val]: obj[val]
+                                                                } : acc
+                                                                ), {});
+                                                            %>
+                                                        <%}%>
+                                                        <% var  listDistricts = filterObject(districts, 'parent_code', infoUser.province < 10 ? "0"+`${infoUser.province}` : `${infoUser.province}`  ) %> 
+                                                        <% var infodistrict %> 
+                                                        <%if(infoUser && !Number.isNaN(Number(infoUser.district))  && Number(infoUser.district) != -1){%>
+                                                            <% if(infoUser.district < 100) { %>
+                                                                <% if(infoUser.district < 10){ %> 
+                                                                    <% infodistrict = districts["00"+infoUser.district]%>
+                                                                <%}else{%>
+                                                                    <% infodistrict = districts["0"+infoUser.district]%>
+                                                                <%}%>
+                                                            <%}else{%>
+                                                                <% infodistrict = districts[infoUser.district]%>
+                                                            <%}%>
+                                                            <%if(!infodistrict){%>
+                                                                <option value="">Chưa cập nhật</option>
+                                                            <%}%>  
+                                                        <%}else{%>
+                                                            <option value="">Chưa cập nhật</option>
+                                                        <%}%>
+                                                        <%for(let index in listDistricts) {%>
+                                                            <option value="<%=listDistricts[index].code && listDistricts[index].code%>" 
+                                                                <%if(infoUser){%>
+                                                                    <%if(infoUser.district && !Number.isNaN(Number(infoUser.district))  && Number(infoUser.district) != -1){%>
+                                                                        <%if(listDistricts[index].code === infodistrict.code){%>  selected="selected" <%}%>
+                                                                    <%}%> 
+                                                                <%}%>
+                                                            ><%=listDistricts[index].name_with_type && listDistricts[index].name_with_type%></option>
+                                                        <%}%>
+                                                </select>
+                                              </span>
+                                            </li>
+
+                                            <li>
+                                                <i class="icon">
+                                                    <img src="/template/front-end-new/img/user-detail/maried_icon.svg" alt="">
+                                                </i>
+                                                <span class="label">Tình trạng hôn nhân</span>
+                                                <span class="select"><select dir="rtl" name="marital__update_site" id="marital__update_site">
+                                                    <%if(infoUser && !Number.isNaN(Number(infoUser.marital))  && Number(infoUser.marital) != -1){%>
+                            <% var infomarital = constants.maritals[infoUser.marital]%>
+                            <%if(!infomarital){%>
+                        <option value="">Chưa cập nhật</option>
+                        <%}%>
+                                                    <%}else{%>
+                        <option value="">Chưa cập nhật</option>
+                        <%}%>
+                                                  <%if(constants.maritals){%>
+                        <%constants.maritals.forEach(marital => {%>
+                        <option value="<%=marital.value%>"
+                            <%if(infoUser.marital && Object.is(Number(marital.value), Number(infoUser.marital))){%>
+                            selected="selected" <%}%>   
+                                                          ><%=marital.text%></option>
+                            <%})%>
+                            <%}%>
+                                                </select></span>
+                                            </li>
+                                            <li>
+                                                <i class="icon">
+                                                    <img src="/template/front-end-new/img/user-detail/smoke_icon.svg" alt="">
+                                                </i>
+                                                <span class="label">Hút thuốc</span>
+                                                <span class="select"><select dir="rtl" name="smoking__update_site" id="smoking__update_site">
+                                                    <%if(infoUser && !Number.isNaN(Number(infoUser.smoking))  && Number(infoUser.smoking) != -1){%>
+                            <% var infosmoking = constants.smokings[infoUser.smoking]%>
+                            <%if(!infosmoking){%>
+                        <option value="">Chưa cập nhật</option>
+                        <%}%>
+                                                    <%}else{%>
+                        <option value="">Chưa cập nhật</option>
+                        <%}%>
+                                                  <%if(constants.smokings){%>
+                        <%constants.smokings.forEach(smoking => {%>
+                        <option value="<%=smoking.value%>"
+                            <%if(infoUser.smoking && Object.is(Number(smoking.value), Number(infoUser.smoking))){%>
+                            selected="selected" <%}%>     
+                                                          ><%=smoking.text%></option>
+                            <%})%>
+                            <%}%>
+                                                </select></span>
+                                            </li>
+                                            <li>
+                                                <i class="icon">
+                                                    <img src="/template/front-end-new/img/user-detail/drink_icon.svg" alt="">
+                                                </i>
+                                                <span class="label">Rượu bia</span>
+                                                <span class="select"><select dir="rtl" name="drink__update_site" id="drink__update_site">
+                                                    <%if(infoUser && !Number.isNaN(Number(infoUser.drink))  && Number(infoUser.drink) != -1){%>
+                            <% var infodrink = constants.drinks[infoUser.drink]%>
+                            <%if(!infodrink){%>
+                        <option value="">Chưa cập nhật</option>
+                        <%}%>
+                                                    <%}else{%>
+                        <option value="">Chưa cập nhật</option>
+                        <%}%>
+                                                  <%if(constants.drinks){%>
+                        <%constants.drinks.forEach(drink => {%>
+                        <option value="<%=drink.value%>"
+                            <%if(infoUser.drink && Object.is(Number(drink.value), Number(infoUser.drink))){%>
+                            selected="selected" <%}%>       
+                                                          ><%=drink.text%></option>
+                            <%})%>
+                            <%}%>
+                                                </select></span>
+                                            </li>
+                                            <li>
+                                                <i class="icon">
+                                                    <img src="/template/front-end-new/img/user-detail/save-money_icon.svg" alt="">
+                                                </i>
+                                                <span class="label">Thu nhập hàng tháng</span>
+                                                <span class="select"><select dir="rtl" name="revenue__update_site" id="revenue__update_site">
+                                                    <%if(infoUser && !Number.isNaN(Number(infoUser.revenue))  && Number(infoUser.revenue) != -1){%>
+                            <% var inforevenue = constants.revenues[infoUser.revenue]%>
+                            <%if(!inforevenue){%>
+                        <option value="">Chưa cập nhật</option>
+                        <%}%>
+                                                    <%}else{%>
+                        <option value="">Chưa cập nhật</option>
+                        <%}%>
+                                                  <%if(constants.revenues){%>
+                        <%constants.revenues.forEach(revenue => {%>
+                        <option value="<%=revenue.value%>"
+                            <%if(infoUser.revenue && Object.is(Number(revenue.value), Number(infoUser.revenue))){%>
+                            selected="selected" <%}%>   
+                                                          ><%=revenue.text%></option>
+                            <%})%>
+                            <%}%>
+                                                </select></span>
+                                            </li>
+                                            <li>
+                                                <i class="icon">
+                                                    <img src="/template/front-end-new/img/user-detail/email_icon.svg" alt="">
+                                                </i>
+                                                <span class="label">Địa chỉ mail</span>
+                                                <input class="field-input" type="text" name="email__update_site" id="email__update_site"
+                                                  <%if(infoUser && !infoUser.email){%>
+                            placeholder='Chưa cập nhật'
+                            <%}%>
+                                                    <%if(infoUser && infoUser.email){%>
+                            value='<%=infoUser.email%>'
+                            <%}%>
+                                                >
+                                            </li>
+                                          </ul>
+                                      </div>
+                                      <a  href="" class="submit btnUpdateSite">Lưu</a>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="user-info-body">
+                          <p class="title">
+                              Sở thích
+                          </p>
+                          <div class="content">
+                              <p data-default="hobies__update_site" value-default="<%=infoUser.hobies%>">
+                            <%if(infoUser){%>
+                            <%=infoUser.hobies%>
+                            <%}else{%>
+                            Chưa Có Sở Thích
+                            <%}%>
+                              </p>
+                          </div>
+                          <div class="edit-btn">
+                              <img src="/template/front-end-new/img/user-detail/edit_icon.svg" alt="">
+                          </div>
+                          <div class="wao-popup-edit">
+                              <div class="wao-popup-edit__wrapper">
+                                  <div class="form-group form-user-edit">
+                                      <p class="title">
+                                          <span class="close-edit-btn">
+                                              <span></span><span></span>
+                                          </span>
+                                          Sở thích
+                                      </p>
+                                      <div class="control-group">
+                                          <label for="" class="favorite-label wao-mb">Sở thích</label>
+                                          <textarea class="favorite-area" name="hobies__update_site" id="hobies__update_site"><%=infoUser.hobies%></textarea>
+        </div>
+        <a href="" class="submit btnUpdateSite">Lưu</a>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div class="user-info-body">
+        <p class="title">
+            Mong muốn hẹn hò cùng
+        </p>
+        <div class="content has-list">
+            <ul>
+                <li>
+                    <i class="icon">
+                        <img src="/template/front-end-new/img/user-detail/gender_icon.svg" alt="">
+                    </i>
+                    <span class="label">Giới tính</span>
+                    <span data-default="focusGender__update_site" value-default="<%=infoUser.focusGender%>">
+                        <%if(infoUser && !Number.isNaN(infoUser.focusGender)){%>
+                        <%if(Object.is(infoUser.focusGender, 1)) {%>
+                        Nam
+                        <%}else if(Object.is(infoUser.focusGender, 0)){%>
+                        Nữ
+                        <%} else{%>
+                        Hỏi tôi
+                        <%}%>
+                                        <%} else{%>
+                        Hỏi tôi
+                        <%}%>
+                                      </span>
+                                  </li>
+                                  <li>
+                                      <i class="icon">
+                                          <img src="/template/front-end-new/img/user-detail/cake_icon.svg" alt="">
+                                      </i>
+                                      <span class="label">Tuổi</span>
+                                      <span>
+                                        <%if(!infoUser.focusAge.from || !infoUser.focusAge.to){%>
+                        Hỏi tôi
+                        <%}else{%>
+
+                        Từ
+                        <span data-default="focusAgeFrom__update_site" value-default="<%=infoUser.focusAge.from%>">
+                            <%=infoUser.focusAge.from%>
+                        </span>
+                        -
+                        <span data-default="focusAgeTo__update_site" value-default="<%=infoUser.focusAge.to%>">
+                            <%=infoUser.focusAge.to%>
+                        </span>
+                        <%}%>
+                                      </span>
+                                  </li>
+                              </ul>
+                              <ul>
+                                <li>
+                                  <i class="icon">
+                                      <img src="/template/front-end-new/img/user-detail/location_icon.svg" alt="">
+                                  </i>
+                                  <span class="label">Sinh sống</span>
+                                  <span data-default="focusProvince__update_site" value-default="<%=infoUser.focusProvince && Number(infoUser.focusProvince) != -1 && infoUser.focusProvince < 10 ? '0' + infoUser.focusProvince : infoUser.focusProvince%>">
+                        <%if(provinces){%>
+                        <%if(infoUser && !Number.isNaN(Number(infoUser.focusProvince)) && Number(infoUser.focusProvince) != -1){%>
+                        <% var infoprovince = provinces[infoUser.focusProvince]%>
+                        <%if(infoprovince){%>
+                        <%=infoprovince.name%>
+                        <%}else{%>
+                        Hỏi tôi
+                        <%}%>
+                                      <%}else{%>
+                        Hỏi tôi
+                        <%}%>
+                                    <%}%>
+                    </span>
+                </li>
+                <li>
+                    <i class="icon">
+                        <img src="/template/front-end-new/img/user-detail/maried_icon.svg" alt="">
+                    </i>
+                    <span class="label">Tình trạng hôn nhân</span>
+                    <span data-default="focusMarital__update_site" value-default="<%=Number(infoUser.focusMarital)%>">
+                        <%if(infoUser && !Number.isNaN(Number(infoUser.focusMarital)) && Number(infoUser.focusMarital) != -1){%>
+                        <%var indexMarital = constants.maritals.findIndex(marital => Object.is(Number(infoUser.focusMarital), Number(marital.value)));%>
+                        <p><%= constants.maritals[indexMarital].text%></p>
+                        <%}else{%>
+                        Hỏi tôi
+                        <%}%>
+                                    </span>
+                                </li>
+                              </ul>
+                          </div>
+                          <div class="edit-btn">
+                              <img src="/template/front-end-new/img/user-detail/edit_icon.svg" alt="">
+                          </div>
+                          <div class="wao-popup-edit">
+                              <div class="wao-popup-edit__wrapper">
+                                  <div class="form-group form-user-edit">
+                                      <p class="title">
+                                          <span class="close-edit-btn">
+                                              <span></span><span></span>
+                                          </span>
+                                          Mong muốn hẹn hò cùng
+                                      </p>
+                                      <div class="content has-list">
+                                          <ul>
+                                              <li>
+                                                  <i class="icon">
+                                                      <img src="/template/front-end-new/img/user-detail/gender_icon.svg" alt="">
+                                                  </i>
+                                                  <span class="label">Giới tính</span>
+                                                  <span class="select">
+                                                      <select dir="rtl" name="focusGender__update_site" id="focusGender__update_site">
+                                                        <%if(infoUser && (!infoUser.focusGender || !Number.isNaN(Number(infoUser.focusGender)))){%>
+                        <option value="">Hỏi tôi</option>
+                        <%}%>
+                                                          <option value="1"
+                                                              <%if(infoUser){%>
+                        <%if(!Number.isNaN(Number(infoUser.focusGender))  && Number(infoUser.focusGender) != -1){%>
+                        <%if(Object.is(Number(infoUser.focusGender), 1)){%>
+                        selected="selected"
+                        <%}%>
+                                                                  <%}%>
+                        <%}%>
+                                                              >Nam</option>
+                                                          <option value="0"
+                                                              <%if(infoUser){%>
+                        <%if(!Number.isNaN(Number(infoUser.focusGender))  && Number(infoUser.focusGender) != -1){%>
+                        <%if(Object.is(Number(infoUser.focusGender),0)){%>
+                        selected="selected"
+                        <%}%>
+                                                                  <%}%>
+                        <%}%>  
+                                                          >Nữ</option>
+                                                      </select>
+                                                  </span>
+                                              </li>
+                                              <li>
+                                                  <i class="icon">
+                                                      <img src="/template/front-end-new/img/user-detail/cake_icon.svg" alt="">
+                                                  </i>
+                                                  <span class="label">Tuổi</span>
+                                                  <!-- <input class="age-input" type="number" id="chose_age"> -->
+                                                  <select dir="rtl" class="age-input field-input form-control" name="focusAgeFrom__update_site" id="focusAgeFrom__update_site">
+                                                      <%if(!infoUser.focusAge.from || !infoUser.focusAge.to){%>
+                        <option value="">Hỏi tôi</option>
+                        <%}%>
+                                                  <%for(let i = 18; i<100; i++){%>
+                        <option value="<%=i%>" <%if(Object.is(Number(i), Number(infoUser.focusAge.from))){%>
+                            selected="selected" <%}%>      
+                                                      ><%=i%></option>
+                            <%}%>
+                                                  </select>
+                                                  <span style="margin-left: auto; margin-right: auto;">đến</span>
+                                                  <select dir="rtl" class="age-input field-input form-control" style="margin-left: 0;" name="focusAgeTo__update_site" id="focusAgeTo__update_site">
+                                                  <%if(!infoUser.focusAge.from || !infoUser.focusAge.to){%>
+                        <option value="">Hỏi tôi</option>
+                        <%}%>
+                                                  <%for(let i = 18; i<100; i++){%>
+                        <option value="<%=i%>" <%if(Object.is(Number(i), Number(infoUser.focusAge.to))){%>
+                            selected="selected" <%}%>       
+                                                      ><%=i%></option>
+                            <%}%>
+                                                  </select>
+                                              </li>
+                                          </ul>
+                                          <ul>
+                                            <li>
+                                              <i class="icon">
+                                                  <img src="/template/front-end-new/img/user-detail/location_icon.svg" alt="">
+                                              </i>
+                                              <span class="label">Sinh sống</span>
+                                              <span class="select">
+                                                  <select dir="rtl" class="form-control select2" name="focusProvince__update_site" id="focusProvince__update_site">
+                                                  <%if(infoUser && !Number.isNaN(Number(infoUser.focusProvince))  && Number(infoUser.focusProvince)){%>
+                            <% var infofocusProvince = provinces[infoUser.focusProvince]%>
+                            <%if(!infofocusProvince){%>
+                        <option value="">Hỏi tôi</option>
+                        <%}%>
+                                                  <%}else{%>
+                        <option value="">Hỏi tôi</option>
+                        <%}%>
+                                                  <%for(let index in provinces) {%>
+                        <option value="<%=provinces[index].code && provinces[index].code%>" <%if(infoUser){%>
+                            <%if(!Number.isNaN(Number(infoUser.focusProvince))  && Number(infoUser.focusProvince) != -1){%>
+                            <%if(Object.is(Number(infoUser.focusProvince), Number(provinces[index].code))){%>
+                            selected="selected" <%}%>
+                                                              <%}%> <%}%>
+                                                      >   <%=provinces[index].name && provinces[index].name%></option>
+                            <%}%>
+                                                  </select>
+                                              </span>
+                                            </li>
+                                            <li>
+                                                <i class="icon">
+                                                    <img src="/template/front-end-new/img/user-detail/maried_icon.svg" alt="">
+                                                </i>
+                                                <span class="label">Tình trạng hôn nhân</span>
+                                                <span class="select">
+                                                <select dir="rtl" class="form-control" name="focusMarital__update_site" id="focusMarital__update_site">
+                                                    <%if(infoUser && !Number.isNaN(Number(infoUser.focusMarital))  && Number(infoUser.focusMarital)){%>
+                            <% var infofocusMarital = provinces[infoUser.focusMarital]%>
+                            <%if(!infofocusMarital){%>
+                        <option value="">Hỏi tôi</option>
+                        <%}%>
+                                                    <%}else{%>
+                        <option value="">Hỏi tôi</option>
+                        <%}%>
+                                                    <%if(constants.maritals){%>
+                        <%constants.maritals.forEach(marital => {%>
+                        <option value="<%=marital.value%>"
+                            <%if(Object.is(Number(marital.value), Number(infoUser.focusMarital))){%> selected="selected" <%}%>        
+                                                            ><%=marital.text%></option>
+                            <%})%>
+                            <%}%>
+                                                </select>
+                                              </span>
+                                            </li>
+                                          </ul>
+                                      </div>
+                                      <a  href="" class="submit btnUpdateSite">Lưu</a>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="user-info-body" id="imageGallery">
+                          <p class="title">
+                              Hình ảnh của tôi
+                          </p>
+                          <div class="user-gallery-nav">
+                              <button class="prev"><img src="/template/front-end-new/img/home/left-arrow.svg" alt=""></button>
+                              <button class="next"><img src="/template/front-end-new/img/home/right-arrow.svg" alt=""></button>
+                          </div>
+                          <div class="user-gallery is-edit owl-theme owl-carousel">
+                            <div class="gallery-item gallery-item__empty">
+                                <label class="gallery-img" for="imgUploadGallery">
+                                    <input type="file" name="" id="imgUploadGallery" multiple
+                                        style="display:none" accept="image/*">
+                                </label>
+                            </div>
+                              <%let isExistsPrivateImage = listImagesPrivate.length !== 0;%>
+                            <div class="gallery-item gallery-item__private">
+                                <div class="gallery-img">
+                                    <a href="" class="btn-gallery-private gallery-item__private-label">Ảnh riêng tư</a>
+                                    <img src="/template/front-end-new/img/user-detail/bg-private-image.svg" alt="alt">
+                                </div>
+                            </div>
+                            <div class="gallery-item gallery-item__private">
+                                <div class="gallery-img">
+                                    <a href="" class="btn-gallery-cover gallery-item__private-label">Ảnh bìa</a>
+                                    <img src="/template/front-end-new/img/user-detail/bg-private-image.svg" alt="alt">
+                                </div>
+                            </div>
+                            <%listImagesPublic.forEach(imageItem => {%>
+                            <div class="gallery-item gallery-item-action" id="image_id_<%=imageItem._id%>">
+                                <div class="gallery-img">
+                                    <%if(imageItem.name.includes('http')){%>
+                                    <img src="<%=imageItem.name%>" alt="" data-image="<%=imageItem._id%>">
+                                    <%}else{%>
+                                    <img type="<%=imageItem.type%>" src="/files/users/<%=imageItem.name%>" alt="alt"
+                                        data-image="<%=imageItem._id%>">
+                                    <%}%> 
+                                  </div>
+                                </div>
+                              <%})%>
+
+                                  
+
+                                </div>
+                                <div style="font-size: 12px; margin-top: 20px; font-style: italic;">
+                                    <span style="text-decoration: underline;">Lưu ý</span>: Hãy tải ảnh <strong>của
+                                        chính bạn</strong> để đảm bảo về chất lượng người dùng trên nền tảng Waodate.
+                                    Xin vui lòng không chọn những bức ảnh về động vật, nhân vật chính trị, người nổi
+                                    tiếng,
+                                    nhân vật tưởng tượng, nhân vật hoạt hình, trừu tượng, ảnh nhạy cảm, ảnh có hai người
+                                    trở lên.
+                                    Điều đấy có thể khiến tài khoản của bạn <strong>bị khóa</strong> hoặc <strong>xóa
+                                        vĩnh viễn.</strong>
+                                </div>
+                                <div class="wao-popup-edit wao-popup-gallery-private wao-popup-not-stopPropagation">
+                                    <a href="" class="btn-close-gallery-private btn-close-dt">
+                                        <img class="icon-close"
+                                            src="/template/front-end-new/img/date-detail/close_icon.svg" alt="">
+                                    </a>
+                                    <div class="wao-popup-edit__wrapper">
+                                        <p class="title title_popup_custom">
+                                            <span class="close-edit-btn btn-close-gallery-private">
+                                                <span></span><span></span>
+                                            </span>
+                                            Ảnh riêng tư
+                                        </p>
+                                        <div class="user-gallery row">
+                                            <%listImagesPrivate.forEach(imageItem => {%>
+                                            <div class="col-md-3 col-sm-4 col-6 img_item_private_custom"
+                                                style="padding-bottom: 25px" id="img_<%=imageItem._id%>">
+                                                <div class="gallery-private-item-action">
+                                                    <div class="gallery-img">
+                                                        <%if(imageItem.name.includes('http')){%>
+                                                        <img type="<%=imageItem.type%>" src="<%=imageItem.name%>" alt=""
+                                                            data-image="<%=imageItem._id%>">
+                                                        <%}else{%>
+                                                        <img type="<%=imageItem.type%>"
+                                                            src="/files/users/<%=imageItem.name%>" alt="alt"
+                                                            data-image="<%=imageItem._id%>">
+                                                        <%}%> 
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <%})%>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                class="wao-popup-edit wao-popup-gallery-cover wao-popup-not-stopPropagation">
+                                                <a href="" class="btn-close-gallery-cover btn-close-dt">
+                                                    <img class="icon-close"
+                                                        src="/template/front-end-new/img/date-detail/close_icon.svg"
+                                                        alt="">
+                                                </a>
+                                                <div class="wao-popup-edit__wrapper">
+                                                    <p class="title title_popup_custom">
+                                                        <span class="close-edit-btn btn-close-gallery-cover">
+                                                            <span></span><span></span>
+                                                        </span>
+                                                        Ảnh bìa
+                                                    </p>
+                                                    <div class="user-gallery row">
+                                                        <%listImagesCover.forEach(imageItem => {%>
+                                                        <div class="col-md-3 col-sm-4 col-6 img_item_private_custom"
+                                                            style="padding-bottom: 25px" id="img_<%=imageItem._id%>">
+                                                            <div class="gallery-cover-item-action">
+                                                                <div class="gallery-img">
+                                                                    <%if(imageItem.name.includes('http')){%>
+                                                                    <img type="<%=imageItem.type%>"
+                                                                        src="<%=imageItem.name%>" alt=""
+                                                                        data-image="<%=imageItem._id%>">
+                                                                    <%}else{%>
+                                                                    <img type="<%=imageItem.type%>"
+                                                                        src="/files/users/<%=imageItem.name%>" alt="alt"
+                                                                        data-image="<%=imageItem._id%>">
+                                                                    <%}%> 
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <%})%>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div
+                                                            class="view_gallery_custom wao-popup-edit wao-popup-view-gallery  wao-popup-gallery wao-popup-not-stopPropagation">
+                                                            <a href="" class="close-gallery-btn btn-close-dt">
+                                                                <img class="icon-close"
+                                                                    src="/template/front-end-new/img/date-detail/close_icon.svg"
+                                                                    alt="">
+                                                            </a>
+                                                            <div class="wao-popup-edit__wrapper">
+                                                                <p class="title title_custom">
+                                                                    <span class="close-edit-btn close-gallery-btn">
+                                                                        <span></span><span></span>
+                                                                    </span>
+                                                                </p>
+                                                                <div class="row align-items-center">
+                                                                    <div class="col-auto img_col_custom"
+                                                                        style="text-align: right;">
+                                                                        <a class="fancybox-gallery">
+                                                                            <img class="wao-popup-gallery__image" src=""
+                                                                                alt="">
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="flex-items">
+                                                                        <div class="mg-20" id="session_to_avatar">
+                                                                            <a href=""
+                                                                                class="btn-action btn-to-image-avatar">
+                                                                                <img class="btn-action-icon"
+                                                                                    src="/template/front-end-new/img/list-by-user/user.svg"
+                                                                                    alt="">
+                                                                                <span>Chuyển thành ảnh đại diện</span>
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="mg-20">
+                                                                            <a href=""
+                                                                                class="btn-action btn-to-image-private">
+                                                                                <img class="btn-action-icon"
+                                                                                    src="/template/front-end-new/img/list-by-user/photo.svg"
+                                                                                    alt="">
+                                                                                <span> Chuyển thành ảnh riêng tư</span>
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="mg-20">
+                                                                            <a href=""
+                                                                                class="btn-action btn-remove-image">
+                                                                                <img class="btn-action-icon"
+                                                                                    src="/template/front-end-new/img/list-by-user/trash_icon.svg"
+                                                                                    alt="">
+                                                                                <span>Xóa ảnh</span>
+                                                                            </a>
+                                                                        </div>
+
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div
+                                                            class="view_gallery_custom wao-popup-edit wao-popup-view-gallery wao-popup-gallery-private-item wao-popup-not-stopPropagation ">
+                                                            <a href="" class="close-gallery-btn btn-close-dt">
+                                                                <img class="icon-close"
+                                                                    src="/template/front-end-new/img/date-detail/close_icon.svg"
+                                                                    alt="">
+                                                            </a>
+                                                            <div class="wao-popup-edit__wrapper">
+                                                                <p class="title title_custom">
+                                                                    <span class="close-edit-btn close-gallery-btn">
+                                                                        <span></span><span></span>
+                                                                    </span>
+                                                                </p>
+                                                                <div class="row align-items-center">
+                                                                    <div class="col-auto img_col_custom"
+                                                                        style="text-align: right;">
+                                                                        <a class="fancybox-gallery">
+                                                                            <img class="wao-popup-gallery__image" src=""
+                                                                                alt="">
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="flex-items">
+                                                                        <div class="mg-20"
+                                                                            id="session_to_avatar_private">
+                                                                            <a href=""
+                                                                                class="btn-action btn-to-image-avatar">
+                                                                                <img class="btn-action-icon"
+                                                                                    src="/template/front-end-new/img/list-by-user/user.svg"
+                                                                                    alt="">
+                                                                                <span>Chuyển thành ảnh đại diện</span>
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="mg-20">
+                                                                            <a href="" class="btn-action"
+                                                                                id="btn-to-image-public">
+                                                                                <img class="btn-action-icon"
+                                                                                    src="/template/front-end-new/img/list-by-user/photo.svg"
+                                                                                    alt="">
+                                                                                <span> Chuyển thành ảnh công khai</span>
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="mg-20">
+                                                                            <a href=""
+                                                                                class="btn-action btn-remove-image">
+                                                                                <img class="btn-action-icon"
+                                                                                    src="/template/front-end-new/img/list-by-user/trash_icon.svg"
+                                                                                    alt="">
+                                                                                <span>Xóa ảnh</span>
+                                                                            </a>
+                                                                        </div>
+
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div
+                                                            class="view_gallery_custom wao-popup-edit wao-popup-view-gallery wao-popup-gallery-cover-item wao-popup-not-stopPropagation ">
+                                                            <a href="" class="close-gallery-btn btn-close-dt">
+                                                                <img class="icon-close"
+                                                                    src="/template/front-end-new/img/date-detail/close_icon.svg"
+                                                                    alt="">
+                                                            </a>
+                                                            <div class="wao-popup-edit__wrapper">
+                                                                <p class="title title_custom">
+                                                                    <span class="close-edit-btn close-gallery-btn">
+                                                                        <span></span><span></span>
+                                                                    </span>
+                                                                </p>
+                                                                <div class="row align-items-center">
+                                                                    <div class="col-auto img_col_custom"
+                                                                        style="text-align: right;">
+                                                                        <a class="fancybox-gallery">
+                                                                            <img class="wao-popup-gallery__image" src=""
+                                                                                alt="">
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="flex-items">
+                                                                        <div class="mg-20">
+                                                                            <a href=""
+                                                                                class="btn-action btn-to-image-private">
+                                                                                <img class="btn-action-icon"
+                                                                                    src="/template/front-end-new/img/list-by-user/photo.svg"
+                                                                                    alt="">
+                                                                                <span> Chuyển thành ảnh riêng tư</span>
+                                                                            </a>
+                                                                        </div>
+                                                                        <div class="mg-20">
+                                                                            <a href=""
+                                                                                class="btn-action btn-remove-image">
+                                                                                <img class="btn-action-icon"
+                                                                                    src="/template/front-end-new/img/list-by-user/trash_icon.svg"
+                                                                                    alt="">
+                                                                                <span>Xóa ảnh</span>
+                                                                            </a>
+                                                                        </div>
+
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+
+                                                    </div>
+                                                    <div class="user-info-body user-verify">
+                                                        <p class="title">Xác thực danh tính</p>
+                                                        <%if(!latestUserVerify){%>
+                                                        <p class="desc"><img
+                                                                src="/template/front-end-new/img/user-detail/note_icon.svg"
+                                                                alt=""> Bạn chưa thực hiện xác thực
+                                                            danh tính, nhấn vào <a href="" class="open-verify-popup">xác
+                                                                thực</a> để nổi bật hơn</p>
+                                                        <% }else {%>
+                                                        <% if(latestUserVerify.status == 0) {%>
+                                                        <p class="desc"><img
+                                                                src="/template/front-end-new/img/user-detail/note_icon.svg"
+                                                                alt=""> Đang được xác thực danh tính, vui lòng chờ admin
+                                                            xác thực</p>
+                                                        <% } else {%>
+                                                        <p class="desc">Tài khoản của bạn đã được xác thực</p>
+                                                        <% } %>
+                                                        <% }%>
+                                                        <img src="/template/front-end-new/img/user-detail/verify_icon.svg"
+                                                            alt="" class="verify-icon">
+                                                        <div class="wao-popup-edit wao-popup-verify">
+                                                            <div class="wao-popup-edit__wrapper">
+                                                                <div class="form-group form-user-edit">
+                                                                    <p class="title wao-mb">
+                                                                        <span class="close-edit-btn btn-close-verify">
+                                                                            <span></span><span></span>
+                                                                        </span>
+                                                                        Xác thực danh tính
+                                                                    </p>
+                                                                    <div class="content" style="text-align:center">
+                                                                        <p class="verify-title">
+                                                                            Chụp chứng minh nhân dân của bạn
+                                                                        </p>
+                                                                        <p class="verify-desc">
+                                                                            Để bảo đảm sự an toàn của bạn và các thành
+                                                                            viên khác trong cộng đồng,
+                                                                            việc xác thực danh tính sẽ giúp bạn trở nên
+                                                                            tin cậy và nổi bật hơn.<br> Đừng
+                                                                            lo lắng, chúng tôi không tiết lộ thông tin
+                                                                            của bạn với bất kì ai
+                                                                        </p>
+                                                                        <div class="verify-upload__group">
+                                                                            <div class="verify-upload__wrapper">
+                                                                                <div
+                                                                                    class="verify-upload__item verify-upload__item__1">
+                                                                                    <img id="imageCMNDFront" src=""
+                                                                                        alt="">
+                                                                                    <input type="file" name=""
+                                                                                        id="inputImageCMNDFront"
+                                                                                        accept="image/x-png,image/gif,image/jpeg">
+                                                                                </div>
+                                                                                <div class="verify-upload__label">
+                                                                                    Mặt trước
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="verify-upload__wrapper">
+                                                                                <div
+                                                                                    class="verify-upload__item verify-upload__item__2">
+                                                                                    <img id="imageCMNDBack" src=""
+                                                                                        alt="">
+                                                                                    <input type="file" name=""
+                                                                                        id="inputImageCMNDBack"
+                                                                                        accept="image/x-png,image/gif,image/jpeg">
+                                                                                </div>
+                                                                                <div class="verify-upload__label">
+                                                                                    Mặt sau
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="verify-btns">
+                                                                            <a href=""
+                                                                                class="close-verify btn-close-verify">
+                                                                                Hủy bỏ
+                                                                            </a>
+                                                                            <a class="verify-submit" id="btnUpdateCMND"
+                                                                                _userID="<%= _lodash.get(infoUser, '_id') %>">Hoàn
+                                                                                tất</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <%if(infoUser.password){%>
+                                                    <div class="user-info-body user-verify">
+                                                        <p class="title">Cập nhật mật khẩu</p>
+                                                        <p class="desc">Nếu bạn mong muốn đổi mật khẩu, vui lòng cập
+                                                            nhật mật khẩu mới tại
+                                                            <a href="" class="open-password-popup">đây.</a>
+                                                        </p>
+                                                        <div class="wao-popup-edit wao-popup-password">
+                                                            <a href="" class="btn-close-pass btn-close-dt">
+                                                                <img class="icon-close"
+                                                                    src="/template/front-end-new/img/date-detail/close_icon.svg"
+                                                                    alt="">
+                                                            </a>
+                                                            <div class="wao-popup-edit__wrapper">
+                                                                <div class="form-group form-user-edit">
+                                                                    <p class="title wao-mb">
+                                                                        <span class="close-edit-btn btn-close-pass">
+                                                                            <span></span><span></span>
+                                                                        </span>
+                                                                        Đổi mật khẩu
+                                                                    </p>
+                                                                    <div class="content" style="text-align:center">
+                                                                        <h4 class="title-dt">Đổi mật khẩu</h4>
+                                                                        <p class="description" style="color: #828282;">
+                                                                            Mật khẩu cần trên 8 ký tự, bao gồm các ký
+                                                                            viết hoa, ký tự số và ký tự đặc biệt</p>
+
+                                                                        <div class="form-wrapper form-pass-old">
+                                                                            <input type="password"
+                                                                                placeholder="Nhập mật khẩu cũ"
+                                                                                class="form-input eventFocus"
+                                                                                id="txtPassCurrent">
+                                                                            <img class="form-input-icon"
+                                                                                src="/template/front-end-new/img/user-detail/lock-icon-purple.svg"
+                                                                                alt="">
+                                                                        </div>
+                                                                        <div class="form-wrapper form-pass-new">
+                                                                            <input type="password"
+                                                                                placeholder="Nhập mật khẩu mới"
+                                                                                class="form-input eventFocus"
+                                                                                id="txtPassNew">
+                                                                            <img class="form-input-icon"
+                                                                                src="/template/front-end-new/img/user-detail/lock-icon-purple.svg"
+                                                                                alt="">
+                                                                        </div>
+                                                                        <div class="form-wrapper form-pass-confirm">
+                                                                            <input type="password"
+                                                                                placeholder="Xác nhận mật khẩu mới"
+                                                                                class="form-input eventFocus"
+                                                                                id="txtPassNewConfirm">
+                                                                            <img class="form-input-icon"
+                                                                                src="/template/front-end-new/img/user-detail/lock-icon-purple.svg"
+                                                                                alt="">
+                                                                        </div>
+
+                                                                        <div class="text-center">
+                                                                            <a href="" class="btn-submit"
+                                                                                id="btnUpdatePass"
+                                                                                _userID="<%= _lodash.get(infoUser, '_id') %>">Xác
+                                                                                nhận</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <% } else { %>
+                                                    <div class="user-info-body user-verify">
+                                                        <p class="title">Đặt mật khẩu mới</p>
+                                                        <p class="desc">Bạn chưa có mật khẩu, vui lòng đặt mật khẩu tại
+                                                            <a href="" class="open-password-popup">đây.</a>
+                                                        </p>
+                                                        <div class="wao-popup-edit wao-popup-password">
+                                                            <a href="" class="btn-close-create-pass btn-close-dt">
+                                                                <img class="icon-close"
+                                                                    src="/template/front-end-new/img/date-detail/close_icon.svg"
+                                                                    alt="">
+                                                            </a>
+                                                            <div class="wao-popup-edit__wrapper">
+                                                                <div class="form-group form-user-edit">
+                                                                    <p class="title wao-mb">
+                                                                        <span
+                                                                            class="close-edit-btn btn-close-create-pass">
+                                                                            <span></span><span></span>
+                                                                        </span>
+                                                                        Đặt mật khẩu mới
+                                                                    </p>
+                                                                    <div class="content" style="text-align:center">
+                                                                        <h4 class="title-dt">Đặt mật khẩu mới</h4>
+                                                                        <p class="description" style="color: #828282;">
+                                                                            Mật khẩu cần trên 8 ký tự, bao gồm các ký
+                                                                            viết hoa, ký tự số và ký tự đặc biệt</p>
+
+                                                                        <div class="form-wrapper form-pass-new">
+                                                                            <input type="password" onclick=""
+                                                                                placeholder="Nhập mật khẩu mới"
+                                                                                class="form-input eventFocus"
+                                                                                id="txtCreatePassNew">
+                                                                            <img class="form-input-icon"
+                                                                                src="/template/front-end-new/img/user-detail/lock-icon-purple.svg"
+                                                                                alt="">
+                                                                        </div>
+                                                                        <div class="form-wrapper form-pass-confirm">
+                                                                            <input type="password"
+                                                                                placeholder="Xác nhận mật khẩu mới"
+                                                                                class="form-input eventFocus"
+                                                                                id="txtCreatePassNewConfirm">
+                                                                            <img class="form-input-icon"
+                                                                                src="/template/front-end-new/img/user-detail/lock-icon-purple.svg"
+                                                                                alt="">
+                                                                        </div>
+
+                                                                        <div class="text-center">
+                                                                            <a href="" class="btn-submit"
+                                                                                id="btnCreatePass"
+                                                                                _userID="<%= _lodash.get(infoUser, '_id') %>">Xác
+                                                                                nhận</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <% } %>
+
+                                                    <div class="user-info-body user-verify">
+                                                        <p class="title">Phần dành cho đối tác</p>
+                                                        <div class="user-verify-banner">
+                                                            <div class="content">
+                                                                <!-- <h3>Affiliate rewards <span class="font-weight-normal">(chương trình đổi thưởng)</span></h3> -->
+                                                                <h3>Tiền rút</h3>
+                                                                <div class="row row-withdrawal">
+                                                                    <div class="col-md col-12">
+                                                                        <input type="text"
+                                                                            placeholder="Nhập số tiền cần rút"
+                                                                            class="form-input-withdrawal"
+                                                                            name="txtPriceForWithdraw"
+                                                                            id="txtPriceForWithdraw">
+                                                                    </div>
+                                                                    <div class="col-md-auto col-12">
+                                                                        <a href="" class="btn-withdrawal"
+                                                                            id="btnWithdraw">Rút tiền</a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- <a href="" class="link"></a> -->
+                                                        </div>
+                                                        <div class="user-verify-info">
+                                                            <div class="user-verify-info__item">
+                                                                <div class="point-discount">
+                                                                    <ul>
+                                                                        <li>
+                                                                            <span
+                                                                                style="color: #269681;padding-right:10px;">$$</span>
+                                                                            <%if(Number(infoUser.point)>0){%>
+                                                                            <b><%= formatCurrency('###,###.', infoUser.point)%></b>
+                                                                            <%}else{%>
+                                                                            <b> <%= infoUser.totalAmountCommission || 0 %></b>
+                                                                            <%}%>
+                                          </li>
+                                          <li><b><%=infoUser.percentCommission * 100 %>% </b><br><span>Chiết khấu
+                                                                            </span></li>
+                                                                    </ul>
+                                                                    <!-- <a href="" class="link"></a> -->
+                                                                </div>
+                                                            </div>
+                                                            <div class="user-verify-info__item">
+                                                                <a href="" id="btnOpenListWithdraws">Lịch sử rút
+                                                                    tiền</a>
+                                                                <div class="wao-popup-edit wao-popup-withdraws">
+                                                                    <a href=""
+                                                                        class="btn-close-listWithdraws btn-close-dt">
+                                                                        <img class="icon-close"
+                                                                            src="/template/front-end-new/img/date-detail/close_icon.svg"
+                                                                            alt="">
+                                                                    </a>
+                                                                    <div class="wao-popup-edit__wrapper">
+                                                                        <p class="title wao-mb">
+                                                                            <span
+                                                                                class="close-edit-btn btn-close-listWithdraws">
+                                                                                <span></span><span></span>
+                                                                            </span>
+                                                                            Lịch sử rút tiền
+                                                                        </p>
+                                                                        <div class="content">
+                                                                            <h3 class="title-dt text-center">Lịch sử rút
+                                                                                tiền</h3>
+                                                                            <%if(!withdraws || withdraws.length === 0){%>
+                                                                            <p class="text-center">
+                                                                                Bạn chưa có lịch sử điểm thưởng nào.
+                                                                            </p>
+                                                                            <%} else {%>
+                                                                            <div class="row row-total">
+                                                                                <div class="col">
+                                                                                    <p><b>Tổng thu</b></p>
+                                                                                    <p><%= formatCurrency('###,###.', infoUser.totalAmountCommission) || 0%>
+                                                                                        VNĐ</p>
+                                                                                </div>
+                                                                                <div class="col text-right"
+                                                                                    style="text-align:right">
+                                                                                    <p><b>Tổng rút</b></p>
+                                                                                    <p><%= formatCurrency('###,###.', totalWithdraw) || 0%>
+                                                                                        VNĐ</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <%withdraws.forEach((withdrawItem, index) => {%>
+                                                                            <div
+                                                                                class="row row-listWithdraws align-items-center">
+                                                                                <div class="col">
+                                                                                    <div class="row align-items-center">
+                                                                                        <img class="row-avatar"
+                                                                                            src="/template/front-end-new/img/date-detail/user_photo_1.jpg"
+                                                                                            alt="">
+                                                                                        <p class="row-info">
+                                                                                            <b><%=infoUser.fullname %>
+                                                                                            </b>
+                                                                                            <br><%= moment(withdrawItem.createAt).format('L');%>
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-auto text-right">
+                                                                                    <p><%= formatCurrency('###,###.', withdrawItem.totalPrice) || 0%>
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <%})%>
+                                                                            <%}%>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="user-verify-info__item">
+                                <a href="/ca-nhan/lich-su-mua-hang">Lịch sử mua gói dịch vụ của bạn</a>
+                            </div>
+                            <div class="user-verify-info__item">
+                                <a href="" id="btnOpenListUserAffiliate">Người dùng đã mời</a>
+                                <div class="wao-popup-edit wao-popup-withdraw popupAffiliate">
+                                    <a href=""
+                                        class="btn-close-listWithdraws btn-close-dt">
+                                        <img class="icon-close"
+                                            src="/template/front-end-new/img/date-detail/close_icon.svg"
+                                            alt="">
+                                    </a>
+                                    <div class="wao-popup-edit__wrapper">
+                                        <p class="title wao-mb">
+                                            <span
+                                                class="close-edit-btn btn-close-listWithdraws">
+                                                <span></span><span></span>
+                                            </span>
+                                            Người dùng đã mời
+                                        </p>
+                                        <div class="content">
+                                            <h3 class="title-dt text-center">Người dùng đã mời</h3>
+                                            <%if(!userAffiliate.userLevel1 || userAffiliate.userLevel1.length === 0){%>
+                                            <p class="text-center">
+                                                Bạn chưa  mời người dùng nào.
+                                            </p>
+                                            <%} else {%>
+                                            <div class="row row-total">
+                                                <div class="col">
+                                                    <p><b>Người dùng</b></p>
+                                                </div>
+                                               
+                                                <div class="col text-right"
+                                                    style="text-align:right">
+                                                    <b>Trạng thái</b>
+                                                </div>
+                                            </div>
+                                            
+                                            <% userAffiliate.userLevel1.forEach((user) => {%>
+                                                <div
+                                                    class="row row-listWithdraws align-items-center">
+                                                    <div class="col">
+                                                        <div class="row align-items-center">
+                                                            <% let url_avatar = `/files/users/${user.avatar.name}` %>
+                                                            <img class="row-avatar"
+                                                                src=<%= url_avatar %>
+                                                                alt="avatar">
+                                                            <p class="row-info">
+                                                                <b><%=user.fullname %>
+                                                                </b>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-auto text-right">
+                                                        <% let dateUser = new Date(user.dateExpired).getTime() %> 
+                                                        <% let dateNow = Date.now() %>
+                                                        <% if(dateUser - dateNow > 0) {%>
+                                                            <b style="color : #f4b31e">Người dùng VIP</b>
+                                                        <% } else { %>
+                                                            <p>Người dùng thường</p>
+                                                        <% } %> 
+                                                    </div>
+                                                </div>
+                                            <%})%>
+                                            <%}%>
+            </div>
+                                    </div>
+                                </div>
+                            </div>
+                              <!-- <div class="user-verify-info__item">
+                                  <a>Tìm hiểu chương trình</a>
+                              </div> -->
+                          </div>
+                          <div class="user-verify-tool">
+                              <div class="user-verify-tool__item">
+
+                              </div>
+                              <div class="user-verify-tool__item">
+                                  <p class="title">Liên kết mặc định</p>
+                                  <div class="text-center">
+                                      <a class="wao-btn wao-btn-bubble copy-clipboard" style="color :#fff" title="Coppy text">
+                                          <input type="text" class="input-clipboard" readonly value="https://waodate.com/affiliate/<%=infoUser.username%>/<%=infoUser.affCode%>">
+                                                                            https://waodate.com/affiliate/<%=infoUser.username%>/<%=infoUser.affCode%>
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="user-verify-tool__item">
+                                                                        <p class="title">Công cụ chuyển</p>
+                                                                        <div class="user-verify-tool__transposter">
+                                                                            <!-- <a href="" class="wao-btn wao-btn-outline-b">Liên kết gốc</a>
+                                      <img src="/template/front-end-new/img/user-detail/long_arrow_icon.svg" alt="">
+                                      <a href="" class="wao-btn wao-btn-outline-b">Liên kết mới</a> -->
+                                                                            <div>
+                                                                                <input type="text"
+                                                                                    placeholder="Vui lòng nhập liên kết muốn chuyển"
+                                                                                    class="form-input"
+                                                                                    id="txtLinkOrigin">
+                                                                                <a class="copy-clipboard"
+                                                                                    title="Coppy text">
+                                                                                    <input type="text"
+                                                                                        placeholder="Kết quả chuyển đổi liên kết"
+                                                                                        class="form-input"
+                                                                                        id="txtLinkReward" readonly>
+                                                                                </a>
+                                                                            </div>
+                                                                            <div class="text-center">
+                                                                                <a href=""
+                                                                                    class="btn-transport btn-submit"
+                                                                                    id="btnGenerateLinkAffiliate">Xác
+                                                                                    nhận chuyển</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="user-verify-tool__item">
+                                                                        <div class="row">
+                                                                            <div class="col-6">
+                                                                                <p class="title title__black">Liên kết
+                                                                                    gốc</p>
+                                                                            </div>
+                                                                            <div class="col-6">
+                                                                                <p class="title title__black">Liên kết
+                                                                                    đã chuyển</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        <%if(listAffiliates && listAffiliates.length){%>
+                                                                        <div class="row">
+                                                                            <div class="col-6">
+                                                                                <div class="user-verify-tool__history">
+                                                                                    <p><%= listAffiliates[0].urlOrigin%>
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-6">
+                                                                                <div class="user-verify-tool__history">
+                                                                                    <p>https://waodate.com/share-link?code=<%= listAffiliates[0].code%>
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <%}%>
+                                  <div class="user-verify-list__history">
+                                      <%listAffiliates && listAffiliates.length && listAffiliates.forEach((affiliateLink, index) => {%>
+                                                                        <%if(index !== 0){%>
+                                                                        <div class="row">
+                                                                            <div class="col-6">
+                                                                                <div class="user-verify-tool__history">
+                                                                                    <p><%= affiliateLink.urlOrigin%></p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-6">
+                                                                                <div class="user-verify-tool__history">
+                                                                                    <p>https://waodate.com/share-link?code=<%=affiliateLink.code%>
+                                                                                    </p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <%}%>
+                                      <%})%>
+                                                                    </div>
+                                                                    <%if(listAffiliates && listAffiliates.length > 1){%>
+                                                                    <div class="user-verify-tool__history text-center">
+                                                                        <a href="" class="read-more expand-history">
+                                                                            Xem thêm
+                                                                        </a>
+                                                                        <a href="" class="read-more shorten-history">
+                                                                            Thu gọn
+                                                                        </a>
+                                                                    </div>
+                                                                    <%}%>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="user-info-body">
+                        <p class="title">Xóa tài khoản</p>
+                        <p class="desc"> Đề xóa tài khoản, vui lòng nhấn vào
+                            <a href="" id="btnRemoveUser" _id="<%= infoUser && infoUser._id && infoUser._id%>">đây.</a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="mask" id="mask_avatar"></div>
+                                            <%listImagesPrivate.forEach(imageItem => {%>
+                                            <div style="display: none;">
+                                                <%if(imageItem.name.includes('http')){%>
+                                                <img class="fancybox-gallery" src="<%=imageItem.name%>" alt=""
+                                                    width="100%" height="100%" id="view_image_<%=imageItem._id%>">
+                                                <%}else{%>
+                                                <img class="fancybox-gallery" src="/files/users/<%=imageItem.name%>"
+                                                    alt="alt" width="100%" height="100%"
+                                                    id="view_image_<%=imageItem._id%>">
+                                                <%}%> 
+    </div>
+  <%})%>
+
+                                            </div>
+                                            <div class="modal_avatar" id="modal_avatar">
+                                                <div id="image-position">
+
+                                                </div>
+                                                <div class="modal_action ">
+                                                    <button class="btn_action_avatar bgr-cancel" id="btn-cancel-upload">
+                                                        <p class="text_cancel" onclick="window.location.reload()">Cancel
+                                                        </p>
+                                                    </button>
+                                                    <button class="btn_action_avatar bgr-upload" id="btn-upload">
+                                                        <p class="text_upload">Upload</p>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="mask" id="mask_cover">
+                                            </div>
+                                            <div class="modal_cover modal-content" id="modal_cover">
+                                                <div id="image-cover-position">
+
+                                                </div>
+                                                <div class="modal_action ">
+                                                    <button class="btn_action_avatar bgr-cancel"
+                                                        id="btn-cancel-upload-cover">
+                                                        <p class="text_cancel">Cancel</p>
+                                                    </button>
+                                                    <button class="btn_action_avatar bgr-upload" id="btn-upload-cover">
+                                                        <p class="text_upload">Upload</p>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+
+</main>
+
+<script>
+    var listInput = document.querySelectorAll('.eventFocus');
+
+    // khi click vào input thì mất placeholder
+    listInput.forEach(input => {
+        var valuePlaceholder;
+        input.addEventListener('focus', () => {
+            valuePlaceholder = input.placeholder
+            input.placeholder = ""
+        });
+        input.addEventListener('blur', () => {
+            input.placeholder = valuePlaceholder
+        })
+    })
+</script>

@@ -1,0 +1,99 @@
+<div class="col-12">
+    <div class="wao-pagination br-8">
+        <% if (pages > 1) { %>
+            <ul class="wao-pagination__list">
+                <% if (current == 1) { %>
+                    <!-- 
+                    <li class="wao-pagination__item wao-pagination__prev">
+                        <a class="wao-pagination__link" href="#">Trang đầu</a>
+                    </li>
+                    <li class="wao-pagination__item wao-pagination__prev">
+                        <a class="wao-pagination__link" href="#">Trước</a>
+                    </li>
+					 -->
+                <% } else { %>
+                    <li class="wao-pagination__item wao-pagination__prev pagination-start">
+                        <a class="wao-pagination__link" href="
+                        <%if(!linkpage.includes('?')){%>
+                            <%=linkpage%>?&page=1
+                        <%}else{%>
+                            <%=linkpage%>&page=1
+                        <%}%>
+                        "><</a>
+                    </li>
+                    <li class="wao-pagination__item wao-pagination__prev pagination-prev">
+                        <a class="wao-pagination__link" href="
+                            <%if(!linkpage.includes('?')){%>
+                                <%=linkpage%>?&page=<%=current-1%>
+                            <%}else{%>
+                                <%=linkpage%>&page=<%=current-1%>
+                            <%}%>
+                        ">...</a>
+                    </li>
+                <% } %>
+                <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                <% if (i !== 1) { %>
+                    <!-- <li class="wao-pagination__item"><a class="wao-pagination__link wao-pagination__dots" href="#">...</a></li> -->
+                <% } %>
+                
+                <%let iStart = Number(current) - 1%>
+                <% for (let i = iStart; i <= (Number(current) + 1) && i <= pages; i++) { %>
+                    <% if (i == current) { %>
+                        <!-- ACTIVE CLASS -->
+                        <li class="wao-pagination__item active">
+                            <a class="wao-pagination__link" href="#"><%= i %></a>
+                        </li>
+                    <% } else { %>
+                        <%if(Number(i) !== 0){%>
+                            <li class="wao-pagination__item">
+                                <a class="wao-pagination__link" href="
+                                    <%if(!linkpage.includes('?')){%>
+                                        <%=linkpage%>?&page=<%= i %>
+                                    <%}else{%>
+                                        <%=linkpage%>&page=<%= i %>
+                                    <%}%>
+                                    "><%= i %></a>
+                            </li>
+                        <%}%>
+                    <% } %>
+                    
+                    <% if (i == Number(current) + 4 && i < pages) { %>
+                        <!-- DISABLE -->
+                        <!-- <li class="wao-pagination__item"><a class="wao-pagination__link wao-pagination__dots" href="#">...</a></li> -->
+                    <% } %>
+                <% } %>
+
+                <% if (current == pages) { %>
+                    <!-- 
+                    <li class="wao-pagination__item">
+                        <a class="wao-pagination__link" href="#">Sau</a>
+                    </li>
+                    <li class="wao-pagination__item">
+                        <a class="wao-pagination__link" href="#">Trang Cuối</a>
+                    </li>
+					-->
+                <% } else { %>
+                    <%let pageNext = Number(current) + 1%>
+                    <li class="wao-pagination__item pagination-next">
+                        <a class="wao-pagination__link" href="
+                            <%if(!linkpage.includes('?')){%>
+                                <%=linkpage%>?&page=<%= pageNext%>
+                            <%}else{%>
+                                <%=linkpage%>&page=<%= pageNext%>
+                            <%}%>
+                        ">...</a>
+                    </li>
+                    <li class="wao-pagination__item pagination-end">
+                        <a class="wao-pagination__link" href="
+                            <%if(!linkpage.includes('?')){%>
+                                <%=linkpage%>?&page=<%= pages %>
+                            <%}else{%>
+                                <%=linkpage%>&page=<%= pages %>
+                            <%}%>    
+                        ">></a>
+                    </li>
+                <% } %>
+            </ul>
+        <% } %>
+    </div>
+</div>

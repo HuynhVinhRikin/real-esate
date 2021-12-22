@@ -1,0 +1,591 @@
+<style>
+  .p-main {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .p-main .wrap_item {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .p-main .wrap_title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .p-main .title {
+    font-family: "NolanNext";
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    margin-bottom: 0;
+  }
+
+  .p-main .participant_info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .p-main .avatar {
+    vertical-align: middle;
+    width: 77px;
+    height: 77px;
+    border-radius: 50%;
+  }
+
+  .p-main .text_description {
+    font-family: "NolanNext";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: 0.04em;
+    margin: 5px 0;
+    color: #828282;
+  }
+
+  .p-main .text_name {
+    margin: 5px 0;
+    font-family: "NolanNext";
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 24px;
+    display: flex;
+    align-items: center;
+    color: #000000;
+  }
+
+  .p-main .text {
+    margin-left: 20px;
+  }
+
+  .p-main .action {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .p-main .btn_action {
+    width: 141.69px;
+    height: 43px;
+    border-radius: 45px;
+    border: none;
+  }
+
+  .p-main .importance {
+    background: #000000;
+    color: #fff;
+  }
+
+  .p-main .is_feature {
+    background-color: brown;
+    opacity: 0.7;
+    color: #fff;
+  }
+
+  .p-main .accept {
+    background: #4E37D3;
+    color: #fff;
+  }
+
+  .p-main .decline {
+    background: #E5E5E5;
+    color: #828282;
+  }
+
+  .p-main .item {
+    padding: 31px 10px;
+    border-radius: 20px;
+    background-color: #FBFBFB;
+    margin-bottom: 26px;
+  }
+
+  .p-main .wrap_bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .p-main .text_center {
+    text-align: center;
+  }
+
+  .p-main .btn_view_list {
+    width: 344px;
+    height: 51px;
+    border: none;
+    color: #fff;
+    background: #4E37D3;
+    border-radius: 30px;
+    margin-top: 26px;
+    margin-bottom: 26px;
+    cursor: pointer;
+  }
+
+
+  @media (min-width: 768px) {
+    .p-main .wrap_list {
+      padding: 43px 48px;
+    }
+
+  }
+
+  @media (max-width: 768px) {
+    .p-main .action {
+      margin-top: 10px;
+    }
+
+  }
+</style>
+<main>
+  <div class="wao-date-detail">
+    <div class="wao-img">
+      <div class="left-label">
+        <a href="javascript:history.back()"><img
+            style="width: 24px;height: 24px; border-radius: 50%; padding: 5px ;background: white;"
+            src="/template/front-end-new/img/home/left-arrow.svg" alt=""></a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=<%=process.env.URL%>/<%=linkSeo%>"><img
+            src="/template/front-end-new/img/date-detail/Faceebook_icon.svg" alt=""></a>
+      </div>
+      <div class="right-label">
+        <span class="wao-mb wao-mb wao-btn wao-btn-yellow">
+          <% if(concept && concept.status === 0) {%>
+          Đang mở
+          <%} else if (concept && concept.status === 1) {%>
+          Đang đóng
+          <%}%>
+                    </span>
+                     <% if(isAuthorConcept){ %>
+          <a href="#participants" class="wao-btn" style="cursor: pointer; background: #4e37d3;">
+            <span style="color: white;"><%=(concept.participants || []).length%> đăng ký (click xem)</span>
+          </a>
+          <% }else { %>
+          <span class="wao-btn wao-btn-black-mb wao-mb">
+            <i class="fa fa-user" aria-hidden="true" style="padding: 2px 0px; margin-right: 5px;"></i>
+            <span><%=(concept.participants || []).length%> đăng ký</span>
+          </span>
+          <% } %>
+          <span class="wao-btn" style="display: flex;">
+            <img src="/template/front-end-new/img/date-detail/eye_icon.svg" alt="">
+            <%if(concept.amountView){%>
+            <%=concept.amountView%>
+            <%}%>
+                    </span>
+                </div>
+                 <div id="owl-img-concept" class=" owl-carousel" >
+                    <%if(concept.image){%>
+            <%concept.image.forEach((image, index) => {%>
+            <a href="/files/users/<%=image%>" class="fancybox-gallery wao_img_concept" data-fancybox-group="gallery">
+              <img src="/files/users/<%=image%>" alt="waodate.com" height="100%" class="wao-pc wao-mb">
+            </a>
+
+            <%})%>
+            <%}%>
+                </div>
+               
+              
+                <div class="wao-pc wao-date-desc">
+                    <h3>Mô tả về buổi hẹn</h3>
+                    <%=concept.description && concept.description%> <a href="" class="wao-popup-open"
+              data="date-more-info">Xem thêm</a>
+      </div>
+    </div>
+    <div class="wao-content">
+      <div class="wao-middle-content">
+        <div class="wao-user-content">
+          <%let objUser = _lodash.get(concept, 'author');%>
+          <a href="/nguoi-dung/thong-tin/<%= objUser.username %>">
+            <%- include ./utils/image_RENDER-header.ejs%>
+          </a>
+          <div class="wao-user-info">
+            <p class="user-name"><b><a
+                  href="/nguoi-dung/thong-tin/<%= objUser.username %>"><%= _lodash.get(concept, 'author.fullname')%>,
+                  <%= _lodash.get(concept, 'author.age')%></a></b></p>
+            
+                  <%if(provinces){%>
+                    <%if(concept.author && !Number.isNaN(Number(concept.author.province))){%>
+                            <% var infoProvince = concept.author.province < 10 ? provinces['0'+concept.author.province] : provinces[concept.author.province]%>
+                            <%if(infoProvince){%>
+                                <%if(concept.author && !Number.isNaN(Number(concept.author.district))  && Number(concept.author.district) != -1 && concept.author.district != null){%>
+                                    <% if(concept.author.district < 100) { %>
+                                        <% if(concept.author.district < 10){ %>
+                                            <%=districts["00"+concept.author.district].name_with_type%><%=", "  %>
+                                            <%=infoProvince.name%>
+                                        <% }else{ %> 
+                                            <%=districts["0"+concept.author.district].name_with_type%><%=", "  %>
+                                            <%=infoProvince.name%>
+                                        <%}%>
+                                    <% }else{  %>
+                                            <%=districts[concept.author.district].name_with_type%><%=", "  %> 
+                                            <%=infoProvince.name%>
+                                    <%}%>
+                                <%}else{%>
+                                    <%=infoProvince.name%>
+                                <%}%>
+                            <%}else{%>
+                                Chưa Cập Nhật
+                            <%}%>
+                    <%}else{%>
+                        Chưa Cập Nhật
+                    <%}%>
+                <%}%>
+                
+            <%let date = new Date(concept.createAt)%>
+            <%let day = (date.getDate() >= 10) ? `${date.getDate()}` : `0${date.getDate()}`%>
+            <%let month = (date.getMonth() + 1 >= 10) ? `${date.getMonth() + 1}` : `0${date.getMonth() + 1}`%>
+            <%let year = `${date.getFullYear()}`%>
+            <!--  <p>Đăng ngày <%= day + '/' + month + '/' + year %></p> -->
+          </div>
+          <%let flagShowButtonRequestConcept = true;%>
+          <%let flagShowButtonNotIsAuthor = true;%>
+
+          <%if(Number(concept.status) == 0){%>
+          <%if(isLogin){%>
+          <%if(listParticipants){%>
+          <%if(listParticipants.data){%>
+          <%let listParticipantsActive = listParticipants.data.filter(item => item.status != -1);%>
+          <%let userIDCurrentAccess = infoUser._id;%>
+          <%if (listParticipantsActive.find(item => item.participant._id.toString() == userIDCurrentAccess.toString())) {%>
+          <%flagShowButtonRequestConcept = false;%>
+          <%}%>
+                                    <%}%>
+          <%}%>
+                                <%if(infoUser._id.toString() == concept.author._id.toString()){%>
+          <%flagShowButtonNotIsAuthor = false;%>
+          <%}%>
+                            <%}%>
+          <%if(!flagShowButtonNotIsAuthor) {%>
+          <span class="wao-btn wao-pc wao-modal-add-item" onClick="detail_user('<%=concept.slug%>')">
+            Chỉnh sửa
+          </span>
+          <%}else if(flagShowButtonRequestConcept){%>
+          <a href="#" class="wao-btn wao-pc wao-popup-open requestParticipantion" data="wao-enjoy-date-popup"
+            _conceptid="<%=concept._id%>" _authorID='<%=concept.author._id%>'>
+            Tham gia
+          </a>
+          <%}else{%> 
+          <small>
+            <i>Bạn đã gửi yêu cầu Concept này</i>
+          </small>
+          <%}%>
+                        <%}%>
+
+          <a href="" class="wao-mb wao-like-btn wao-popup-open likeConcept 
+                        													<%if(infoUser){%>
+														<%let arrUserLikedConcept = concept.favorites.join('_');%>	
+														<%if(arrUserLikedConcept.includes(infoUser._id)){%>
+															active
+														<%}else{%>
+															
+														<%}%>
+													<%}else{%>
+														  
+                                                    <%}%>"
+                                                    " data="wao-favorite-popup" _conceptid="<%=concept._id%>">
+            <svg width="18" height="16" viewBox="0 0 18 16" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M9 16C8.74374 16 8.49669 15.9072 8.30415 15.7388C7.577 15.1035 6.87593 14.5065 6.2574 13.9799L6.25424 13.9772C4.44081 12.4332 2.87485 11.0998 1.78528 9.7863C0.567307 8.31791 0 6.92567 0 5.40473C0 3.92701 0.507156 2.56372 1.42795 1.56581C2.35973 0.556101 3.63826 0 5.02844 0C6.06747 0 7.01903 0.3282 7.8566 0.975406C8.2793 1.3021 8.66245 1.70192 9 2.16828C9.33769 1.70192 9.7207 1.3021 10.1435 0.975406C10.9811 0.3282 11.9327 0 12.9717 0C14.3617 0 15.6404 0.556101 16.5722 1.56581C17.493 2.56372 18 3.92701 18 5.40473C18 6.92567 17.4328 8.31791 16.2149 9.78616C15.1253 11.0998 13.5595 12.433 11.7463 13.9769C11.1267 14.5043 10.4245 15.1023 9.69571 15.739C9.50331 15.9072 9.25612 16 9 16Z">
+              </path>
+            </svg>
+          </a>
+        </div>
+        <p><%=concept.title && concept.title%></p>
+        <ul class="wao-content-info">
+          <li>
+            <i><img src="/template/front-end-new/img/list-by-user/calendar_icon_2.svg" alt=""></i>
+            <span class="label"><b>Ngày diễn
+                ra:</b></span><%= moment(concept.time).format('L');%>
+          </li>
+          <li>
+            <i><img src="/template/front-end-new/img/list-by-user/person_icon.svg" alt=""></i>
+            <span class="label"><b>Đối
+                tượng:</b></span>
+            <%if(concept.author){%>
+            <%if(Object.is(Number(concept.focusGender), 1)){%>
+            Nam
+            <%}else{%>
+            Nữ
+            <%}%> ,
+										<%}else{%>
+            (Giới Tính)-
+            <%}%>
+										<%if(concept.focusAge){%>
+            <%= _lodash.get(concept, 'focusAge.from', 'x')%> -
+            <%= _lodash.get(concept, 'focusAge.to', 'y')%>
+            <%}%>
+                        </li>
+                        <%if(concept && concept.address){%>
+            <%var conceptNew = concept.address.filter(Boolean);%>
+            <%conceptNew.forEach((concept, index) => {%>
+          <li>
+            <i><img src="/template/front-end-new/img/list-by-user/location_icon.svg" alt=""></i>
+            <span class="label"><b>Địa Điểm <%=index+1%>:</b></span><%=concept%>
+          </li>
+          <%})%>
+          <%}%>
+                        <li class="wao-mb">
+                            <i><img src="/template/front-end-new/img/list-by-user/tag_icon.svg" alt=""></i>
+                            <%var indexPrayer = constants.prayers.findIndex(prayer => Object.is(Number(concept.prayer), Number(prayer.value)))%>
+          <span class="label"><b>Chi
+              phí:</b></span><span><b><%= formatCurrency('###,###.', concept.cost)%> VND <br>
+              <%=constants.prayers[indexPrayer].text%></b></span>
+          </li>
+        </ul>
+        <%if(Number(concept.status) == 0){%>
+        <%if(!flagShowButtonNotIsAuthor) {%>
+        <p class="wao-mb text-center">
+          <span class="wao-btn wao-pc wao-modal-add-item" onClick="detail_user('<%=concept.slug%>')">
+            Chỉnh sửa
+          </span>
+        </p>
+        <%}else if(flagShowButtonRequestConcept){%>
+        <p class="wao-mb text-center">
+          <a href="#" class="wao-btn wao-mb wao-popup-open requestParticipantion" data="wao-enjoy-date-popup"
+            _conceptid="<%=concept._id%>" _authorID='<%=concept.author._id%>'>
+            Tham gia
+          </a>
+        </p>
+
+        <%}else{%>
+          <p class="wao-mb text-center">
+            <a href="#" class="wao-btn wao-mb">
+              Đã gửi yêu cầu
+            </a>
+          </p>
+        <%}%>
+                    <%}%>
+        <blockquote class="wao-mb">
+          <%=concept.description && concept.description%> <a href="#" class="wao-popup-open" data="date-more-info">Xem
+            chi tiết mô tả buổi
+            hẹn</a>
+        </blockquote>
+        <div class="wao-pc wao-date-summany">
+          <hr>
+          <% if (flagShowButtonNotIsAuthor) {%>
+          <p class="wao-justi-space"><span><img src="/template/front-end-new/img/list-by-user/tag_icon.svg" alt="">Kế
+              hoạch chi tiêu dự kiến: <%= formatCurrency('###,###.', concept.cost)%> VNĐ</span><a href="" class="wao-like-btn wao-popup-open likeConcept 													
+                                                    <%if(infoUser){%>
+														<%let arrUserLikedConcept = concept.favorites.join('_');%>	
+														<%if(arrUserLikedConcept.includes(infoUser._id)){%>
+															active
+														<%}else{%>
+															
+														<%}%>
+													<%}else{%>
+														
+													<%}%>" data="wao-favorite-popup" _conceptid="<%=concept._id%>" _guestID='<%=concept.author._id%>'><img
+                src="/template/front-end-new/img/date-detail/heart_icon.svg" alt="" class="icon"><img
+                src="/template/front-end-new/img/date-detail/heart_icon_active.svg" alt="" class="icon-active"></a></p>
+          <% } %>
+          <%var indexPrayer = constants.prayers.findIndex(prayer => Object.is(Number(concept.prayer), Number(prayer.value)))%>
+          <p><span class="wao-btn wao-btn-yellow">
+              <%if(Number(concept.status) == 0){%>
+              Đang Mở
+              <%}else{%>
+              Đã Đóng
+              <%}%>
+                        </span><span class="wao-btn wao-btn-black">
+                            <%=constants.prayers[indexPrayer].text%></span>
+          </p>
+        </div>
+      </div>
+      <div class="wao-photos owl-carousel">
+        <%if(images){%>
+        <%images.forEach((image, index) => {%>
+        <a href="/files/users/<%=image.name%>" class="fancybox-gallery" data-fancybox-group="gallery">
+          <img src="/files/users/<%=image.name%>" alt="waodate.com">
+        </a>
+        <%})%>
+        <%}%>
+                </div>
+            </div>
+        </div>
+
+        <% if(isAuthorConcept){ %>
+        <div id="participants" class="container p-main">
+          <div class="wrap_item">
+            <div class="wrap_title">
+              <img width="26px" height="26px" src="/template/user/img/important.svg">
+              <h3 class="title">Ưu tiên</h3>
+            </div>
+            <div class="wrap_list" id="list_participant">
+              <% if (participantsIsFeature.length > 0)  {%>
+              <% participantsIsFeature.forEach(({participant, message, _id, isFeature, status}) =>{ %>
+              <%- include ./utils/participant-item.ejs%>
+              <%})%>
+              <% } else { %>
+                <h4 style="text-align: center;">(Bạn chưa chọn người ưu tiên)</h4>
+              <% } %> 
+            </div>
+          </div>
+          <div class="wrap_item">
+            <div class="wrap_title">
+              <img width="26px" height="26px" src="/template/user/img/list.svg">
+              <h3 class="title">Đã chấp nhận</h3>
+            </div>
+            <div class="wrap_list" id="list_participant_accepted">
+              <% if (participantsConfirmed.length > 0)  {%>
+              <% participantsConfirmed.forEach(({participant, message, _id, isFeature, status}) =>{ %>
+              <%- include ./utils/participant-item.ejs%>
+              <%})%>
+              <% } else { %>
+                <h4 style="text-align: center;">(Chưa có người dùng được bạn chấp nhận)</h4>
+              <% } %> 
+            </div>
+          </div>
+          <div class="wrap_item">
+            <div class="wrap_title">
+              <img width="26px" height="26px" src="/template/front-end-new/img/nav/nav_icon_4.svg">
+              <h3 class="title">Chưa chấp nhận</h3>
+            </div>
+            <div class="wrap_list" id="list_participant_not_accept">
+              <% if (participantsNotConfirmed.length > 0)  {%>
+              <% participantsNotConfirmed.forEach(({participant, message, _id, isFeature, status}) =>{ %>
+              <%- include ./utils/participant-item.ejs%>
+              <%})%>
+              <% } else { %>
+                <h4 style="text-align: center;">(Chưa có người dùng yêu cầu tham gia)</h4>
+              <% } %> 
+            </div>
+          </div>
+          <% if(!isUserVip){ %>
+          <div class="wrap_bottom">
+            <p class="text_center"> <a href="/goi-dich-vu"><b style="color: black">Nâng cấp tài khoản </b></a> để xem
+              thêm
+              <% const totalParticipantNotYetView = (participantsNotConfirmed.length > 2) ? participantsNotConfirmed.length - 2 : participantsNotConfirmed.length %> 
+              <b><%= totalParticipantNotYetView %></b> người khác
+              đang yêu cầu tham gia cuộc hẹn này của bạn
+            </p>
+            <a href="/goi-dich-vu"><button class="btn_view_list">Nâng cấp ngay</button></a>
+          </div>
+          <% } %>
+        </div>
+        <% } %>
+
+        <div class="wao-suggest-date">
+          <div class="container wao-container">
+            <h2>Đề xuất cuộc hẹn cho bạn</h2>
+            <div class="suggest-date-row row">
+              <%if(listConceptsRandom && listConceptsRandom.length > 0){%>
+              <%listConceptsRandom.forEach(concept => {%>
+              <div class="suggest-date-col col-lg-4">
+                <div class="wao-suggest-date-item">
+                  <div class="img">
+                    <a href="/buoi-hen-ho/<%=concept.slug&& concept.slug%>">
+                      <img class="img-thumbnail" src="/files/users/<%if(concept && concept.image[0]){%><%=concept.image[0]%><%}%>
+                                            " alt="
+                                            <%if(concept && concept.title){%>
+                                                <%=concept.title%>
+                                            <%}%>
+                                        ">
+                                    </a>
+                                    <div class="user-info">
+                                        <div class="avatar">
+                                            <img src="/template/front-end-new/img/date-detail/crow.svg" alt="" class="crow">
+                                            <%let objUser = concept%>
+                                            <a href=" /nguoi-dung/thong-tin/<%= objUser.author.username %>">
+                      <%-include ./utils/image_RENDER-random.ejs%>
+                    </a>
+                  </div>
+                  <div class=" user-content">
+                    <p class="name">
+                      <%if(concept && concept.author && concept.author.fullname){%>
+                      <a style="color: white;" href="/nguoi-dung/thong-tin/<%=concept.author.username%>">
+                        <%=concept.author.fullname%>
+                      </a>
+                      <%}%>, 
+                                                <%if(concept && concept.author && concept.author.age){%>
+                      <%=concept.author.age%>
+                      <%}%>
+                                            </p>
+                                            <p class="meta"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="content">
+                                    <p class="wao-justi-space">
+                                        <span class="wao-label">
+                                            <%if(constants && constants.prayers){%>
+                      <%let indexPrayerConcept = constants.prayers.findIndex(prayer => Object.is(Number(prayer.value), Number(concept.prayer)));%>
+                      <%=constants.prayers[indexPrayerConcept].text%>
+                      <%}%>
+                                        </span> 
+                                        <!-- <span>
+                                            <%if(concept && concept.cost){%>
+                      <span><%= formatCurrency('###,###.', concept.cost)%> VNĐ</span>
+                      <%}%>
+                                        </span> -->
+                                    </p>
+                                    <p class="desc" style="overflow: hidden;
+                                        text-overflow: ellipsis;
+                                        display: -webkit-box;
+                                        -webkit-line-clamp: 2;
+                                        -webkit-box-orient: vertical;">
+                                        <a style="color: black;" href="/buoi-hen-ho/<%=concept.slug&& concept.slug%>">
+                      <%if(concept && concept.title){%>
+                      <%=concept.title%>
+                      <%}%>
+                                        </a>
+                                    </p>
+                                    <p class="meta">
+                                        <%var genderFocus = null;%>
+                      <%if(concept && concept.author && !Number.isNaN(Number(concept.author.focusGender)) && Object.is(Number(concept.author.focusGender), 1)){%>
+                      <%genderFocus = 'Cuộc hẹn dành cho Nam. '%>
+                      <%}else{%> <%genderFocus = 'Cuộc hẹn dành cho Nữ. '%>
+                      <%}%>
+                                        <%if(concept && concept.author && concept.author.focusAge && concept.author.focusAge.from && concept.author.focusAge.to){%>
+                    <p> <%=genderFocus%> Từ <%=concept.author.focusAge.from%> -
+                      <%=concept.author.focusAge.to%> </p>
+                    <%}else{%>
+                    Chưa Có Thông Tin.
+                    <%}%>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <%})%>
+                    <%}%>
+                </div>
+            </div>
+        </div>
+
+        <div class="wao-popup" id="date-more-info">
+            <div class="wao-popup-bg"></div>
+            <div class="wao-popup-container">
+                <a href="" class="wao-btn-outline wao-close-popup">Thoát</a>
+                <p><small>/Lời mời tham dự/</small><br>
+                <b><%=concept.title && concept.title%></b></p>
+                    <p><small>/Mô tả buổi hẹn/</small><br>
+                      <%=concept.description && concept.description%>
+                    </p>
+                  </div>
+                </div>
+
+
+                <!-- end popup -->
+</main>
+
+<script>
+  // DUC ANH fix chi tiet cuoc hen khong hien popup ngay 15-6-2020
+
+  document.addEventListener('DOMContentLoaded', (e) => {
+    document.querySelectorAll('a.wao-popup-open').forEach(link => {
+      link.addEventListener('click', function (e) {
+        e.preventDefault()
+        let popup = document.getElementById(`${this.getAttribute('data')}`).classList.add('active')
+      })
+      console.log(link.getAttribute('data'))
+    })
+  })
+</script>

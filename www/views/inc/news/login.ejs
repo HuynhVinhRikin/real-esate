@@ -1,0 +1,56 @@
+<main class="page-layout-1" id="newLogin">
+    <section class="wrapPageLogin">
+        <section class="pageLogin-logo">
+            <a href="/"><img class="wao-welcome-logo-desktop" src="/template/front-end-new/img/login_register/login_register_logo_page.png" alt="waodate logo"/></a>
+        </section>
+        <section class="pageSign-in">
+            <h2>Bạn sẽ được rất nhiều người ái mộ, đăng nhập để kết nối với họ</h2>
+            <div class="wao-welcome-sign-up-form">
+                <a class="wao-welcome-sign-up-input" id="login-facebook" style="border:1px solid #4e37d3" href="/facebook">
+                    <img src="/template/front-end-new/img/login_register/facebook-logo.png" style="vertical-align: bottom;margin-right: 2px;" alt="facebook">
+                    Đăng nhập bằng tài khoản facebook
+                </a>
+                <a class="wao-welcome-sign-up-input google" id="login-google" href="/google">
+                    <img src="/template/front-end-new/img/login_register/google-logo.png" style="vertical-align: bottom;margin-right: 2px;" alt="google">
+                    Đăng nhập bằng tài khoản google
+                </a>
+                <p>hoặc</p>
+                <div style="width:100%">
+                    <input class="wao-welcome-input" type="text" id="usernameLogin" placeholder="Nhập Email hoặc Username">
+                    <span class="wao-form-error-message">Có lỗi xảy ra</span> 
+                </div>
+                <div style="width:100%">
+                    <input class="wao-welcome-input hasMarTop"type="password" id="passwordLogin" placeholder="Nhập mật khẩu" style="margin-top: 29px">
+                    <span class="wao-form-error-message">Có lỗi xảy ra</span>
+                </div>
+                <span class="wao-button wao-welcome-button" id="btn-login">Đăng nhập</span>
+            </div>
+            <div class=" wao-login-footer" style="margin-top: 2rem">
+                <p style="margin-bottom: 10px; font-size: 16px;">Bạn chưa có tài khoản Waodate? <a href="/dang-ky" style="font-weight: 700; text-decoration: underline">Đăng ký</a></p>
+                <pzs>Quên mật khẩu? <a href="/quen-mat-khau" style="font-weight: 700; text-decoration: underline">Nhấn vào đây</a></pzs>
+            </div>
+        </section>
+    </section>
+
+    <div class="wao-modal-container js-wao-modal wao-modal-sign-in-up-state" id="wao-modal-sign-in-fail">
+        <div class="wao-modal-content">
+            <div class="wao-modal-img-container">
+                <figure>
+                    <img src="/template/front-end-new/img/login_register/error.svg" alt=""/>
+                    <figcaption>
+                        <h2>Ôi, rất tiếc!!</h2>
+                        <p>Đăng nhập thất bại, hiện có lỗi không xác định xảy ra trong quá trình đăng nhập. <br> Bạn vui lòng hãy thử lại trong ít phút nữa nhé!</p>
+                    </figcaption>
+                </figure>
+                <div class="modal-alert-action"><a class="wao-button wao-button-primary wao-button-fixed-width" href="/dang-nhap">Đăng nhập lại</a>
+                    <a class="close-modal-latter modal-close-button" href="javascript:void(0)">Để khi khác</a>
+                </div>
+                <div class="modal-close-button modal-close-button-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation">
+                        <path d="M12 10.586L6.707 5.293a1 1 0 0 0-1.414 1.414L10.586 12l-5.293 5.293a1 1 0 0 0 1.414 1.414L12 13.414l5.293 5.293a1 1 0 0 0 1.414-1.414L13.414 12l5.293-5.293a1 1 0 1 0-1.414-1.414L12 10.586z" fill="currentColor"></path>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

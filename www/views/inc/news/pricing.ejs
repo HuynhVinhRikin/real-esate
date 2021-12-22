@@ -1,0 +1,36 @@
+<!-- ////////////// Begin Main ////////////// -->
+<div class="wao-wrapper">
+	<div class="wao-date-buy wao-date-vip">
+		<div class="container wao-container wao-buy-container">
+			<h1 class="text-center">Nâng cấp VIP</h1>
+			<div class="wao-buy-card-list">
+				<div class="row wao-buy-card__row">
+				<%listPricing && listPricing.length > 0 && listPricing.forEach((itemPricing, index) => {%>
+					<div class="col-lg-4 wao-buy-card__col">
+						<div class="wao-buy-card wao-buy-card__silver">
+							<p class="wao-buy-card__meta">
+								<b><%=itemPricing.heading%></b><br>
+								<span><%=itemPricing.textTime%></span>
+							</p>
+							<p class="wao-buy-card__price">
+								<b><%=itemPricing.text%></b>
+								<span><%=itemPricing.descriptionDemo%></span>
+							</p>
+							<ul class="wao-buy-card__info">
+								<%-itemPricing.description%>
+							</ul>
+							<a href="#" class="wao-btn wao-btn-outline2"  _pricingID='<%=itemPricing._id%>'>
+								Chọn gói <%= itemPricing.heading %>
+							</a>
+						</div>
+					</div>
+				<% }) %>
+				</div>
+				<div style="display: flex; justify-content: center;">
+					<a href="/ca-nhan/lich-su-mua-hang"  class="wao-btn-history">Lịch sử mua hàng</a>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>

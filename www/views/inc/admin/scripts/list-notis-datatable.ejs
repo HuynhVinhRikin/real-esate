@@ -1,0 +1,49 @@
+<script>
+        var compare_dates = function(date1,date2){
+               if (date1>date2) return true;
+               else if (date1<date2) return false
+               else return true; 
+           }
+   
+           Date.prototype.addDays = function(days) {
+               var date = new Date(this.valueOf());
+               date.setDate(date.getDate() + days);
+               return date;
+           }
+   
+           let fromDate = new Date(`2019/01/01`).toISOString(), 
+               toDate = new Date(Date.now()).addDays(2).toISOString();
+           $.fn.dataTable.ext.search.push(
+               function( settings, data, dataIndex ) {
+                   // var fromDate = $('.txtFromDate').val() || new Date(`2019/01/01`).toISOString();
+                   // var toDate = $('.txtToDate').val() || new Date(Date.now()).toISOString();
+                   var dateTime = data[3]; // use data for the dateTime column
+   
+                   /**
+                    * newdate: thời gian được convert lại để có thể so sánh
+                    */
+                //    console.log({ dateTime })
+                   var newdate = dateTime.split("/").reverse().join("-");
+                   // console.log({ 
+                   //     fromDate, newdate, toDate,
+                   //     _: compare_dates(newdate, fromDate), 
+                   //     __: compare_dates(toDate, newdate)
+                   //  })
+                   if (compare_dates(newdate, fromDate) && compare_dates(toDate, newdate))
+                       return true;
+                   return false;
+               }
+           );
+    
+   
+           /**
+            * notis route
+            */ 
+            let listNotis = $("#datatable_listNotis").DataTable();
+            $('#btnFilter_datatable_listNotis').on('click', function(){
+               fromDate = $('#fromDate_datatable_listNotis').val() || new Date(`2019/01/01`).toISOString();
+               toDate = $('#toDate_datatable_listNotis').val() || new Date(Date.now()).toISOString();
+               listNotis.draw();
+           });
+   
+   </script>

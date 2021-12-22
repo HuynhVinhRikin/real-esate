@@ -1,0 +1,183 @@
+<script>
+
+	$(document).ready(function () {
+		$('#cityForm').on('change', function(e) {
+            const provinceID = $(this).val();
+            $.ajax({
+                url: `/get-district/${provinceID}`,
+                method: 'GET',
+                success: function(listDistricts) {
+                    if (listDistricts) {
+                        $('#districtForm').empty();
+                        for (let index in listDistricts) {
+                            $('#districtForm').append(`
+                                <option value="${listDistricts[index].code}">${listDistricts[index].name_with_type}</option>
+                            `);
+                        }
+                    } else {
+                        alert('Tỉnh Không Có Huyện');
+                    }
+                },
+                error: function(err){
+                    console.log(err.message)
+                }
+            })
+        });
+
+
+
+		ResizeUploads('#avatarForm', '#popup-avatar');
+		const yearFormOptions = document.querySelectorAll('#yearForm .female-only')
+		const maleCheck = document.querySelector('#male')
+		const signInStep4 = document.querySelector('#sign-in-step-4')
+
+		signInStep4.addEventListener('click', (e) => {
+			if (maleCheck.checked) {
+				console.log('checked')
+				yearFormOptions.forEach(e => e.remove())
+			}
+		})
+
+		$('#btn-avatar-form').on('click', function () {
+			$('#avatarForm').trigger('click');
+		});
+	6
+		var avatar = {
+			name: 'avatar',
+			viewport: {
+				width: 300,
+				height: 300,
+			},
+			result: {
+				width: 350,
+				height: 350,
+			},
+			boundary: {
+				width: 300,
+				height: 300
+			},
+			notifications: {
+				success: 'Cập Nhật Ảnh Thành Công',
+				error: 'Lỗi Upload Ảnh'
+			}
+		}
+		CropImage.init(
+			'#avatarForm',
+			'#btn-avatar-form label',
+			'#avatarFormImg',
+			avatar
+		);
+
+
+
+
+		const getFormRegister = () => {
+			const fullname = $('#usernameForm').val();
+			const email = $('#emailFormRegister') &&  $('#emailFormRegister').val() ? $('#emailFormRegister').val().toLowerCase() : 'example@gmail.com';
+			const age = caculatorAge($('#dayForm').val(), $('#monthForm').val(), $('#yearForm').val());
+			const province = $('#cityForm').val();
+			const district = $('#districtForm').val();
+			const gender = $("input[name=gender]:checked").val();
+			const username = $('#usernameForm').val();
+			const phone = $('#phoneForm').val();
+			const password = $('#passwordForm').val();
+			return { fullname, gender, email, age, username, password, province, district, phone };
+		};
+		const data = getFormRegister();
+
+
+
+		$('#usernameForm').keyup(function () {
+			let val = $(this).val();
+			let valConvert = removeUtf8AndJoinSpace(val);
+			$(this).val(valConvert);
+		})
+
+
+
+		const SignUpStep = async () => {
+			let current_fs, next_fs, previous_fs;
+			$('#step-first').on('click', function () {
+				checkMail($('#emailFormRegister'), `/check-mail-existenced`).then(() => {
+					$('#emailFormRegister').removeClass("is-error");
+					$('.sign-up-page').removeClass('active');
+					$('.wao-sign-up-page').addClass('active');
+					$('#btn-trigger-register-step-1-success').trigger('click');
+				});
+
+			})
+			const stepNavigation = "#progressSignUp ul li";
+			let currentSection = $(stepNavigation).parents('.wao-sign-up-page').find('section.wao-sign-up-step');
+			$(".wao-sign-up-page .wao-button-next").click(async function () {
+				current_fs = $(this).parents("section.wao-sign-up-step");
+
+				const validateUsername = current_fs.find("#usernameForm");
+				const validateEmail = current_fs.find("#emailForm");
+				const validatePassword = current_fs.find("#passwordForm");
+				const validateRePassword = current_fs.find("#confirmPasswordForm");
+				const validatePhone = current_fs.find("#phoneForm");
+
+				if (counter === 1) {
+					// console.log(await checkUserName(validateUsername));
+					checkUserName('usernameForm').then(() => {
+						checkPassword(validatePassword, validateRePassword) && $('#btn-trigger-register-step-2-success').trigger('click') && onNext(current_fs, stepNavigation, currentSection);
+					})
+
+				} else if (counter === 2) {
+					$('#btn-trigger-register-step-3-success').trigger('click')
+					onNext(current_fs, stepNavigation, currentSection);
+				} else if (counter === 3) {
+					checkPhone('#phoneForm').then(() => {
+						checkDate($('#dayForm').val(), $('#monthForm').val(), $('#yearForm').val()) && checkProvince('cityForm') && $('#btn-trigger-register-step-4-success').trigger('click') && onNext(current_fs, stepNavigation, currentSection);
+					});
+				}
+			});
+
+			$(".wao-sign-up-action .wao-button-previous").click(function () {
+				current_fs = $(this).parents("section.wao-sign-up-step");
+				onPrev(current_fs, stepNavigation);
+			});
+
+			$(".submit").click(function () {
+				return false;
+			});
+		};
+		$('#btn-register-submit').on('click', function (e) {
+			checkAvatar('#avatarFormImg').then(() => {
+				let data = getFormRegister();
+				var avatarVal = $('#avatarFormImg').attr('src');
+				var blob = base64ToBlob(avatarVal, 'image/jpeg');
+				var fd = new FormData();
+				fd.append('avatar', blob);
+				fd.append('data', JSON.stringify(data));
+				$.ajax({
+					url: `/dang-ky`,
+					method: 'POST',
+					data: fd,
+					processData: false,
+					contentType: false,
+					success: function (resp) {
+						if (resp.error) {
+							openPopup('#wao-modal-sign-up-fail .wao-modal-content');
+						} else {
+							$('#btn-trigger-register-success').trigger('click');
+							openPopup('#wao-modal-sign-up-success .wao-modal-content');
+							// setTimeout(() => {
+							// 	return window.location.href = `/dang-nhap`;
+							// }, 2000);
+						}
+					},
+					error: function (err) {
+						return toastr['error']('Đăng Ký Thất Bại', 'Thông Báo');
+					}
+				});
+			})
+
+
+		});
+		SignUpStep();
+		$('.wao-modal-backdrop, .modal-close-button').on('click', function () {
+			removePopup();
+		})
+	});
+</script>

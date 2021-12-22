@@ -1,0 +1,28 @@
+<div class="dataTables_length" id="datatable_length">
+    <label> 
+        SL
+        <select name="datatable_length" aria-controls="datatable" class="custom-select custom-select-sm form-control form-control-sm" id="select_datatable_length">
+            <option value="10" <% if (perPage && perPage == 10 ) { %>
+                selected
+            <% } %> >10</option>
+            <option value="25" <% if (perPage && perPage == 25 ) { %>
+                selected
+            <% } %> >25</option>
+            <option value="50"  <% if (perPage && perPage == 50 ) { %>
+                selected
+            <% } %> >50</option>
+            <option value="100" <% if (perPage && perPage == 100) { %>
+                selected
+            <% } %> >100</option>
+            <option value="200" <% if (perPage && perPage == 200) { %>
+                selected
+            <% } %> >200</option>
+            <option value="500" <% if (perPage && perPage == 500) { %>
+                selected
+            <% } %> >500</option>
+            <option value="1000" <% if (perPage && perPage == 1000) { %>
+                selected
+            <% } %> >1000</option>
+        </select> 
+    </label>
+</div>

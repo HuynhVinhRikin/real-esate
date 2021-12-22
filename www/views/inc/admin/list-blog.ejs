@@ -1,0 +1,389 @@
+<% moment.locale('vi') %>
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+        <br>
+        <br>
+            <div class="row">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-primary">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-verified float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Tổng Bài Viết <br><br></h6>
+                                <h4 class="mb-4">
+                                    <% if (infoOverview) { %>
+                                        <% if (infoOverview._allBlogAmount) { %>
+                                            <%= infoOverview._allBlogAmount._allBlogAmount && infoOverview._allBlogAmount._allBlogAmount %> 
+                                        <% }else{ %>
+                                            0
+                                        <% } %>
+                                    <% }else{
+                                        0
+                                    } %>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tổng số user mới đăng ký (trong 24h qua) -->
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-info">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-gnome float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Tổng bài biết mới nhất</h6>
+                                <h4 class="mb-4">
+                                    <% if (infoOverview) { %>
+                                        <% if (infoOverview._allBlogAmountLastest24hPosted) { %>
+                                            <%= infoOverview._allBlogAmountLastest24hPosted._allBlogAmountLastest24hPosted && infoOverview._allBlogAmountLastest24hPosted._allBlogAmountLastest24hPosted %> 
+                                        <% }else{ %>
+                                            0
+                                        <% } %>
+                                    <% }else{
+                                        0
+                                    } %>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tổng số user bị khóa -->
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-danger">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-lock float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Tổng Bài Viết đang Khoá</h6>
+                                <h4 class="mb-4">
+                                    <% if (infoOverview) { %>
+                                        <% if (infoOverview._allBlogAmountBlocked) { %>
+                                            <%= infoOverview._allBlogAmountBlocked._allBlogAmountBlocked && infoOverview._allBlogAmountBlocked._allBlogAmountBlocked %> 
+                                        <% }else{ %>
+                                            0
+                                        <% } %>
+                                    <% }else{
+                                        0
+                                    } %>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tổng số user trả phí -->
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-success">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-diamond float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Tổng bài viết đang hoạt động</h6>
+                                <h4 class="mb-4">
+                                     <% if (infoOverview) { %>
+                                        <% if (infoOverview._allBlogAmountActive) { %>
+                                            <%= infoOverview._allBlogAmountActive._allBlogAmountActive && infoOverview._allBlogAmountActive._allBlogAmountActive %> 
+                                        <% }else{ %>
+                                            0
+                                        <% } %>
+                                    <% }else{
+                                        0
+                                    } %>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <h4 class="mt-0 header-title">Bộ Lọc và Sắp Xếp</h4>
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <input class="form-control" type="text" placeholder="Lọc theo tiêu đề" id="txtSearch" <% if (search) { %>
+                                            value="<%= search.key && search.key%>"
+                                        <% } %> >
+                                    </div>
+                                </div>
+                                <hr>
+                                <br>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Ngày Xuất Bản</label>
+                                        <div class="col-md-12" >
+                                            <div class="input-daterange input-group" data-date-format="dd/mm/yyyy" id="date-range">
+                                                <input type="text" class="form-control" name="start" placeholder="Ngày Bắt Đầu" id="txtStartTime" <% if (search) { %>
+                                                    value="<%= search.starttime && search.starttime %>"
+                                                <% } %> > 
+                                                <input type="text" class="form-control" name="end" placeholder="Ngày Kết Thúc" id="txtEndTime" <% if (search) { %>
+                                                    value="<%= search.endtime && search.endtime %>"
+                                                <% } %> >
+                                            </div>
+                                        </div>
+                                         <div class="col-md-12">
+                                            <div class="card m-b-20" style="margin-top: 27px;">
+                                                <select class="form-control" id="txtTag">
+                                                    <option value="-1">Lọc Theo tag </option>
+                                                    <% if (tags && tags.length) { %>
+                                                        <% tags.forEach(tag => { %>
+                                                            <% if (tag) { %>
+                                                                <option value="<%= tag._id && tag._id %>" <% if (search) { %>
+                                                                    <% if (search.tag) { %>
+                                                                        <% if (JSON.stringify(search.tag) == JSON.stringify(tag._id)) { %>
+                                                                            selected
+                                                                        <% } %>
+                                                                    <% } %>
+                                                                <% } %>" > <%= tag.title && tag.title %></option>
+                                                            <% } %>
+                                                        <% }) %>
+                                                    <% } %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <div class="card m-b-20" style="margin-top: 27px;">
+                                                <select class="form-control" id="txtCategory">
+                                                    <option value="-1">Lọc Theo Chuyên Mục </option>
+                                                    <% if (categories && categories.length > 0) { %>
+                                                        <% categories.forEach(category => { %>
+                                                            <% if (category) { %>
+                                                                <option value="<%= category._id && category._id %>" <% if (search) { %>
+                                                                    <% if (search.category) { %>
+                                                                        <% if (JSON.stringify(search.category) == JSON.stringify(category._id)) { %>
+                                                                            selected
+                                                                        <% } %>
+                                                                    <% } %>
+                                                                <% } %>" > <%= category.title && category.title %>(<%=category.parent  && category.parent.title%>)</option>
+                                                            <% } %>
+                                                        <% }) %>
+                                                    <% } %>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="card m-b-20" style="margin-top: 27px;">
+                                                <select class="form-control" id="txtAuthor">
+                                                    <option value="-1">Lọc Theo Tác gỉa </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <div class="card m-b-20" style="margin-top: 27px;">
+                                                <select class="form-control" id="txtSort">
+                                                <option value="-1">Lọc Theo Status</option>
+                                                <option value="1" <% if (search) { %>
+                                                    <% if (search.status && search.status == 1) { %>
+                                                        selected
+                                                    <% } %>
+                                                <% } %> >Hoạt Động</option>
+                                                <option value="0" <% if (search) { %>
+                                                     <% if (search.status && search.status == 0) { %>
+                                                        selected
+                                                    <% } %>
+                                                <% } %> >Không Hoạt Động</option>
+                                            </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="card m-b-20" style="margin-top: 27px;">
+                                                <select class="form-control" id="txtView">
+                                                    <option value="-1">Lọc Theo View</option>
+                                                    <option value="amountView" <% if (search) { %>
+                                                        <% if (search.sortView) { %>
+                                                            <% if (search.sortView == "amountView") { %>
+                                                                selected
+                                                            <% } %>
+                                                        <% } %>
+                                                    <% } %> >Lượt Xem Tăng Dần</option>
+                                                    <option value="-amountView" <% if (search) { %>
+                                                        <% if (search.sortView == "-amountView") { %>
+                                                                selected
+                                                        <% } %>
+                                                    <% } %> >Lượt Xem Giảm Dần</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <span class="text-center"> 
+                                        <i>
+                                            <% if (!Number(Number.isNaN(amountResult))) { %>
+                                                Có <strong style="color: #29bbe3"><%= amountResult || 0%></strong> kết quả trả về 
+                                            <% } %>
+                                        </i>
+                                    </span>
+                                    <button class="btn btn-info float-right" id="btnSearch">Tìm Kiếm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <table class="content-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        STT <input type="checkbox" name="#" value="" id="checkAll">
+                                    </th>
+                                    <th>Index</th>
+                                    <th>Ngày Xuất Bản</th>
+                                    <th>Ngày Chỉnh Sửa</th>
+                                    <th>Tiêu Đề</th>
+                                    <!-- <th>Mô Tả Ngắn</th> -->
+                                    <th>Danh Mục</th>
+                                    <th>Lượt Xem</th>
+                                    <th>Ngôn ngữ</th>
+                                    <th>Trạng Thái</th>
+                                    <th>Tuỳ Chọn</th>
+                                </tr>
+                            </thead>
+                                <tbody>
+                                    <% if (blogs && blogs.length > 0) { %>
+                                        <% blogs.forEach(( blog, index ) => { %>
+                                            <%if (blog){%>
+                                                <tr>
+                                                    <th>
+                                                        <%= index + 1 %> &nbsp <input type="checkbox" value="<%= blog._id && blog._id %>" class="ckbBlogID">
+                                                    </th>
+                                                    <td>
+                                                      <div class="form-check" style="display: flex; align-items: center;">
+                                                        <input type="checkbox" class="form-check-input index_seo" data-blog="<%=blog._id %> "
+                                                          <% if(blog.seo !== 1){%>
+                                                            checked
+                                                          <% } %>  
+                                                        >
+                                                      </div>
+                                                    </td>
+                                                     <td>
+                                                        <i>
+                                                            <% if (blog.createAt) { %>
+                                                               <%= moment(blog.createAt).format('L'); %>
+                                                            <% } %>
+                                                        </i>
+                                                    </td>
+                                                    <td>
+                                                        <i>
+                                                            <% if (blog.createAt) { %>
+                                                               <%= moment(blog.modifyAt).format('L'); %>
+                                                            <% } %>
+                                                        </i>
+                                                    </td>
+                                                    <td>
+                                                        <a href="/blog/<%=blog.slug%>" target="_blank">
+                                                            <i>
+                                                                <%= blog.title && blog.title %>
+                                                            </i>
+                                                        </a>
+                                                    </td>
+                                                    <!-- <td>
+                                                        <i>
+                                                            <%= blog.description && blog.description %>
+                                                        </i>
+                                                    </td> -->
+
+                                                    <td>
+                                                        <i><%
+                                                            let cateTileParent = '';
+                                                            categories.forEach(item=>{
+                                                                if( blog.category.parent && item._id.toString() == blog.category.parent.toString()){
+                                                                    cateTileParent = item.title
+                                                                }
+                                                            })
+                                                            %>
+                                                           <%= blog.category && blog.category.title%>(<%=  cateTileParent%>)
+                                                        </i>
+                                                    </td> 
+                                                     <td>
+                                                        <i>
+                                                            <%= blog.amountView && blog.amountView%>
+                                                        </i>
+                                                    </td> 
+                                                    <td>
+                                                       <%= blog.lang || ''%>
+                                                    </td>
+                                                    <td>
+                                                        <% if (blog.status) { %>
+                                                            <span class="badge badge-pill badge-success">
+                                                                Hoạt Động
+                                                            </span>
+                                                        <% } else{ %>
+                                                            <span class="badge badge-danger">
+                                                                Không Hoạt Động
+                                                            </span>
+                                                        <% } %>
+                                                    </td>
+                                                    <td>
+                                                        <div class="btn-group mb-2">
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light" id="btnDropDownBlog_<%= blog._id && blog._id %>">
+                                                                Thao Tác
+                                                            </button>
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light dropdown-toggle-split dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <span class="sr-only">...</span>
+                                                            </button>
+                                                            <div class="dropdown-menu" x-placement="right-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(143px, 0px, 0px);">
+                                                                <a class="dropdown-item" href="/admin/update-blog/<%= blog && blog.slug %>">Sửa Thông Tin</a>
+                                                                <% if (blog && blog.status) { %>
+                                                                    <a class="dropdown-item btnBlockUser btnToggleStatus" _status="0" _slug="<%= blog && blog.slug %>" >Tắt Hoạt Động</a>
+                                                                <% }else{ %>
+                                                                    <a class="dropdown-item btnBlockUser btnToggleStatus" _status="1" _slug="<%= blog && blog.slug %>" >Bật Hoạt Động</a>
+                                                                <% } %>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <%}%>
+                                        <% }) %>
+                                    <% } %>
+                                </tbody>
+                                <div class="row">
+                                    <div class="col-md-6"> 
+                                        <%- include ./utils/data-table-length.ejs%>
+                                        <div class="dropdown mo-mb-2" id="dropdownMenuRemoveBlog" style="display: none">
+                                            <a class="btn btn-light dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Chọn Thao Tác
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 33px, 0px);">
+                                                <a class="dropdown-item" id="btnRemoveWithListBlog" href="#">Xóa</a>
+                                                <a class="dropdown-item btnUpdateWithListBlog" _status="0" href="#">Tắt Hoạt Động</a>
+                                                <a class="dropdown-item btnUpdateWithListBlog" _status="1" href="#">Mở Hoạt Động</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!-- PAGING (WEB ADMIN) -->
+                                        <%- include ./utils/paging.ejs%>
+                                        <!--END PAGING (WEB ADMIN) -->
+                                    </div>
+                                </div>
+                            </table>
+                            <!-- PAGING (WEB ADMIN) -->
+                            <%- include ./utils/paging.ejs%>
+                            <!--END PAGING (WEB ADMIN) -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

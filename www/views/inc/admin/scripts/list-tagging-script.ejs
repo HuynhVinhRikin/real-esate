@@ -1,0 +1,103 @@
+<script>
+    $(document).ready(function(){
+        $('.btnToggleStatus').on('click', function(){
+            let slug   = $(this).attr('_slug');
+            let status = $(this).attr('_status');
+            $.ajax({ 
+                url: `/admin/update-status-tagging/${slug}`,
+                method: 'POST',
+                data: { status },
+                // beforeSend: function (xhr) {
+                //     xhr.setRequestHeader("Authorization", 'Bearer '+ token);
+                // },
+                success: function(resp){
+                    location.reload();
+                },
+                error: function(){
+                    alert('ERROR');
+                }
+            })
+        })
+        
+        let getFormSearchAndFilter = ()=>{
+            let key = $('#txtSearch').val();
+            let status = $('#txtSort').val();
+            let amountItemShow = $('#select_datatable_length').val();
+
+            return { key, status, amountItemShow };
+        }
+
+        $('#btnSearch').on('click', function(e){
+            e.preventDefault();
+            let { key, status, amountItemShow } = getFormSearchAndFilter();
+            let uri = `/admin/list-tagging?`;
+            if(key && key.length > 0) uri += `&key=${key}`;
+            if(status != -1 && !Number.isNaN(Number(status))) uri += `&status=${status}`;
+            <%- include ./checkPerPageCurrent.ejs %>
+            return window.location.href = uri;
+        })
+
+        /*
+        *  CODE BEGIN CHECKBOX UPDATE STATUS CATEGORY
+        */
+        //checked item
+
+        let taggingIdArr = [];
+        $('.ckbTaggingID').on('click', function(){
+            let taggingID = $(this).val();
+            if($(this).is(':checked')){
+                taggingIdArr.push(taggingID);
+            }else{
+                if(taggingIdArr.includes(taggingID)){
+                    taggingIdArr.splice(taggingIdArr.indexOf(taggingID), 1);
+                }
+            }
+
+            if(taggingIdArr.length > 0){
+                $('#dropdownMenuOptionTagging').show();
+            }else{
+                $('#dropdownMenuOptionTagging').hide();
+            }
+        })
+        //checked all
+        $('#checkAll').on('change', function(){
+            if($(this).is(':checked')){
+                $('.ckbTaggingID').prop('checked', true);
+                $('.ckbTaggingID:checked').each(function(){
+                    $('#dropdownMenuOptionTagging').show();
+                    taggingIdArr.push(this.value);
+                })
+            }else{
+                $('.ckbTaggingID').prop('checked', false);
+                $('#dropdownMenuOptionTagging').hide();
+                taggingIdArr = []
+            }
+        })
+
+        /*
+        *  CODE END CHECKBOX UPDATE STATUS CATEGORY
+        */
+        $('.btnUpdateStatusWithListTagging').on('click', function(e){
+            e.preventDefault();
+            if (taggingIdArr.length === 0) 
+                return alert('Vui Lòng Chọn ít nhất 1 Danh Mục');
+            let status = Number($(this).attr('_status'));
+            $.ajax({
+                url: `/admin/update-status-list-tagging`,
+                method: 'POST',
+                data: { arrTaggingID: taggingIdArr, status },
+                success: function(resp){
+                    if(!resp.error){
+                        alert('Cập Nhật Thành Công');
+                        return window.location.reload(true);
+                    }else{
+                        alert('Cập Nhật Thất Bại');
+                    }
+                },
+                error: function(){
+                    alert('Cập Nhật Thất Bại');
+                }
+            })
+        })
+    })
+</script>

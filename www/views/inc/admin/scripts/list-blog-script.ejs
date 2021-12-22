@@ -1,0 +1,184 @@
+<script>
+    $(document).ready(function(){
+        $('.btnToggleStatus').on('click', function(){
+            let slug   = $(this).attr('_slug');
+            let status = $(this).attr('_status');
+            $.ajax({ 
+                url: `/admin/update-status-blog/${slug}`,
+                method: 'POST',
+                data: { status },
+                // beforeSend: function (xhr) {
+                //     xhr.setRequestHeader("Authorization", 'Bearer '+ token);
+                // },
+                success: function(resp){
+                    location.reload();
+                },
+                error: function(){
+                    alert('ERROR');
+                }
+            });
+        });
+
+        let arrBlogID = [];
+        let getFormSearchAndFilter = () => {
+            let key = $('#txtSearch').val();
+            let starttime = $('#txtStartTime').val();
+            let endtime = $('#txtEndTime').val();
+            let category = $('#txtCategory').val();
+            let tag = $('#txtTag').val();
+            let author = $('#txtAuthor').val();
+            let sortView = $('#txtView').val();
+            let status = $('#txtSort').val();
+            /*
+            * so luong item hien thi
+            */
+            let amountItemShow = $('#select_datatable_length').val();
+
+            return { key, starttime, endtime, category, tag, author, sortView, status, amountItemShow };
+        }
+
+        let buildAndGoURI = () =>{
+            let { key, starttime, endtime, category, tag, author, sortView, status, amountItemShow } = getFormSearchAndFilter();
+            let uri = `/admin/list-blog?`;
+            if(key) uri += `&key=${key}`;
+
+            if(starttime && endtime) uri += `&starttime=${starttime}&endtime=${endtime}`
+            if(category != -1) uri += `&category=${category}`;
+            if(tag != -1) uri += `&tag=${tag}`;
+            if(author   != -1) uri += `&author=${author}`;
+            if(sortView != -1) uri += `&sortView=${sortView}`;
+            if(status   != -1 && !Number.isNaN(Number(status))) uri += `&status=${status}`;
+            <%- include ./checkPerPageCurrent.ejs %>
+
+            return window.location.href = uri;
+        }
+        $('#btnSearch').on('click', function(e){
+            e.preventDefault();
+            buildAndGoURI();
+        })
+
+        $('.ckbBlogID').on('click', function(e){
+            let blogID = $(this).val();
+            if($(this).is(':checked')){
+                arrBlogID.push(blogID);
+            } else {
+                if(arrBlogID.includes(blogID)){
+                    arrBlogID.splice(arrBlogID.indexOf(blogID), 1);
+                }
+            }
+            if(arrBlogID.length > 0)
+            {
+                $('#dropdownMenuRemoveBlog').show(500);
+            }else{
+                $('#dropdownMenuRemoveBlog').hide(500);
+            }
+            console.log(arrBlogID);
+        })
+
+        $('#checkAll').on('change', function(){
+            if ($(this).is(":checked")) {
+                $('.ckbBlogID').prop('checked', true);
+                $('.ckbBlogID:checked').each(function() {
+                    arrBlogID.push(this.value);
+                });
+                $('#dropdownMenuRemoveBlog').fadeIn(500);
+            } else {
+                $('.ckbBlogID').prop('checked', false);
+                arrBlogID = [];
+                $('#dropdownMenuRemoveBlog').fadeOut(500);
+            }
+        });
+
+        $('#btnRemoveWithListBlog').on('click', function(e){
+            e.preventDefault();
+            if (arrBlogID.length === 0) 
+                return alert('Vui Lòng Chọn ít nhất 1 Bài Viết');
+
+            swal({
+                title: "Bạn có chắc chắc xóa?",
+                text: "Bạn sẽ không thể khôi phục tập tin này!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Xác nhận!",
+                closeOnConfirm: false
+                },function(){
+                    $.ajax({
+                        url: '/admin/remove-list-blog',
+                        method: "post",
+                        data: {
+                            arrBlogsID: arrBlogID
+                        },
+                        success: function(resp) {
+                            if (resp.error)
+                                return alert('Xóa Thất Bại');
+                            swal("Xóa thành công!", "", "success");
+                            return window.location.reload(true);
+                        }, error: function(err) {
+                            console.log({ err });
+                        }
+                    }) 
+            });
+        });
+
+        $('.btnUpdateWithListBlog').on('click', function(e){
+            e.preventDefault();
+            if (arrBlogID.length === 0) 
+                return alert('Vui Lòng Chọn ít nhất 1 Bài Viết');
+
+            const status = Number($(this).attr('_status'));
+            $.ajax({
+                url: '/admin/update-status-list-blog',
+                method: "post",
+                data: {
+                    arrBlogsID: arrBlogID,
+                    status
+                },
+                success: function(resp) {
+                    if (resp.error)
+                        return alert('Cập Nhật Thất Bại');
+                    alert('Cập Nhật Thành Công');
+                    return window.location.reload(true);
+                }, error: function(err) {
+                    console.log({ err });
+                    return alert('Cập Nhật Thất Bại');
+                }
+            }) 
+        })
+    
+        $(".index_seo").change(function(e) {
+          e.preventDefault();
+          const index = this.checked ? 0 : 1;
+          const self = this;
+          const blogID = $(self).attr("data-blog");
+            swal({
+                title: `Bạn có muốn ${this.checked ? "chọn" : "huỷ"} index bài này?`,
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Xác nhận!",
+                closeOnConfirm: false
+                },function(isConfirm){
+                  if(isConfirm){
+                    $.ajax({
+                        url:  `/admin/update-index-blog/${blogID}`,
+                        method: "post",
+                        data: {
+                            index
+                        },
+                        success: function(resp) {
+                            if (resp.error)
+                                return swal("Cập nhật thất bại!", "", "fail");
+                            swal("Cập nhật thành công!", "", "success");
+                        }, error: function(err) {
+                          self.checked = !self.checked
+                          swal("Cập nhật thất bại!", "", "fail");
+                        }
+                    });
+                    return;
+                  };
+                  self.checked = !self.checked
+            });
+        });
+    })
+</script>

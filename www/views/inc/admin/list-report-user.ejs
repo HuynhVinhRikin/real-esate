@@ -1,0 +1,141 @@
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+            <br>
+            <div class="row">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-primary">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-verified float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Tổng Báo Cáo <br><br></h6>
+                                <h4 class="mb-4">
+                                    <% if (infoOverview) { %>
+                                        <%= infoOverview.reportAmount%>
+                                    <% } %>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="row">
+                 <div class="col-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <div class="row">
+                                <h4 class="mt-0 header-title" style="padding-left: 16px">Bộ Lọc và Sắp Xếp</h4>
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <div class="col-sm-8">
+                                            <input class="form-control" type="text" placeholder="Lọc theo tên user" id="txtKey" <% if (search) { %>
+                                                value="<%= search.key && search.key %>"
+                                            <% } %> >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <span class="text-center"> 
+                                        <i>
+                                            <% if (amount) { %>
+                                                Có <strong style="color: #29bbe3"><%= amount || 0 %></strong> kết quả trả về 
+                                            <% }else{ %>
+                                                Có <strong style="color: #29bbe3"><%= amount || 0 %></strong> kết quả trả về 
+                                            <% } %>
+                                        </i>
+                                    </span>
+                                    <button class="btn btn-info float-right" id="btnSearch">Tìm Kiếm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="table-responsive">
+                                    <div class="row">
+                                        <div class="col-md-6"><%- include ./utils/data-table-length.ejs%></div>
+                                        <div class="col-md-6"><%- include ./utils/paging.ejs%></div>
+                                    </div>
+                                    <table class="content-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Người report</th>
+                                                    <th>Người bị report</th>
+                                                    <th>Lý Do</th>
+                                                    <th>Mô Tả</th>
+                                                    <th>Hình Ảnh</th>
+                                                    <th>Trạng thái</th>
+                                                    <!-- <th>Tùy chọn</th> -->
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <%listReports && listReports.length && listReports.forEach((itemReport, index) => {%>
+                                                    <tr>
+                                                        <td><%= index + 1%></td>
+                                                        <td>
+                                                            <a href="/admin/view-user/<%=itemReport.author.username%>">
+                                                                <strong><%=itemReport.author.fullname%></strong>
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            <a href="/admin/view-user/<%=itemReport.user.username%>">
+                                                                <%=itemReport.user.fullname %>
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            <% if (reasonReportUser && reasonReportUser.length) { %>
+                                                                <% reasonReportUser.forEach(reasonReport => { %>
+                                                                    <% if (reasonReport.value == itemReport.categoryReport) { %>
+                                                                        <%= reasonReport.reason %>
+                                                                    <% } %>
+                                                                <% }) %>
+                                                            <% } %>
+                                                        </td>
+                                                        <td><%=itemReport.descriptionReport %></td>
+                                                        <td>
+                                                            <img src="/files/report/<%= itemReport.imageReport && itemReport.imageReport%>" width="200" alt="">
+                                                        </td>
+                                                        <td><% if (itemReport.status) { %>
+                                                            <span class="badge badge-pill badge-success">Đã xem</span>
+                                                        <% }else{ %>
+                                                            <span class="badge badge-pill badge-danger">Chưa Xem</span>
+                                                        <% } %></td>
+                                                        <!-- <td>
+                                                            <div class="btn-group mb-2">
+                                                                <button type="button" class="btn btn-primary waves-effect waves-light">
+                                                                    Thao Tác
+                                                                </button>
+                                                                <button type="button" class="btn btn-primary waves-effect waves-light dropdown-toggle-split dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <span class="sr-only">...</span>
+                                                                </button>
+                                                                <div class="dropdown-menu" x-placement="right-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(143px, 0px, 0px);">
+                                                                    <a class="dropdown-item" href="#">abc</a>
+                                                                        <a class="dropdown-item" _status="0">xyz</a>
+                                                                </div>
+                                                            </div>
+                                                        </td> -->
+                                                    </tr>
+                                                <%})%>
+                                        </tbody>
+                                    </table>
+                                    <%- include ./utils/paging.ejs%>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>

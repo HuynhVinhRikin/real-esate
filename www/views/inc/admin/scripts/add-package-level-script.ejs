@@ -1,0 +1,45 @@
+<script>
+        $(document).ready(function(){
+    
+            let getForm = () => {
+                let name, percentCommission, timeReset, thresholdTotatlCommission, description;
+                name = $('#txtName').val();
+                percentCommission = $('#txtPercentCommission').val();
+                timeReset = $('#txtTimeReset').val();
+                thresholdTotatlCommission = $('#txtThresholdTotatlCommission').val();
+                description = $('#txtDescription').val();
+                return { name, percentCommission, timeReset, thresholdTotatlCommission, description }
+            }
+    
+            $('#btnAddPackageLevel').on('click', function(){
+                let data = getForm();
+
+                let { 
+                    name, percentCommission, timeReset, thresholdTotatlCommission, description
+                } = data;
+
+                if (Number.isNaN(Number(percentCommission)) || Number(percentCommission) < 0 || Number(percentCommission) > 1)
+                    return alert('Vui Lòng nhập % Hoa Hồng là Số, 0.1 -> 1.0');
+                if (Number.isNaN(Number(timeReset)))   
+                    return alert('Thời Gian Reset phải là Số');
+                if (Number.isNaN(Number(thresholdTotatlCommission)))
+                    return alert('Ngưỡng User phải là Số');
+
+                $.ajax({
+                    url        : `/admin/add-package-level`,
+                    method     : 'POST',
+                    data       : data,
+                    success    : function(resp) { 
+                        if (!resp.error) {
+                            alert('THÊM THÀNH CÔNG');
+                            return window.location.href = `/admin/list-package-level`;
+                        }
+                        return alert('THÊM THẤT BẠI');
+                    },
+                    error: function(err) {
+                        return alert('THÊM THẤT BẠI');
+                    }
+                });
+            });
+        });    
+    </script>

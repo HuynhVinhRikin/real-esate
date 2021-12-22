@@ -1,0 +1,110 @@
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+            <br>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card m-b-20">
+                        <br>
+                        <div class="row" style="margin-left: 10px;">
+                            <div class="col-md-5 form-group">
+                                <label>Từ Ngày</label>
+                                <input class="form-control txtFromDate" type="date" id="fromDate_datatable_listNotis">
+                            </div>
+                            <div class="col-md-5 form-group">
+                                <label>Tới Ngày</label>
+                                <input class="form-control txtToDate" type="date" id="toDate_datatable_listNotis">
+                            </div>
+                            <div class="col-md-2 form-group" style="padding-top: 28px;">
+                                <button class="btn btn-primary" type="button" id="btnFilter_datatable_listNotis">Lọc</button>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <table id="datatable_listNotis" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>Tác Giả</th>
+                                        <th>Tiêu Đề Concept</th>
+                                        <th>Trạng Thái</th>
+                                        <th>Thời Gian</th>
+                                        <th>Người Tham Gia</th>
+                                        <th>#</th>
+                                    </tr>
+                                </thead>
+                                    <tbody>
+                                        <% if (listNotisLogConceptParticipant && listNotisLogConceptParticipant.length > 0) { %>
+                                            <% listNotisLogConceptParticipant.forEach(( notiItem, index ) => { %>
+                                                <% if (notiItem && notiItem.concept) { %>
+                                                        <tr>
+                                                            <td>
+                                                                <a href="/nguoi-dung/thong-tin/<%=notiItem.concept && notiItem.concept.author && notiItem.concept.author.username%>">
+                                                                    <%let objUser = notiItem.concept.author%>
+                                                                    <%-include ./utils/image_RENDER_ADMIN.ejs%>
+                                                                    <%=notiItem.concept.author.fullname%>
+                                                                        <%if(notiItem.concept.author.age){%>
+                                                                            - <%=notiItem.concept.author.age%>
+                                                                        <%}%>
+                                                                    <small>
+                                                                        <%=notiItem.concept.author.email%>
+                                                                    </small>
+                                                                </a>    
+                                                            </td>
+                                                            <td>
+                                                                <i>
+                                                                    <%= notiItem.concept && notiItem.concept.title%>
+                                                                </i>
+                                                                <%if(notiItem.concept.status == 2){%>
+                                                                    <br>
+                                                                    <small style="color: red;"><i>Concept đã xoá</i></small>
+                                                                <%}%>
+                                                               
+                                                            </td>
+                                                            <td>
+                                                                <% if (Number(notiItem.status) == 1) { %>
+                                                                    <span class="badge badge-pill badge-success">
+                                                                        Đã xem
+                                                                    </span>
+                                                                <% }else{ %>
+                                                                    <span class="badge badge-danger">
+                                                                        Chưa xem
+                                                                    </span>
+                                                                <% } %>
+                                                            </td>
+                                                            <td>
+                                                                <%= moment(notiItem.createAt).format('L');%>
+                                                            </td>
+                                                            <td>
+                                                                <a href="/nguoi-dung/thong-tin/<%=notiItem.participant.username%>">
+                                                                    <%objUser = notiItem.participant%>
+                                                                    <%-include ./utils/image_RENDER_ADMIN.ejs%>
+                                                                    
+                                                                    <%=notiItem.participant.fullname%>
+                                                                        <%if(notiItem.participant.age){%>
+                                                                            - <%=notiItem.participant.age%>
+                                                                        <%}%>
+                                                                    <small>
+                                                                        <%=notiItem.participant.email%>
+                                                                    </small>
+                                                                </a>
+                                                            </td>
+                                                            <td>
+                                                                <%if(notiItem.concept.status != 2){%>
+                                                                    <a href="/admin/noti-detail-flow/<%=notiItem.concept._id%>?logID=<%=notiItem._id%>" class="btn btn-outline-info btn-rounded btn-custom btn-block waves-effect waves-light">Chi Tiết 
+                                                                        <i style="padding-left: 10px" class="mdi mdi-forward"></i>
+                                                                    </a>
+                                                                <%}%>
+                                                            </td>
+                                                        </tr>
+                                                <% } %>
+                                            <% }) %>
+                                        <% } %>
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

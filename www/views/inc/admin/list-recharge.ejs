@@ -1,0 +1,242 @@
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+            <br><br>
+            <!-- TOP | THÔNG TIN CÁC BLOCK -->
+            <div class="row">
+
+                <div class="col-xl-4 col-md-6">
+                    <div class="card mini-stat bg-info">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-gnome float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Giao Dịch Chưa Thanh Toán
+                                    (<strong><%=infoStatusAwait && infoStatusAwait.count%></strong>)</h6>
+                                <h4 class="mb-4">
+                                    <%=infoStatusAwait && formatCurrency('###,###.', infoStatusAwait.totalAmount) || 0%>
+                                    VNĐ
+                                </h4>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-6">
+                    <div class="card mini-stat bg-danger">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-lock float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Giao Dịch Thất Bại
+                                    (<strong><%=infoStatusError && infoStatusError.count || 0%></strong>)</h6>
+                                <h4 class="mb-4">
+                                    <%=infoStatusError && formatCurrency('###,###.', infoStatusError.totalAmount) || 0%>
+                                    VNĐ
+                                </h4>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-6">
+                    <div class="card mini-stat bg-success">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-diamond float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Giao Dịch Thành Công
+                                    (<strong><%=infoStatusSuccess && infoStatusSuccess.count%></strong>)</h6>
+                                <h4 class="mb-4">
+                                    <%=infoStatusSuccess && formatCurrency('###,###.', infoStatusSuccess.totalAmount) || 0%>
+                                    VNĐ
+
+                                </h4>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <div class="row">
+                                <h4 class="mt-0 header-title" style="padding-left: 16px">Bộ Lọc và Sắp Xếp</h4>
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label>Ngày Xuất Bản</label>
+                                                <div>
+                                                    <div class="input-daterange input-group"
+                                                        data-date-format="dd/mm/yyyy" id="date-range">
+                                                        <input type="text" class="form-control" name="start"
+                                                            placeholder="Ngày Bắt Đầu" id="txtStartTime"
+                                                            <% if (search) { %>
+                                                            value="<%= search.starttime && search.starttime %>" <% } %>>
+                                                        <input type="text" class="form-control" name="end"
+                                                            placeholder="Ngày Kết Thúc" id="txtEndTime"
+                                                            <% if (search) { %>
+                                                            value="<%= search.endtime && search.endtime %>" <% } %>>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label>Lọc</label>
+                                                    <select class="form-control" id="txtStatus">
+                                                        <option value="-1">Lọc Theo Status</option>
+                                                        <option value="1" <% if (search) { %>
+                                                            <% if (search.status == 1) { %> selected <% } %> <% } %>>
+                                                            Đang đợi xác nhận</option>
+                                                        <option value="2" <% if (search) { %>
+                                                            <% if (search.status == 2) { %> selected <% } %> <% } %>>
+                                                            Thanh toán thành công</option>
+                                                        <option value="-1" <% if (search) { %>
+                                                            <% if (search.status == -1) { %> selected <% } %> <% } %>>
+                                                            Thanh toán thất bại</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label>Loại Dịch Vụ</label>
+                                                    <select class="form-control" id="txtTypeTransaction">
+                                                        <option value="2">Tất Cả</option>
+                                                        <option value="-1" <% if (search) { %>
+                                                            <% if (search.typeTransaction == -1) { %> selected <% } %>
+                                                            <% } %>>Gói Dịch Vụ(Gói VIP)</option>
+                                                        <option value="1" <% if (search) { %>
+                                                            <% if (search.typeTransaction == 1) { %> selected <% } %>
+                                                            <% } %>>Nổi Bậc</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <span class="text-center">
+                                        <i>
+                                            <% if (amount) { %>
+                                            Có <strong style="color: #29bbe3"><%= amount || 0 %></strong> kết quả trả về
+                                            <% }else{ %>
+                                            Có <strong style="color: #29bbe3"><%= amount || 0 %></strong> kết quả trả về
+                                            <% } %>
+                                        </i>
+                                    </span>
+
+                                    <button class="btn btn-info" id="exportListRechargePDF">
+                                        Xuất PDF
+                                        <i style="margin-left: 5px" class="dripicons-export"></i>
+                                    </button>
+                                    <button class="btn btn-info float-right" id="btnSearch">
+                                        Tìm Kiếm
+                                        <i style="margin-left: 5px" class="dripicons-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="table-responsive">
+                                    <div class="row">
+                                        <div class="col-md-6"><%- include ./utils/data-table-length.ejs%></div>
+                                        <div class="col-md-6"><%- include ./utils/paging.ejs%></div>
+                                    </div>
+                                    <table class="content-table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Người Dùng</th>
+                                                <th>----</th>
+                                                <th>Thông Tin Gói</th>
+                                                <th>Trạng Thái Thanh Toán</th>
+                                                <th>Ngày Tạo</th>
+                                                <th>Tổng Tiền</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <%listRecharges && listRecharges.length && listRecharges.forEach((itemRecharge, index) => {%>
+                                            <tr>
+                                                <% if (itemRecharge && itemRecharge.user) {%>
+                                                <td><%=index+1%></td>
+                                                <td>
+                                                    <a href="/admin/view-user/<%=itemRecharge.user.username%>">
+                                                        <strong>
+                                                            <%let objUser = itemRecharge.user%>
+                                                            <%-include ./utils/image_RENDER_ADMIN.ejs%>
+
+                                                            <%=itemRecharge.user.fullname%>
+
+                                                        </strong>
+                                                    </a>
+
+                                                </td>
+                                                <td>
+                                                    <%=itemRecharge.user.fullname%>
+                                                    <p class="m-0 text-muted font-8">
+                                                        <%=itemRecharge.user.email%>
+                                                    </p>
+                                                </td>
+                                                <td>
+                                                    <%let infoRechargePackage = rechargesPackage.find(itemPackage => Object.is(itemPackage._id, itemRecharge.pricing))%>
+                                                    <%=infoRechargePackage && infoRechargePackage.text || ''%>
+                                                    <p class="m-0 text-muted font-8">
+                                                        <%=infoRechargePackage && infoRechargePackage.pointOrigin%>
+                                                        point
+                                                        - <%=infoRechargePackage && infoRechargePackage.point%> (point
+                                                        Thưởng)
+                                                    </p>
+                                                </td>
+                                                <td>
+                                                    <%if(!Number.isNaN(Number(itemRecharge.status))){%>
+                                                    <%if(Object.is(Number(itemRecharge.status), 2)){%>
+                                                    <i class="mdi mdi-checkbox-blank-circle text-success"></i> TT Thành
+                                                    Công
+                                                    <%}else if(Object.is(Number(itemRecharge.status), 1) || Object.is(Number(itemRecharge.status), 0)){%>
+                                                    <i class="mdi mdi-checkbox-blank-circle text-warning"></i> TT Đang
+                                                    Đợi Xác Nhận
+                                                    <%}else if(Object.is(Number(itemRecharge.status), -1)){%>
+                                                    <i class="mdi mdi-checkbox-blank-circle text-warning"></i> TT Thất Bại
+                                                    <% } %>
+                                                    <%}else if(Object.is(Number(itemRecharge.status), 0)){ %>
+                                                    <i class="mdi mdi-checkbox-blank-circle text-error"></i> TT Thất Bại
+                                                    <% } %>
+                                                </td>
+                                                <td>
+                                                    <%= moment(itemRecharge.createAt).calendar();%>
+                                                </td>
+                                                <td>
+                                                    <strong>
+                                                        <%if(!Number.isNaN(Number(itemRecharge.totalPrice))){%>
+                                                        <%= formatCurrency('###,###.', itemRecharge.totalPrice)%> VNĐ
+                                                        <% } %>
+
+                                                    </strong>
+                                                </td>
+                                                <% } %>
+                                            </tr>
+                                            <%})%>
+                                        </tbody>
+                                    </table>
+                                    <%- include ./utils/paging.ejs%>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

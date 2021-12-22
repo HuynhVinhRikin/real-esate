@@ -1,0 +1,238 @@
+<%if(list_concept_of_user && list_concept_of_user.length > 0){%>
+    <% var list_user = list_concept_of_user.slice(0,6) %>
+<script>
+    localStorage.setItem("list_user",
+        JSON.stringify( <%- JSON.stringify(list_user) %>)
+    )
+</script>
+<% } %>
+<div class="wao-modal-add-profile waodate-modal">
+    <%if(list_concept_of_user && list_concept_of_user.length > 0){%>
+    <% var list_user = list_concept_of_user.slice(0,6) %>
+    
+    <%list_concept_of_user.slice(0,6).forEach(concept => {%>
+    <div class="wao-modal-add-item is-used" onClick="detail_user('<%=concept.slug%>')">
+        <img src="/template/front-end-new/img/sub_logo.svg" alt="logo">
+        <button class="wao-button">Đã sử dụng</button>
+    </div>
+    <% }) %>
+    <%(new Array(6 - list_concept_of_user.slice(0,6).length).fill(null)).forEach((concept,index) => {%>
+        <div class="wao-modal-add-item" onClick="detail_user('')">
+            <a><img src="/template/front-end-new/img/plus_icon.svg" alt=""></a>
+        </div>
+    <% }) %>
+    <% } else{%>
+    <% (new Array(6).fill(null)).forEach((concept,index) => {%>
+        <div class="wao-modal-add-item" onClick="detail_user('')">
+            <a><img src="/template/front-end-new/img/plus_icon.svg" alt=""></a>
+        </div>
+    <% }) %>
+    <% } %>
+    <div class="wao-modal-add-profile-close">Thoát</div>
+</div>
+<div class="wao-modal-form waodate-modal">
+    <div class="wao-modal-form-process">
+        <div class="process-bar"></div>
+    </div>
+    <div class="wao-modal-form-close is-active"><img src="/template/front-end-new/img/close_ico.svg" alt=""></div>
+    <div class="wao-modal-form-content">
+        <div class="wao-modal-form-step step-1">
+            <div class="wao-modal-form-step-title">Chào người quyến rũ, <br> người bạn muốn<b> gặp gỡ</b> là</div>
+            <div class="wao-modal-form-step-content">
+                <div class="wao-modal-form-select">
+                    <input class="wao-modal-form-input-select" id="male" type="radio" name="gender" value="1">
+                    <label class="wao-modal-form-label-select" for="male">
+                        <figure class="check-box-gender"></figure>
+                        <figcaption>Nam</figcaption>
+
+                    </label>
+                    <input class="wao-modal-form-input-select" id="female" type="radio" name="gender"
+                        value="0">
+                    <label class="wao-modal-form-label-select" for="female">
+                        <figure class="check-box-gender"></figure>
+                        <figcaption>Nữ</figcaption>
+
+                    </label>
+                </div>
+                <div class="wao-modal-form-range">
+                    <div class="wao-modal-form-range-title">
+                        <label for="amount">Độ tuổi:</label>
+                        <input id="amount" type="text" readonly="">
+                    </div>
+                    <div id="wao-slider"></div>
+                </div>
+            </div>
+        </div>
+        <div class="wao-modal-form-step step-2">
+            <label style="font-weight: 400;">Hãy bắt đầu bằng một <strong>lời mời chân thành</strong> (tiêu đề cuộc hẹn)</label>
+            <span class="wao-form-error-message-title">Vui lòng nhập Tiêu đề từ 20 đến 100 ký tự.</span>
+            <span class="wao-form-error-message-title1">Vui lòng không nhập số điện thoại.</span>
+            <span class="wao-form-error-message-title2">Lời nhắn của bạn không được chứa từ khóa vi phạm quy định sử dụng Waodate</span>
+            <textarea id="titleMessage" name="title" rows="2" cols="1" placeholder="" maxlength="100" style="padding: 30px 18px 14px;font-family: NolanNext; font-size: 18px"></textarea>
+            <label style="font-weight: 400;">Các <strong>hoạt động trong buổi hẹn</strong> sẽ thu hút người ấy, bạn hãy sáng tạo và mô tả thật chi tiết</label>
+            <span class="wao-form-error-message-description">Vui lòng nhập Mô tả từ 30 đến 300 ký tự.</span>
+            <span class="wao-form-error-message-description1">Vui lòng không nhập số điện thoại.</span>
+            <span class="wao-form-error-message-description2">Lời nhắn của bạn không được chứa từ khóa vi phạm quy định sử dụng Waodate</span>
+            <textarea id="titleMessage1" name="description" rows="4" cols="" placeholder="" maxlength="300" style="font-family: NolanNext; font-size: 18px"></textarea>
+        </div>
+        <div class="wao-modal-form-step step-3">
+            <div class="step-3-content">
+                <div class="wao-form-item has-label">
+                    <label style="font-size: 15; font-weight: 500">Địa điểm 1 (bắt buộc)</label>
+                    <span class="wao-form-error-message-address1" style="font-size: 13;">Vui lòng nhập Địa điểm 1.</span>
+                    <input id="addressConcept1" name="address1" class="wao-form-input" placeholder="Nhập tên, địa điểm cuộc hẹn" style="font-family: NolanNext; font-weight: 400"><span
+                        class="wao-form-error-message">Có lỗi xảy ra</span>
+                </div>
+                <div class="wao-form-item has-label">
+                    <label style="font-size: 15; font-weight: 500">Địa điểm 2 (không bắt buộc)</label>
+                    <input id="addressConcept2" name="address2" class="wao-form-input" placeholder="Nhập tên, địa điểm cuộc hẹn" style="font-family: NolanNext; font-weight: 400">
+                </div>
+                <div class="wao-form-item has-label">
+                    <label style="font-size: 15; font-weight: 500">Địa điểm 3 (không bắt buộc)</label>
+                    <input id="addressConcept3" name="address3" class="wao-form-input" placeholder="Nhập tên, địa điểm cuộc hẹn" style="font-family: NolanNext; font-weight: 400">
+                </div>
+                <div class="wao-modal-form-choose">
+                    <div class="wao-modal-wrapper-datetime">
+                        <label class="wao-modal-form-step">Thời gian</label>
+                        <input class="wao-modal-form-input-date" id="date-input" type="text" data-type="date" style="font-family: NolanNext; font-weight: 400; font-size: 14px;">
+                        <div id="material-header-holder" style="display:none">
+                            <div class="ui-datepicker-material-header">
+                                <div class="ui-datepicker-material-day"></div>
+                                <div class="ui-datepicker-material-date">
+                                    <div class="ui-datepicker-material-month"></div>
+                                    <div class="ui-datepicker-material-day-num"></div>
+                                    <div class="ui-datepicker-material-year"></div>
+                                </div>
+                            </div>
+                        </div>
+                    <span class="wao-form-error-message-time" style="font-size: 15; font-weight: 500">Vui lòng chọn thời gian.</span>
+                    </div>
+                    <div class="wao-modal-wrapper-checkbox">
+                        <label class="wao-modal-form-step dib" style="font-size: 15; font-weight: 500">Công khai cuộc hẹn</label>
+                        <label class="switch" for="checkbox">
+                            <input id="checkbox" type="checkbox" checked>
+                            <div class="slider round"></div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="wao-modal-form-step-upload">
+                <p>Hình ảnh địa điểm và không gian buổi hẹn</p>
+                <label class="wao-form-upload-item" for="wao-upload-img-1">
+                    <div class="wao-block-add-icon"><img src="/template/front-end-new/img/add_icon_2.svg" alt="">
+                    </div><img class="img-concept-label" id="wao-hidden-img-1" src="" alt="">
+                    <span class="btn-remove-img-concept" id="btn-img1"></span>
+                </label>
+                <input class="input-img" id="wao-upload-img-1" hidden type="file" accept="image/*">
+                <label class="wao-form-upload-item" for="wao-upload-img-2">
+                    <div class="wao-block-add-icon"><img src="/template/front-end-new/img/add_icon_2.svg" alt="">
+                    </div><img class="img-concept-label" id="wao-hidden-img-2" src="" alt="">
+                    <span class="btn-remove-img-concept" id="btn-img2"></span>
+                </label>
+                <input class="input-img" id="wao-upload-img-2" type="file" hidden accept="image/*">
+                <label class="wao-form-upload-item" for="wao-upload-img-3">
+                    <div class="wao-block-add-icon"><img src="/template/front-end-new/img/add_icon_2.svg" alt="">
+                    </div><img class="img-concept-label" id="wao-hidden-img-3" src="" alt="">
+                    <span class="btn-remove-img-concept" id="btn-img3"></span>
+                </label>
+                <input class="input-img" id="wao-upload-img-3" type="file" hidden accept="image/*">
+                <label class="wao-form-upload-item mr-0" for="wao-upload-img-4">
+                    <div class="wao-block-add-icon"><img src="/template/front-end-new/img/add_icon_2.svg" alt="">
+                    </div><img class="img-concept-label" id="wao-hidden-img-4" src="" alt="">
+                    <span class="btn-remove-img-concept" id="btn-img4"></span>
+                </label>
+                <input class="input-img" id="wao-upload-img-4" type="file" hidden accept="image/*">
+                <span class="wao-form-error-message-image">Vui lòng chọn ít nhất một ảnh</span>
+
+            </div>
+        </div>
+        <div class="wao-modal-form-step step-4">
+            <div class="wao-modal-form-step-area">
+                <label style="font-size: 15; font-weight: 500">Giờ là lúc làm cho trái tim người ấy chết đứ đừ rồi đây, bung hết nấc <strong>độ quyến rũ</strong> của bạn ngay nào! (không bắt buộc)</label>
+                <textarea id="Step4Content" rows="10" name="content" style="font-family: NolanNext; font-size: 18px"></textarea>
+                <span class="wao-form-error-message-content" style="display: none;">Vui lòng không nhập số điện thoại! </span>
+                <span class="wao-form-error-message-content1" style="display: none;">Lời nhắn của bạn không được chứa từ khóa vi phạm quy định sử dụng Waodate! </span>
+            </div>
+            <div class="wrapper-main-deal">
+                <div class="wao-modal-form-step-price">
+                    <label>Chi phí cuộc hẹn</label>
+                    <div class="wao-modal-form-step-price wrapper">
+                        <div class="wao-form-item">
+                            <input name="cost" type="number" class="wao-form-input" placeholder="" min="100000" max="10000000" step="500000">
+                            <span
+                                class="wao-form-error-message">Có lỗi
+                                xảy ra</span>
+                        </div>
+                        <select>
+                            <option selected>VNĐ</option>
+                            <!-- <option>USD</option> -->
+                        </select>
+                    </div>
+                    <span class="wao-form-error-message-cost">Chi phí phải nhiều hơn 100,000 VND, tối đa 10,000,000 VND</span>
+                </div>
+                <div class="wao-modal-form-step-buy">
+                    <p>Bạn sẽ chi trả</p>
+                    <div class="wrapper">
+                        <input id="pay-100" type="radio" name="pay" value="0">
+                        <label for="pay-100" class="    ">100%</label>
+                        <input id="pay-50" type="radio" name="pay" value="1" checked>
+                        <label for="pay-50" class="btn-label-1">50%</label>
+                        <input id="pay-0" type="radio" name="pay" value="2">
+                        <label for="pay-0" class="btn-label-1">0%</label>
+                        <input id="pay-negotiate" type="radio" name="pay" value="3">
+                        <label for="pay-negotiate" class="btn-label-2">Thương lượng</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wao-modal-form-action">
+        <button class="wao-modal-form-action-prev closeModal">Hủy bỏ</button>
+        <button class="wao-modal-form-action-next next step1">Tiếp tục</button>
+        <button class="wao-modal-form-action-next next step2" id="waoFormNextStep2">Tiếp tục</button>
+        <button class="wao-modal-form-action-next next step3" id="waoFormNextStep3">Tiếp tục</button>
+        <button class="wao-modal-form-action-next btn-submit" id="submit-button">Xong</button>
+    </div>
+</div>
+<div class="wao-modal-container waodate-modal wao-modal-concept-success wao-modal-sign-in-up-state is-success"
+    id="wao-modal-concept-success">
+    <div class="wao-modal-content">
+        <div class="wao-modal-img-container">
+            <figure><img src="/template/front-end-new/img/home/success_img.svg" alt="">
+                <figcaption>
+                    <h2>Wao, tuyệt vời!</h2>
+                    <p>Cuộc hẹn đã hoàn tất, bạn nên kiểm tra thông báo thường xuyên để xem tín hiệu từ người ấy. Nhớ
+                        ghé xem những cuộc hẹn khác để khám phá thêm nhiều điều bất ngờ.</p>
+                </figcaption>
+            </figure>
+            <div class="modal-alert-action">
+                <a href='/ca-nhan/danh-sach-buoi-hen-ho' class="wao-button wao-button-primary modal-close-button radius-20" id="wao-modal-success-close">Hoàn tất</a>
+               <!--  <a class="close-modal-latter modal-close-button" href="/ca-nhan/danh-sach-buoi-hen-ho">Xem lại cuộc hẹn</a> -->
+            </div>
+            <div class="modal-close-button modal-close-button-icon" id="wao-modal-success-close-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation">
+                    <path
+                        d="M12 10.586L6.707 5.293a1 1 0 0 0-1.414 1.414L10.586 12l-5.293 5.293a1 1 0 0 0 1.414 1.414L12 13.414l5.293 5.293a1 1 0 0 0 1.414-1.414L13.414 12l5.293-5.293a1 1 0 1 0-1.414-1.414L12 10.586z"
+                        fill="currentColor"></path>
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+   
+   
+    //step3
+    // $('#waoFormNextStep3').on('click', function(e){
+    //             e.preventDefault();
+    //             let message1 = $('#addressConcept1').val();
+    //             let message2 = $('#addressConcept2').val();
+    //             let message3 = $('#addressConcept3').val();
+    //             let checkaddress1 = checkphoneNumber(message1);
+    //             let checkaddress2 = checkphoneNumber(message2);
+    //             let checkaddress3 = checkphoneNumber(message3);
+    //             if(checkaddress1 || checkaddress2 || checkaddress3){
+    //                 return toastr.warning(`Vui lòng không nhập số điện thoại!`);
+    //             }
+    //         })
+    </script>

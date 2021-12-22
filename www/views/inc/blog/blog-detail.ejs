@@ -1,0 +1,180 @@
+<div class="wrapper">
+    <%-include ./utils/header_BLOG.ejs%>
+		<div id="page-content" class="page-wrapper">
+			<div class="zm-section single-post-wrap pt-30 xs-pt-30">
+			  <div class="container">
+				<div class="row">
+				  <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 columns">
+					<div class="row">
+					  <div class="col-xs-12">
+						<ul  typeof="BreadcrumbList" class="breadcrumb">
+						  <li property="itemListElement" typeof="ListItem" >
+							<a href="/" property="item" typeof="WebPage" title="" href="/" itemprop="url">Home</a>
+							<meta property="position" content="1">
+						  </li>
+						  <li>
+							<span property="itemListElement" typeof="ListItem" itemscope="">
+							  <a property="item" typeof="WebPage" title="<% if (blogInfo) { %>
+                                 <%= blogInfo.category && blogInfo.category.title && blogInfo.category.title %>
+                              <% } %>" href="/blog/<%=blogInfo.category.slug%>" class="taxonomy category" itemprop="url"> <span itemprop="title" property="name"><% if (blogInfo) { %>
+                                 <%= blogInfo.category && blogInfo.category.title && blogInfo.category.title %>
+                              <% } %> </span> </a>
+							  <meta property="position" content="2">
+							</span>
+						  </li>
+						</ul>
+						<div class="row mb-10">
+						  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="section-post-title">
+							  <h1 class="inline-block uppercase"><% if (blogInfo) { %>
+                                <%= blogInfo.title && blogInfo.title %> 
+                              <% } %></h1>
+							</div>
+							<div class="zm-post-meta">
+							  <ul>
+								<li class="s-meta"><a href="#" class="zm-author disabled1">
+									<%if(originAuthor) {%>
+										<%=originAuthor.fullname%>
+									<%}else{%>	
+										
+									<%}%>
+								</a></li>
+								<li class="s-meta"><% if (blogInfo) { %>
+                                <%= blogInfo.createAt &&  moment(blogInfo.createAt).format('L'); %> 
+                              <% } %></li>
+							  </ul>
+							</div>
+							<div class="fb-like" data-href="<%=url && url%>" data-width="" data-layout="button_count" data-action="like" data-size="large" data-show-faces="true" data-share="true"></div>
+							
+						  </div>
+						</div>
+	<!-- 					<div id="ez-toc-container" class="counter-hierarchy counter-numeric ez-toc-grey" style="transition: none !important;">
+							<div class="ez-toc-title-container" style="transition: none !important;">
+								<p class="ez-toc-title">Mục lục</p>
+								<span class="ez-toc-title-toggle" style="transition: none !important;"><a class="ez-toc-pull-right ez-toc-btn ez-toc-btn-xs ez-toc-btn-default ez-toc-toggle"><i class="ez-toc-glyphicon ez-toc-icon-toggle"></i></a></span>
+							</div>
+							<nav style="transition: none !important">
+								<ul class="ez-toc-list" id="toc" data-toc=".rich-text" data-toc-headings="h2,h3,h4" style="transition: none !important;">
+									
+								</ul>
+							</nav>
+						</div> -->
+						<p style="font-weight:bold; color:#000;" class="category-desc"><% if(blogInfo) { %>
+                            <%- blogInfo.description && blogInfo.description %> 
+                        <% } %> 
+                        </p>
+						<!--
+							<div class="posts-relate-tags posts-relate mt-10 pl-20">
+							<ul style="list-style:disc;padding-left:10px;">
+								<%blogsRefTags && blogsRefTags.length > 3 && blogsRefTags.slice(0, 3).forEach(blogInfo => {%>
+									<li><a href="/blog/<%=blogInfo.slug%>" title="<%=blogInfo.title%>"><%=blogInfo.title%></a></li>
+								<%})%>
+							</ul>
+							</div>
+						-->
+						
+
+						<article id="post-363" class="zm-post-lay-single post-363 post type-post status-publish format-standard has-post-thumbnail hentry category-waodate-tips tag-tips-hen-ho tag-tips-tinh-yeu tag-waodate-tips">
+                           <div id="content-blog">
+
+						   </div>
+						   <br>
+						   <div class="fb-like" data-href="<%=url && url%>" data-width="" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+						   	<div class="posts-relate-post  mt-20">
+								<p class="mb-10 h5"> Đọc Thêm :</p>
+								<div class="row">
+									<!-- 8 items -->
+									<%blogsRefCategories && blogsRefCategories.length && blogsRefCategories.forEach(blogInfo => {%>
+										<%-include ./utils/item_footer_ref.ejs%>
+									<%})%>
+								</div>
+							</div>
+
+							<div class="fb-comments" data-order-by="reverse_time" data-href="<%=url && url%>" data-width="" data-numposts="10"></div>
+						  <hr>
+						</article>
+						
+					  </div>
+					</div>
+				  </div>
+				  <%-include ./utils/right_bar__BLOG_DETAIL.ejs%>
+				</div>
+			  </div>
+			</div>
+		  </div>
+	 <!-- Start footer area -->
+	 <div id="footer-sidebar1">
+		
+	</div>
+		<footer id="footer" class="footer-wrapper footer-1">
+			<div class="footer-top-wrap ptb-30 bg-dark">
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-12 col-sm-4 col-md-6 col-lg-5 hidden-sm">
+							<div class="zm-widget pr-40">
+								<p class="h6 zm-widget-title uppercase text-white mb-20"> WAODATE BLOG</p>
+								<div class="zm-widget-content">
+									<p>Waodate Blog là nơi chia sẻ những tâm tư, nỗi lòng của mọi người về chuyện tình yêu, hôn nhân, gia đình...Bạn sẽ được lắng nghe, chia sẻ và thấu hiểu. Hãy cùng nhau bày tỏ tâm sự và tìm kiếm những người bạn tri kỷ tại đây nhé.</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-4 col-md-6 col-lg-3">
+							<div class="zm-widget">
+								<p class="h6 zm-widget-title uppercase text-white mb-20">Follow Waodate :</p>
+								<div class="zm-widget-content">
+									<div class="zm-social-media zm-social-1">
+										<ul>
+											<li>
+												<a target="_blank"  href="https://www.facebook.com/waodate" rel="nofollow">
+													<i class="fa fa-facebook"></i>Facebook WaoDate
+												</a>
+											</li>
+											<li>
+												<a target="_blank" class="disabled1"  href="https://twitter.com/waodate" rel="nofollow">
+													<i class="fa fa-twitter"></i>Twitter Waodate
+												</a>
+											</li>
+											<li>
+												<a target="_blank" class="disabled1" href="https://www.pinterest.com/Waodate/" rel="nofollow">
+													<i class="fa fa-pinterest"></i>Pinterest WaoDate
+												</a>
+											</li>
+											<li>
+												<a target="_blank" class="disabled1" href="https://www.instagram.com/datingwaodate/" rel="nofollow">
+													<i class="fa fa-instagram"></i>Instagram WaoDate
+												</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-4 col-md-6 col-lg-3 mb-20">
+							<div class="zm-widget pr-50 pl-20">
+								<p class="h6 zm-widget-title uppercase text-white mb-20">Chuyên mục phổ biến</p>
+								<div class="zm-widget-content">
+									<div class="zm-category-widget zm-category-1">
+										<ul style="text-transform: capitalize;">
+											<li>
+												<a href="/blog/bi-kip-hen-ho" rel="nofollow">Bí Kíp Hẹn Hò </a>
+											</li>
+											<li>
+												<a href="/blog/bi-kip-yeu" rel="nofollow">Bí Kíp Yêu </a>
+											</li>
+											<li>
+												<a href="/blog/cau-chuyen-tinh-yeu" rel="nofollow">Câu Chuyện Tình Yêu </a>
+											</li>
+											<li>
+												<a href="/blog/chuyen-tham-kin" rel="nofollow">Chuyện Thầm Kín </a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+        <!-- End footer area -->
+	</div>

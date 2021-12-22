@@ -1,0 +1,273 @@
+<header class="t-header">
+  
+    <div class="hide-pc"><button class="flat-btn t-mobile-menu-close-btn"><img src="/template/images/icon-close.svg" alt="Close" /></button></div>
+    <div class="t-header-container">
+        <a href="/" class="t-logo"><img src="/template/images/logo.png" /></a>
+        <div class="t-header-content">
+            <div class="t-menu">
+                <!-- <div class="t-menu-item">
+                    <a href="/solution"> <%- lang(langKey,'solution')%></a>
+                    <div class="t-menu-dropdown">
+                        <%listSolutionTopbar&& listSolutionTopbar.forEach(solution=>{%>
+                            <a  href="/solution/?solutionID=<%=solution._id%>&slug=<%=solution.slug%>">
+                                <img class="t-menu-dropdown-bullet" src="/template/images/icon-circle.svg" alt="Menu" />
+                                <%- lang(langKey,solution.slug)%>
+                                <img class="t-menu-dropdown-angle" src="/template/images/icon-angle-right.svg" alt="Menu" />
+                            </a>
+                        <%})%>
+                    </div>
+                </div>
+                <div class="t-menu-item">
+                    <a href="/products"> <%- lang(langKey,'product')%></a>
+                    <div class="t-menu-dropdown">
+                        <%listProductTopbar && listProductTopbar.forEach(product=>{%>
+                            <a href="/products/?productID=<%=product._id%>&slug=<%=product.slug%>">
+                                <img class="t-menu-dropdown-bullet" src="/template/images/icon-circle.svg" alt="Menu" />
+                            <%- lang(langKey,product.slug)%>
+                                <img class="t-menu-dropdown-angle" src="/template/images/icon-angle-right.svg" alt="Menu" />
+                            </a>
+                        <%})%>
+                    </div>
+                </div> -->
+                <%
+                    let activeEx ='', activeHome = '', activeContact = '';
+                    if(render.code == 'RESULT_SEARCH' || render.code == 'HOME' || render.code == 'DETAIL_BLOG'){
+                        activeHome = 'active'
+                        activeEx ='';
+                        activeContact = '';
+                    }
+                    if(render.code == 'INTRO_EXPERIENCE'){
+                        activeHome = ''
+                        activeEx ='active';
+                        activeContact = '';
+                    }
+                    if(render.code == 'INTRO_CONTACT'){
+                        activeContact = 'active'
+                        activeEx ='';
+                        activeHome = '';
+                    }
+
+                %>
+                <div class="t-menu-item">
+                    <a class = "<%= activeHome %>" href="/"> <%- lang(langKey,'home')%></a>
+                </div>
+                <div class="t-menu-item">
+                    <a class = "<%= activeEx %>" href="/experience" > <%- lang(langKey,'experience')%></a>
+                </div>
+                <div class="t-menu-item">
+                    <a class = "<%= activeContact %>" href="/contact"> <%- lang(langKey,'contact')%></a>
+                </div>
+            </div>
+
+            <div class="t-header-right-block">
+                <div class="t-header-search">
+                    <input  id = 'input-search-blog' type="text" class="form-control" placeholder="<%- lang(langKey,'keyword_search')%>" />
+                    <button id = 'btn-search-blog' class="btn"><img src="/template/images/icon-search.png" alt="Search" /></button>
+                </div>
+                <a class="t-header-hotline" href="tel:+84868898086"><img src="/template/images/icon-call.png" /><%- lang(langKey,'phone_of_us')%></a>
+                <a class="btn t-header-btn" href="https://app.trixgo.com/login"><p style=" margin-top: 5px;"><%- lang(langKey,'login')%></p></a>
+               
+                <div class="dropdown"> <%- lang(langKey,'language')%>
+                    <% let isStop%>
+                    <a href="#" data-toggle="dropdown">
+                    <% languageSettingSys.forEach((lang, index)=>{%>
+                        <%if(lang.lang.toString() === langSetting.toString() ){ %>
+                            <%isStop = 2%>
+                                <span class="hide-pc"> <%=lang.lang%></span>
+                                <img class="t-lang-img" src="<%=lang.image%>" alt="Language" />
+                        <%}else{%>
+                            <%if(index === 0 && isStop){%>
+                                <%isStop = 2%>
+                                    <span class="hide-pc"> <%=lang.lang%> <%=isStop%></span>
+                                    <img class="t-lang-img" src="<%=lang.image%>" alt="Language" />
+                            <%}%>
+                        <%}%>
+                    <%})%>
+                        <img class="t-lang-icon" src="/template/images/icon-angle-down.png" alt="Dropdown" />
+                    </a>
+                    <div class="dropdown-menu">
+                        <% languageSettingSys.forEach(lang=>{%>
+                        <a class="dropdown-item btnLangSettting" _lang = "<%=lang.lang%>">
+                            <img src="<%=lang.image%>" alt="Language" /> <%=lang.lang%>
+                        </a>
+                        <%})%>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<% if(render.code == 'INTRO_PRODUCTS_buiding'){ %>
+	<!--__________________________________MAIN CONTENT____________________________________-->
+	<div class="t-banner">
+		<img class="t-banner-bg" src="/template/images/subpage-banner-bg.png" alt="Banner" />
+		<div class="container">
+			<div class="t-banner-text">
+				<h1 class="t-banner-title">
+					<%- lang(langKey,'product')%>
+				</h1>
+				<div class="t-breadcrumbs">
+					<a href="/"><%- lang(langKey,'home')%></a>
+					<span>/</span>
+					<p><%- lang(langKey,'product')%></p>
+				</div>
+			</div>
+		</div>
+	</div>
+<%}%>
+
+<% if(render.code == 'INTRO_EXPERIENCE'){ %>
+<!--__________________________________MAIN CONTENT____________________________________-->
+<div class="t-banner">
+    <img class="t-banner-bg" src="/template/images/subpage-banner-bg.png" alt="Banner" />
+    <div class="container">
+        <div class="t-banner-text">
+            <h1 class="t-banner-title">
+                <%- lang(langKey,'experience')%>
+            </h1>
+            <div class="t-breadcrumbs">
+                <a href="/"><%- lang(langKey,'home')%></a>
+                <span>/</span>
+                <p><%- lang(langKey,'experience')%></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<%}%>
+<% if(render.code == 'DETAILS_EVENT_buiding'){ %>
+ 	<!--__________________________________MAIN CONTENT____________________________________-->
+     <div class="t-banner">
+		<img class="t-banner-bg" src="/template/images/subpage-banner-bg.png" alt="Banner" />
+		<div class="container">
+			<div class="t-banner-text">
+				<h1 class="t-banner-title">
+                    <%= infoBlog && infoBlog.title %>
+				</h1>
+				<div class="t-breadcrumbs">
+					<a href="/">  <%- lang(langKey,'home')%></a>
+					<span>/</span>
+					<a href="/solution">  <%- lang(langKey,'event')%></a>
+					<span>/</span>
+					<p> <%= infoBlog && infoBlog.title %></p>
+				</div>
+			</div>
+		</div>
+	</div>
+<%}%>
+<% if(render.code == 'INTRO_EVENT_buiding'){ %>
+    <!--__________________________________MAIN CONTENT____________________________________-->
+    <div class="t-banner">
+       <img class="t-banner-bg" src="/template/images/subpage-banner-bg.png" alt="Banner" />
+       <div class="container">
+           <div class="t-banner-text">
+               <h1 class="t-banner-title">
+               </h1>
+               <div class="t-breadcrumbs">
+                   <a href="/">  <%- lang(langKey,'home')%></a>
+                   <span>/</span>
+                   <a href="/solution">  <%- lang(langKey,'event')%></a>
+                   <span>/</span>
+                   <p></p>
+               </div>
+           </div>
+       </div>
+   </div>
+<%}%>
+<% if(render.code == 'INTRO_SOLUTION_buiding'){ %>
+    	<!--__________________________________MAIN CONTENT____________________________________-->
+	<div class="t-banner">
+		<img class="t-banner-bg" src="/template/images/subpage-banner-bg.png" alt="Banner" />
+		<div class="container">
+			<div class="t-banner-text">
+				<h1 class="t-banner-title"></h1>
+                    <%if(slug){%>
+                        <%- lang(langKey,slug)%>
+                    <%}%>
+				</h1>
+				<div class="t-breadcrumbs">
+					<a href="/"><%- lang(langKey,'home')%></a>
+					<span>/</span>
+					<a href="/solution"> <%- lang(langKey,'solution')%></a>
+                    <%if(slug){%>
+                        <span>/</span>
+                        <p>
+                                <%- lang(langKey,slug)%>
+                        </p>
+                    <%}%>
+				</div>
+			</div>
+		</div>
+	</div>
+<%}%>
+<% if(render.code == 'INTRO_CONTACT'){ %>
+	<!--__________________________________MAIN CONTENT____________________________________-->
+	<div class="t-banner">
+		<img class="t-banner-bg" src="/template/images/subpage-banner-bg.png" alt="Banner" />
+		<div class="container">
+			<div class="t-banner-text">
+				<h1 class="t-banner-title">
+					<%- lang(langKey,'contact')%>
+				</h1>
+				<div class="t-breadcrumbs">
+					<a href="/"><%- lang(langKey,'home')%></a>
+					<span>/</span>
+					<p><%- lang(langKey,'contact')%></p>
+				</div>
+			</div>
+		</div>
+	</div>
+<%}%>
+<% if(render.code == 'DETAIL_PRODUCT_BLOG'){ %>
+<!--__________________________________MAIN CONTENT____________________________________-->
+    <div class="t-banner">
+        <img class="t-banner-bg" src="/template/images/subpage-banner-bg.png" alt="Banner" />
+        <div class="container">
+            <div class="t-banner-text">
+                <h1 class="t-banner-title">
+                    <%= infoBlog && infoBlog.title %>
+                </h1>
+                <div class="t-breadcrumbs">
+                    <a href="/"><%- lang(langKey,'home')%></a>
+                    <span>/</span>
+                    <a href="/products"><%- lang(langKey,'product')%></a>
+                    <span>/</span>
+                    <p><%= infoBlog && infoBlog.title %></p>
+                </div>
+            </div>
+        </div>
+    </div>
+<%}%>
+
+<% if(render.code == 'RESULT_SEARCH'){ %>
+    <!--__________________________________MAIN CONTENT____________________________________-->
+        <div class="t-banner">
+            <img class="t-banner-bg" src="/template/images/subpage-banner-bg.png" alt="Banner" />
+            <div class="container">
+                <div class="t-banner-text">
+                    <h1 class="t-banner-title">
+                    </h1>
+                    <div class="t-breadcrumbs">
+                        <a href="/"><%- lang(langKey,'home')%></a>
+                    </div>
+                </div>
+            </div>
+    </div>
+<%}%>
+<% if(render.code == 'DETAIL_BLOG'){ %>
+    <!--__________________________________MAIN CONTENT____________________________________-->
+        <div class="t-banner">
+            <img class="t-banner-bg" src="/template/images/subpage-banner-bg.png" alt="Banner" />
+            <div class="container">
+                <div class="t-banner-text">
+                    <h1 class="t-banner-title">
+                        <%- lang(langKey,'home')%>
+                    </h1>
+                    <div class="t-breadcrumbs">
+                        <p> <%= infoBlog && infoBlog.title %></p>
+                    </div>
+                </div>
+            </div>
+    </div>
+<%}%>
+

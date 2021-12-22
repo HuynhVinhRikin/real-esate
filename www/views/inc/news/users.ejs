@@ -1,0 +1,46 @@
+<main>
+    <div class="wao-wrapper">
+        <div class="container wao-container wao-container-full-width-mb wao-mb">
+            <div class="row wao-justi-center">
+                <div class="col-12 col-lg-11">
+                    <div class="wao-banner-inner">
+                        <img src="/template/front-end-new/img/home/inner-banner.jpg" alt="">
+                        <p class="content">
+                            Buổi hẹn của bạn,<br>luật của bạn
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container wao-container">
+            <div class="row wao-content-row wao-justi-center">
+                <div class="col-lg-3 wao-content-col">
+                    <%let flagPageSearch  = 0;%>
+                    <%- include ./utils/sidebar/search__USER_ITEM.ejs%>
+                    <%- include ./utils/sidebar/image-advertisement.ejs%>
+                </div>
+                <div class="col-lg-9 wao-content-col">
+                    <div class="wao-user-card-list wao-date-card-list active">
+                        <%if(users && users.length > 0) {%>
+                            <%users.forEach(user => {%>
+                                <%- include ./utils/user/item-user__USERS.ejs%>
+                           <% })%>
+                        <%}else{%>
+                            <strong>Không tìm thấy kết quả</strong>
+                        <%}%>
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <%-include ./utils/paging.ejs%>
+            </div>
+
+        </div>
+    </div>
+   
+   
+</main>
+
+
+

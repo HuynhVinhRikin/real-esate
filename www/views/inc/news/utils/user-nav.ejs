@@ -1,0 +1,57 @@
+<div class="profile-nav profile-nav--user container-smaller container">
+    <div class="row">
+      <div class="col-12">
+        <nav class="br-8">
+          <div class="profile-nav__toggle"><i class="fa fa-bars"></i>Danh mục</div>
+          <ul class="profile-nav__list" style="display:flex">
+            <li class="profile-nav__item">
+				
+				<a class="profile-nav__link 
+              <%if(hrefCurrent.includes('/danh-sach-buoi-hen-ho')){%>
+                  profile-nav__link--active
+              <%}%>
+              " href="/ca-nhan/danh-sach-buoi-hen-ho"><h1 style="margin-bottom: 0;
+    font-size: 1.6rem;
+    line-height: 1.5;
+    font-weight: bold;
+">Buổi hẹn hò </h1></a>
+			 
+			  </li>
+
+            <li class="profile-nav__item"><a class="profile-nav__link
+              <%if(hrefCurrent.includes('/ca-nhan/hinh-anh')){%>
+                  profile-nav__link--active
+              <%}%>
+              " href="/ca-nhan/hinh-anh">Hình ảnh</a></li>
+
+            <li class="profile-nav__item">
+              <a class="profile-nav__link
+              <%if(hrefCurrent.includes('/thong-tin')){%>
+                  profile-nav__link--active
+              <%}%>
+              " href="/ca-nhan/thong-tin" rel="nofollow">
+                  Thông tin cá nhân 
+                  <%if(infoUser && infoUser.cmnd){%>
+                    <i class="fa fa-check " style="color:#5890cc"></i>
+                  <%}else{%>
+                    <i class="fa fa-exclamation-triangle" style="color:red"></i> 
+                  <%}%>
+              </a>
+              
+              </li>
+
+            <li class="profile-nav__item"><a class="profile-nav__link
+              <%if(hrefCurrent.includes('/ca-nhan/yeu-thich')){%>
+                  profile-nav__link--active
+              <%}%>
+              " href="/ca-nhan/yeu-thich" rel="nofollow">Yêu thích</a></li>
+            <li class="profile-nav__item"><a class="profile-nav__link
+              <%if(hrefCurrent.includes('/ca-nhan/luot-gioi-thieu')){%>
+                  profile-nav__link--active
+              <%}%>
+              " href="/ca-nhan/luot-gioi-thieu"> Link Giới Thiệu</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+</div>

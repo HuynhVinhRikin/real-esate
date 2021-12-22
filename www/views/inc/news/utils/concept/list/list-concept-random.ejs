@@ -1,0 +1,207 @@
+<div class="wao-user-card-list wao-date-card-list active">
+  <%if(listConceptsRandom && listConceptsRandom.length > 0){%>
+    <%listConceptsRandom.forEach(concept => {%>
+      <div class="wao-date-card">
+          <div class="left-card wao-pc">
+              <div class="card-img">
+                  <img src="/files/users/<%if(concept && concept.image){%><%=concept.image%><%}%>
+                    " alt="
+                    <%if(concept && concept.title){%>
+                      <%=concept.title%>
+                    <%}%>
+                  ">
+                  <a href="/buoi-hen-ho/<%=concept.slug&& concept.slug%>" class="wao-pc card-view-more">
+                      <img src="/template/front-end-new/img/home/arrow-down.svg" alt="">
+                      Xem chi tiết
+                  </a>
+              </div>
+          </div>
+          <div class="right-card">
+              <div class="right-top-card">
+                  <div class="card-user">
+                      <div class="user-left wao-mb">
+                          <div class="user-img card-img">
+                            <img src="/files/users/<%if(concept && concept.image){%><%=concept.image%><%}%>
+                              " alt="
+                              <%if(concept && concept.title){%>
+                                <%=concept.title%>
+                              <%}%>
+                            ">
+                              <a href="/buoi-hen-ho/<%=concept.slug&& concept.slug%>" class="wao-pc card-view-more">
+                                  <img src="/template/front-end-new/img/home/arrow-down.svg" alt="">
+                                  Xem chi tiết
+                              </a>
+                          </div>
+                      </div>
+                      <div class="user-info user-right">
+                          <a href="" class="wao-mb wao-btn wao-like-btn wao-popup-open likeGuest
+                              <%if(infoUser){%>
+                                <%var listUserLikeGuest = infoUser.usersMeLike.join(',');%>
+                                <%if(listUserLikeGuest.includes(concept.author._id)){%>
+                                    active
+                                <%}else{%>
+                                <%}%>
+                              <%}else{%>
+                              <%}%>"
+                              style='cursor: pointer;' _guestID='<%=concept.author._id%>'
+                            data="wao-favorite-popup">
+                              <svg width="14" height="13" viewBox="0 0 14 13"
+                                  xmlns="http://www.w3.org/2000/svg">
+                                  <path d="M7 12.4444C6.80069 12.4444 6.60854 12.3723 6.45879 12.2413C5.89322 11.7472 5.34795 11.2828 4.86687 10.8733L4.86441 10.8711C3.45396 9.67024 2.23599 8.63317 1.38855 7.61157C0.441238 6.46948 0 5.38663 0 4.20368C0 3.05434 0.394455 1.994 1.11063 1.21785C1.83534 0.432523 2.82976 0 3.91101 0C4.71915 0 5.45924 0.255266 6.11069 0.758649C6.43945 1.01274 6.73746 1.32371 7 1.68644C7.26265 1.32371 7.56055 1.01274 7.88942 0.758649C8.54086 0.255266 9.28096 0 10.0891 0C11.1702 0 12.1648 0.432523 12.8895 1.21785C13.6057 1.994 14 3.05434 14 4.20368C14 5.38663 13.5589 6.46948 12.6116 7.61146C11.7641 8.63317 10.5462 9.67013 9.13602 10.8709C8.65408 11.2811 8.10796 11.7462 7.54111 12.2415C7.39146 12.3723 7.1992 12.4444 7 12.4444Z"/>
+                              </svg>
+                              Yêu thích
+                          </a>
+                          <a href="/ca-nhan/tin-nhan/<%=concept.author.username%>" class="wao-mb wao-btn wao-btn-outline-b">
+                              <img src="/template/front-end-new/img/nav/nav_icon_mb_3.svg"
+                                  alt="">
+                              Nhắn tin
+                          </a>
+                          <p class="name">
+                            <%if(concept && concept.author && concept.author.fullname){%>
+                              <a href="/nguoi-dung/thong-tin/<%=concept.author.username%>">
+                                  <%=concept.author.fullname%>, 
+                                  <%if(concept.author.age){%>
+                                    <%=concept.author.age%>
+                                  <%}%>
+                              </a>
+                            <%}%>
+                          </p>
+                          <ul class="meta">
+                              <li><span><img src="/template/front-end-new/img/date-detail/eye_icon.svg"alt=""></span>
+                                <%if(concept && concept.amountView){%>
+                                  <%=concept.amountView%>
+                                <%}%>  
+                              </li>
+                              <li>
+                                <span>
+                                  <img src="/template/front-end-new/img/favorite/heart_icon.svg"alt="">
+                                </span>
+                                <%if(concept && concept.favorites){%>
+                                  <%=concept.favorites.length%>
+                                <%}%>    
+                              </li>
+                              <li><span><img src="/template/front-end-new/img/home/location_icon.svg" alt=""></span>TP.
+                                <%if(provinces){%>
+                                  <%if(concept.author && !Number.isNaN(Number(concept.author.province))){%>
+                                      <% var infoProvince = provinces[concept.author.province]%>
+                                      <%if(infoProvince){%>
+                                          <%=infoProvince.name%>
+                                      <%}else{%>
+                                          Chưa Cập Nhật
+                                      <%}%>
+                                  <%}else{%>
+                                      Chưa Cập Nhật
+                                  <%}%>
+                                <%}%>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+                  <a href="/ca-nhan/tin-nhan/<%=concept.author.username%>" class="wao-pc wao-message-btn has-message">
+                    <img
+                      src="/template/front-end-new/img/nav/nav_icon_mb_3.svg"
+                      alt="">
+                  </a>
+                  <a href="" class="wao-like-btn wao-popup-open wao-pc likeGuest
+                    <%if(infoUser){%>
+                      <%var listUserLikeGuest = infoUser.usersMeLike.join(',');%>
+                      <%if(listUserLikeGuest.includes(concept.author._id)){%>
+                          active
+                      <%}else{%>
+                      <%}%>
+                    <%}else{%>
+                    <%}%>
+                  "
+                  style='cursor: pointer;' _guestID='<%=concept.author._id%>'
+                    data="wao-favorite-popup">
+                      <svg width="18" height="16" viewBox="0 0 18 16"
+                          xmlns="http://www.w3.org/2000/svg">
+                          <path d="M9 16C8.74374 16 8.49669 15.9072 8.30415 15.7388C7.577 15.1035 6.87593 14.5065 6.2574 13.9799L6.25424 13.9772C4.44081 12.4332 2.87485 11.0998 1.78528 9.7863C0.567307 8.31791 0 6.92567 0 5.40473C0 3.92701 0.507156 2.56372 1.42795 1.56581C2.35973 0.556101 3.63826 0 5.02844 0C6.06747 0 7.01903 0.3282 7.8566 0.975406C8.2793 1.3021 8.66245 1.70192 9 2.16828C9.33769 1.70192 9.7207 1.3021 10.1435 0.975406C10.9811 0.3282 11.9327 0 12.9717 0C14.3617 0 15.6404 0.556101 16.5722 1.56581C17.493 2.56372 18 3.92701 18 5.40473C18 6.92567 17.4328 8.31791 16.2149 9.78616C15.1253 11.0998 13.5595 12.433 11.7463 13.9769C11.1267 14.5043 10.4245 15.1023 9.69571 15.739C9.50331 15.9072 9.25612 16 9 16Z"/>
+                      </svg>
+                  </a>
+              </div>
+              <div class="card-content has-list">
+                  <ul>
+                      <li>
+                          <i><img src="/template/front-end-new/img/home/height.svg" alt=""></i>
+                          <%if(concept.author.height){%>
+                            <%= _lodash.get(concept.author, 'height', 'Chưa cập nhật')%> cm
+                          <%}else{%>
+                              Chưa cập nhật
+                          <%}%>
+                      </li>
+                      <li>
+                          <i><img src="/template/front-end-new/img/home/weight.svg" alt=""></i>
+                          <%if(!Number.isNaN(Number(concept.author.body))){%>
+                              <%var infoBody = constants.bodys.find(body => Object.is(Number(body.value), Number(concept.author.body)))%>
+                              <%= _lodash.get(infoBody, 'text', 'Chưa cập nhật')%>
+                          <%}else{%>
+                              ...
+                          <%}%>
+                      </li>
+                  </ul>
+                  <ul>
+                      <li>
+                          <i><img src="/template/front-end-new/img/home/married.svg" alt=""></i>
+                          <%if(!Number.isNaN(Number(concept.author.marital))){%>
+                            <%var infoMarital = constants.maritals.find(marital => Object.is(Number(marital.value), Number(concept.author.marital)))%>
+                            <%= _lodash.get(infoMarital, 'text', 'Chưa cập nhật')%>
+                          <%}else{%>
+                            ...
+                          <%}%>
+                      </li>
+                      <li>
+                          <i><img src="/template/front-end-new/img/home/major.svg" alt=""></i>
+                          <%if(!Number.isNaN(Number(concept.author.education))){%>
+                            <%var infoEdu = constants.educations.find(education => Object.is(Number(education.value), Number(concept.author.education)))%>
+                            <%= _lodash.get(infoEdu, 'text', 'Chưa cập nhật')%>
+                        <%}else{%>
+                            ...
+                        <%}%>
+                      </li>
+                  </ul>
+                  <ul>
+                      <li>
+                          <i><img src="/template/front-end-new/img/home/smoke.svg" alt=""></i>
+                          <%if(!Number.isNaN(Number(concept.author.smoking))){%>
+                            <%var infoSmoking = constants.smokings.find(smoking => Object.is(Number(smoking.value), Number(concept.author.smoking)))%>
+                            <%= _lodash.get(infoSmoking, 'text', 'Chưa cập nhật')%>
+                          <%}else{%>
+                              ...
+                          <%}%>
+                      </li>
+                      <li>
+                          <i><img src="/template/front-end-new/img/home/drink.svg" alt=""></i>
+                          <%if(!Number.isNaN(Number(concept.author.drink))){%>
+                              <%var infoDrink = constants.drinks.find(drink => Object.is(Number(drink.value), Number(concept.author.drink)))%>
+                              <%= _lodash.get(infoDrink, 'text', 'Chưa cập nhật')%>
+                          <%}else{%>
+                              ...
+                          <%}%>
+                      </li>
+                  </ul>
+                  <ul>
+                      <li>
+                          <i><img src="/template/front-end-new/img/home/job.svg" alt=""></i>
+                          <%if(!Number.isNaN(Number(concept.author.job))){%>
+                              <%var infoJob = constants.jobs.find(job => Object.is(Number(job.value), Number(concept.author.job)))%>
+                              <%= _lodash.get(infoJob, 'text', 'Chưa cập nhật')%>
+                          <%}else{%>
+                              ...
+                          <%}%>
+                      </li>
+                  </ul>
+              </div>
+              <div class="card-content">
+                  <p class="title">
+                      Bio:
+                  </p>
+                  <p>
+                    <%= _lodash.get(concept.author, 'intro', 'Chưa cập nhật')%>
+                  </p>
+              </div>
+          </div>
+      </div>
+    <%})%>
+  <%}%>
+</div>

@@ -1,0 +1,431 @@
+<script>
+    let counter = 1;
+    function detail_user(slug) {
+    if (slug) {
+      $(".wao-modal-form-action button#submit-button").attr('slug', slug);
+      const list_user = JSON.parse(localStorage.getItem('list_user'));
+      const user = list_user.find(e => e.slug === slug);
+      if (user) {
+
+        (new Array(4).fill(null)).forEach((e, i) => {
+          $(`#wao-upload-img-${i + 1}`).attr('_conceptid', user._id);
+          $(`#btn-img${i + 1}`).attr('_conceptid', user._id);
+        })
+        user.image.forEach((e,i)=>{
+          $(`#btn-img${i + 1}`).attr('_image', e);
+        })
+          // console.log(user);
+        form_create_user = {
+          focusGender: user.focusGender,
+          focusAgeFrom: user.focusAge.from,
+          focusAgeTo: user.focusAge.to,
+          title: user.title,
+          description: user.description,
+          content: user.content,
+          address1: user.address[0],
+          address2: user.address[1],
+          address3: user.address[2],
+          status: user.status,
+          cost: user.cost,
+          time: user.time,
+          prayer: user.prayer,
+          image: user.image
+        }
+        patchForm(form_create_user);
+      }
+    } else {
+      $(".wao-modal-form-action button#submit-button").attr('slug', '');
+      (new Array(4)).forEach((e, i) => {
+        $(`wao-hidden-img-${i + 1}`).attr('_sconceptid', '');
+        $(`#btn-img${i + 1}`).attr('_conceptid', '');
+        $(`#btn-img${i + 1}`).attr('_image', '');
+
+      })
+      form_create_user = {
+        focusGender: "0", focusAgeFrom: 18, focusAgeTo: 25,
+        title: '', desctiption: "",
+        address1: "", address2: "", address3: "", time: '', status: 0, image: [],
+        content: '', cost: "", prayer: 2,
+      }
+      patchForm(form_create_user);
+    }
+  }
+  function patchForm(data) {
+    // gender
+    $('.wao-modal-form-select input:radio[name="gender"]').filter('[value="' + data.focusGender + '"]').attr('checked', true);
+    $("#wao-slider").slider('values', [data.focusAgeFrom, data.focusAgeTo]);
+    // title
+    $(".wao-modal-form-step.step-2 textarea[name='title']").val(data.title);
+    // description
+    $(".wao-modal-form-step.step-2 textarea[name='description']").val(data.description);
+    // content
+    
+    let content_ckeditor = data.content;
+    if (content_ckeditor !== '' || !content_ckeditor) {
+        let html_parse_content = $.parseHTML(content_ckeditor)[0].data;
+        // $('#contentSummernote').summernote('code' ,`<div>${html_parse_content}</div>`);
+        CKEDITOR.instances.content.setData(content_ckeditor);
+    }
+    
+    // $(".wao-modal-form-step.step-4 textarea[name='content']").val(data.content)
+    // address
+    $(".wao-modal-form-step.step-3 input[name='address1']").val(data.address1);
+    $(".wao-modal-form-step.step-3 input[name='address2']").val(data.address2);
+    $(".wao-modal-form-step.step-3 input[name='address3']").val(data.address3);
+    // time
+    $("input[data-type='date'").val(format_date(data.time, 'DD-MM-YYYY'))
+    // public
+    $(".wao-modal-wrapper-checkbox input[type='checkbox']")
+      .prop('checked', data.status === 1 ? false : true);
+    // cost
+    $(".wao-modal-form-step.step-4 .wao-modal-form-step-price input[name='cost']").val(
+      data.cost.toLocaleString())
+    // prayer
+    $('.wao-modal-form-step-buy input:radio[name="pay"]').attr('checked', false)
+    $('.wao-modal-form-step-buy input:radio[name="pay"]').filter('[value="' + data.prayer + '"]').attr('checked', true);
+    // image
+    data.image[0] ?
+      $(`#wao-hidden-img-1`).attr('src', '/files/users/' + data.image[0]) :
+      $(`#wao-hidden-img-1`).attr('src', '')
+    data.image[1] ?
+      $(`#wao-hidden-img-2`).attr('src', '/files/users/' + data.image[1]) :
+      $(`#wao-hidden-img-2`).attr('src', '')
+    data.image[2] ?
+      $(`#wao-hidden-img-3`).attr('src', '/files/users/' + data.image[2]) :
+      $(`#wao-hidden-img-3`).attr('src', '')
+    data.image[3] ?
+      $(`#wao-hidden-img-4`).attr('src', '/files/users/' + data.image[3]) :
+      $(`#wao-hidden-img-4`).attr('src', '')
+  }
+  function format_date(date, type) {
+    if (date) {
+      if (type = "DD-MM-YYYY") {
+        const split_date = date.substring(0, 10).split("-");
+        return `${split_date[2]}-${split_date[1]}-${split_date[0]}`;
+      } else {
+        const split_date = date.substring(0, 10).split("-");
+        return `${split_date[2]}-${split_date[1]}-${split_date[0]}`;
+      }
+    } else {
+      return '';
+    }
+  }
+
+    function blobToFile(theBlob, fileName){
+		//A Blob() is almost a File() - it's just missing the two properties below which we will add
+		theBlob.lastModifiedDate = new Date();
+		theBlob.name = fileName;
+		return theBlob;
+	}
+	function ResizeUploads(btnUpload,popupUpload) {
+		$(btnUpload).on('change', function () {
+			$(popupUpload).addClass('active'); 
+		});
+	}
+	function base64ToBlob(base64, mime) 
+		{
+			mime = mime || '';
+			var sliceSize = 1024;
+			var byteChars = window.atob(base64);
+			var byteArrays = [];
+
+			for (var offset = 0, len = byteChars.length; offset < len; offset += sliceSize) {
+				var slice = byteChars.slice(offset, offset + sliceSize);
+
+				var byteNumbers = new Array(slice.length);
+				for (var i = 0; i < slice.length; i++) {
+					byteNumbers[i] = slice.charCodeAt(i);
+				}
+
+				var byteArray = new Uint8Array(byteNumbers);
+
+				byteArrays.push(byteArray);
+			}
+
+			var blob = new Blob(byteArrays, {type: mime});
+			return blobToFile(blob,'trung.jpg');
+        }
+        
+    function openPopup(popup){
+        $(popup).parent().addClass("is-show"),
+        $(popup).parent().append('<div class="wao-modal-backdrop"></div>')
+    }
+		
+    function removePopup(){
+        $(".wao-modal-container").removeClass("is-show"),
+        $(".wao-modal-backdrop").remove()
+    }
+    const caculatorAge = (d,m,y) => {
+        birthDate = new Date(m+'/'+d+'/'+y);
+        let now = new Date();
+        let otherDate = new Date();
+
+        var years = (otherDate.getFullYear() - birthDate.getFullYear());
+
+        if (otherDate.getMonth() < birthDate.getMonth() || 
+            otherDate.getMonth() == birthDate.getMonth() && otherDate.getDate() < birthDate.getDate()) {
+            years--;
+        }
+
+        return years;
+    }
+    const removeUtf8AndJoinSpace = str => {
+        str = str.toLowerCase();
+        str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a');
+        str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, 'e');
+        str = str.replace(/ì|í|ị|ỉ|ĩ/g, 'i');
+        str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, 'o');
+        str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, 'u');
+        str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, 'y');
+        str = str.replace(/đ/g, 'd');
+        // str = str.replace(/\W+/g, ' ');
+        str = str.replace(/\s/g, '');
+        str = str.replace(/[^a-zA-Z0-9]/g, '');
+
+        let max = 10;
+        for (let index = max; index >= 0; index--) {
+            let inc_ = "";
+            for (let index2 = 0; index2 <= index; index2++) {
+                inc_ += "";
+            }
+            str = str.replace(inc_, '');
+        }
+        return str;
+    }
+    function checkDate(d,m,y) {
+        var y = parseInt(y, 10),
+            m = parseInt(m, 10),
+            d = parseInt(d, 10);
+        // Assume not leap year by default (note zero index for Jan)
+        var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+        // If evenly divisible by 4 and not evenly divisible by 100,
+        // or is evenly divisible by 400, then a leap year
+        if ((!(y % 4) && y % 100) || !(y % 400)) {
+            daysInMonth[1] = 29;
+        }
+        if(!(/\D/.test(String(d))) && d > 0 && d <= daysInMonth[--m]){
+            $('.wao-form-error-message.date').removeClass('is-error');
+            return true
+        }else{
+            setErrorMessage($('.wao-form-error-message.date'), "Ngày tháng không hợp lệ");        
+            return false;
+        }
+        
+    }
+
+    const setErrorMessage = (elementError, textError, classError = "is-error") => {
+			elementError.addClass(classError);
+			elementError.siblings("span").html(textError);
+		};
+
+    const removeErrorMessage = (elementError, classError = "is-error")=>{
+        elementError.removeClass(classError);
+    };
+
+    const checkMail = (email, url) => {
+        return new Promise((resolve,reject) => {
+            const mailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            const mailValue = email.val();
+            let data = {email:mailValue};
+            if (mailValue !== '') {
+                if (mailRegex.test(mailValue)) {
+                    $.ajax({
+                        url: url,
+                        method: 'POST',
+                        data: data,
+                        success: function(resp) {
+                            if (resp.error) {
+                                if (resp.message === 'email_not_valid') {
+                                    setErrorMessage(email, "Kiểm tra lại định dạng Email");
+                                }else if(resp.message === "email_existenced"){
+                                    setErrorMessage(email, "Email đã tồn tại");
+                                }
+                            } else {
+                                resolve(true);
+                            }
+                            
+                        },
+                        error: function(err){
+                            alert('Đăng Ký Thất Bại');
+                        }
+                    });
+                }
+                else {
+                    setErrorMessage(email, "Kiểm tra lại định dạng Email");
+                }
+            }
+            else{
+                setErrorMessage(email, "Vui lòng điền Email");
+            }
+        });
+
+    };
+    
+    const onNext = (current_fs,stepNavigation,currentSection) => {
+        const next_fs = current_fs.next();
+        $(stepNavigation)
+            .eq(currentSection.index(next_fs))
+            .addClass("is-active");
+        $(stepNavigation)
+            .eq(currentSection.index(current_fs))
+            .removeClass("is-active");
+        counter += 1;
+
+        $(".step-header").html(`Đăng ký - Bước ${counter}`);
+        current_fs.removeClass("is-active");
+        next_fs.addClass("is-active");
+    };
+
+    const onPrev = (current_fs,stepNavigation) => {
+        const prev_fs = current_fs.prev();
+        $(stepNavigation)
+            .eq($("section.wao-sign-up-step").index(prev_fs))
+            .addClass("is-active");
+        $(stepNavigation)
+            .eq($("section.wao-sign-up-step").index(current_fs))
+            .removeClass("is-active");
+        counter -= 1;
+
+        $("#step-header").html(`Đăng ký - Bước ${counter}`);
+        current_fs.removeClass("is-active");
+        prev_fs.addClass("is-active");
+    };
+    function checkAvatar(avatar){
+        return new Promise((resolve,reject) => {
+            const avatarVal = $(avatar).attr('src');
+            if (avatarVal == '') {
+                $(avatar).parents('.wao-step__content').addClass('is-error');
+            }else{
+                $(avatar).parents('.wao-step__content').removeClass('is-error');
+                resolve(true);
+            }
+                
+
+        })
+    }
+    function checkUserName(un){ 
+        return new Promise((resolve,reject) => {
+            const username = $('#'+un).val();
+            let data = {username};
+            if (username) {
+                if(username.length < 8){
+                    ($('#'+un), "Username phải 8 ký tự trở lên");
+                }else{
+                    $.ajax({
+                        url: `/check-username-existenced`,  
+                        method: 'POST', 
+                        data: data,
+                        success: function(resp) {
+                            if (resp.error) {
+                                if(resp.message === "username_existenced"){
+                                    setErrorMessage($('#'+un), "Username đã tồn tại");
+                                }
+                            } else {
+                                resolve(true);
+                                $('#'+un).removeClass("is-error");
+                            }
+                        },
+                        error: function(err){
+                            alert('lỗi kết nối server');
+                        }
+                    }); 
+                }
+                
+
+            }else{
+                setErrorMessage($('#'+un), "Vui lòng điền Username");
+            }
+                
+            
+        })
+        
+        
+    };
+
+    
+
+    const checkPassword = (passWord, rePassword) => {
+        const passWordVal = passWord.val(),
+            rePasswordVal = rePassword.val();
+        if (!passWordVal) {
+            setErrorMessage(passWord, "Vui lòng nhập mật khẩu");
+            return false;
+        } else if (passWordVal.length >= 7) {
+            removeErrorMessage(passWord);
+            if (passWordVal === rePasswordVal) {
+                rePassword.removeClass("is-error");
+                return true;
+            }
+            setErrorMessage(rePassword, "Mật khẩu nhập lại không trùng khớp");
+            return false;
+        } else if (passWordVal && passWordVal.length < 7) {
+            setErrorMessage(passWord, "Mật khẩu bắt buộc lớn hơn 7 ký tự");
+            return false;
+        } 
+    };
+    const checkProvince = (pv) => {
+        let province = $('#'+pv);
+        if(province.val() !== '-1'){
+            province.removeClass("is-error");
+            return true;
+        }else{
+            setErrorMessage(province, "Vui lòng chọn nơi bạn sống");
+            return false;
+        }
+
+    }
+    const checkPhone = (ph) => {
+        return new Promise((resolve,reject) => {
+            const vnf_regex = /((9|3|7|8|5)+([0-9]{8})\b)/g;
+            let phone = $(ph);
+            const phoneVal = phone.val();
+            // let data = {phone:phoneVal};
+            if(phoneVal){
+                if (vnf_regex.test(phoneVal)) {
+                    $.ajax({
+                        url: `/check-phone-existenced/${phoneVal}`,
+                        method: 'GET', 
+                        // data: data,
+                        success: function(resp) {
+                            if(resp.message === "phone_existenced"){
+                                setErrorMessage(phone, "Số điện thoại đã tồn tại");
+                            } else {
+                                phone.removeClass("is-error");
+                                resolve({ status : true, phone : phoneVal  });
+                            }
+
+                            // if (resp.error) {
+                            //     if(resp.message === "phone_existenced"){
+                            //         setErrorMessage(phone, "Số điện thoại đã tồn tại");
+                            //     }
+                            // } else {
+                            //     phone.removeClass("is-error");
+                            //     resolve(true);
+                            // }
+                        },
+                        error: function(err){
+                            alert('lỗi kết nối server');
+                        }
+                    });
+                    
+                }
+                else{
+                    setErrorMessage(phone, "Sai định dạng số điện thoại");
+                }
+            }else{
+                setErrorMessage(phone, "Vui lòng nhập số điện thoại");
+            }
+           
+
+        })
+    };
+   
+    $( document ).ready(function() {
+            $('body').on('click', '.btnLogout', function(e){
+                e.preventDefault();
+                localStorage.removeItem('token_waodate');
+                window.location.href = '/clear-session';
+            });
+    });
+</script>

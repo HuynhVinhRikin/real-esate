@@ -1,0 +1,24 @@
+<% if (isLogin) { %>
+	<% if (!isPayer) { %>
+		<aside class="d-none d-sm-block">
+			<div class="sidebar-banner-ads__img">
+				<a href="/goi-dich-vu" rel="nofollow">
+					<img class="img-fluid" src="/template/user/img/KeuGoiNangCap.png" alt="">
+				</a></div>
+		</aside>
+	<% }else { %>
+		<aside class="d-none d-sm-block">
+			<div class="sidebar-banner-ads__img">
+				<a href="/ca-nhan/luot-hien-thi" rel="nofollow">
+					<img class="img-fluid" src="/template/user/img/muagoinoibat.png" alt="">
+				</a></div>
+		</aside>
+	<% }%>
+<%}else {%>
+	<aside class="d-none d-sm-block">
+		<div class="sidebar-banner-ads__img">
+			<a href="/dang-ky" rel="nofollow">
+				<img class="img-fluid" src="/template/user/img/baner-newmember.jpg" alt="Đăng Kí Waodate - Thành Viên mới của Waodate">
+			</a></div>
+	</aside>
+<% }%>

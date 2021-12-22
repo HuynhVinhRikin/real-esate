@@ -1,0 +1,50 @@
+<!-- ////////////// Begin Main ////////////// -->
+<div class="wao-wrapper">
+    <div class="wao-date-buy wao-date-vip">
+        <div class="container wao-container wao-buy-container">
+            <h1 class="text-center">Lịch sử mua gói dịch vụ của bạn</h1>
+            <!---->
+            <div class="wrapper-history">
+                <div class="history-row title">
+                    <div class="history-column">
+                        Ngày
+                    </div>
+                    <div class="history-column">
+                        Trạng thái
+                    </div>
+                    <div class="history-column">
+                        Giá
+                    </div>
+                    <div class="history-column">
+                        Gói dịch vụ
+                    </div>
+                </div>
+
+                <% if (transactions) {%>
+                    <%  transactions.forEach(e => {%>
+                        <div class="history-row content">
+                            <div class="history-column">
+                                <% const date = new Date(e.time) %>
+                                <% const day = date.getDate(), month = date.getMonth() + 1, year = date.getFullYear(), hours = date.getHours(), minutes = date.getMinutes()%>
+                                <%= `${(day > 10) ? day : `0${day}`}/${(month > 10) ? month : `0${month}`}/${year} - ${(hours > 10) ? hours : `0${hours}`}:${(minutes > 10) ? minutes : `0${minutes}`}` %>
+                            </div>
+                            <div class="history-column">
+                                <%= (e.status) ? 'Thành Công' : 'Không Thành Công' %> 
+                            </div>
+                            <div class="history-column">
+                                <span><%= e.price %> </span>
+                            </div>
+                            <div class="history-column type" style="text-transform: Capitalize">
+                                Gói <%- e.name.toLowerCase() %> 
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else {%>
+                    <div class="history-row content">
+                        <h3 style="text-align: center;">Bạn chưa có giao dịch nào</h3>
+                    </div>
+                <% } %> 
+            </div>
+        </div>
+    </div>
+</div>

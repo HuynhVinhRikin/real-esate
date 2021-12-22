@@ -1,0 +1,52 @@
+<script>
+	$(document).ready(function(){
+		// setTimeout(function(){
+		// 	$('.profile-gallery__wrapper').masonry({
+		// 		// options
+		// 		itemSelector: '.profile-pic',
+		// 		columnWidth: 175
+		// 	});
+		// },1500);
+		
+		// REQUEST VIEW IMAGE PRIVATE
+		$('.btnRequestViewImagePrivate').on('click', function(e){
+			e.preventDefault();
+
+			let imageID = $(this).attr('_imageID');
+			let token = localStorage.getItem('token_waodate');
+			if (!token) {
+				setTimeout(() => {
+						toastr['warning']('Vui Lòng Đăng Nhập để sử dụng chức năng này', 'Thông Báo');
+				}, 100);
+				return;
+			}
+      socket.emit("NOTIFICATION_REQUEST_VIEW_PRIVATE_IMAGE", {
+        imageID
+      })
+		});
+    
+    socket.on("NOTIFICATION_REQUEST_VIEW_PRIVATE_IMAGE_SUCCESS", data =>{
+      toastr['success'](data.message);		
+    })
+    socket.on("NOTIFICATION_REQUEST_VIEW_PRIVATE_IMAGE_ERR", data =>{
+      toastr['warning'](data.message);		
+    })
+	
+   setTimeout(()=>{
+      const currentUrl = new URL(window.location.href);
+      const imageId = currentUrl.searchParams.get("imgId");
+      if(imageId){
+        document.getElementsByClassName("btn-gallery-private")[0].click();
+        document.getElementById("view_image_"+imageId).click();
+      }
+   },1000)
+  })
+		
+$('.fancybox-gallery').fancybox({
+	helpers: {
+		overlay: {
+			locked: false
+		}
+	}
+})
+</script>

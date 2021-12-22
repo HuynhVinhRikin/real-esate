@@ -1,0 +1,707 @@
+<script>
+  $( document ).ready(function() {
+  // modal
+  var counter = 1;
+          var widthProcess = 25;
+          var PrevButton = $(".wao-modal-form-action-prev");
+          var NextButton1 = $(".wao-modal-form-action-next.next.step1");
+          var NextButton2 = $(".wao-modal-form-action-next.next.step2");
+          var NextButton3 = $(".wao-modal-form-action-next.next.step3");
+          var SubmitButton = $(".wao-modal-form-action-next.btn-submit");
+          var CloseButton = $(".wao-modal-form-close");
+          var ModalForm = $(".wao-modal-form");
+          var ProcessBar = $(".wao-modal-form-process .process-bar");
+
+          var StepModal = function StepModal(counter) {
+            return $(".wao-modal-form-step.step-".concat(counter));
+          };
+
+          $(".wao-modal-form:has(.wao-modal-form-content .wao-modal-form-step.step-2)").addClass("wao-modal-padding-less");
+          $(".wao-modal-form:has(.wao-modal-form-content .wao-modal-form-step.step-3)").addClass("wao-modal-padding-less");
+          $(".wao-modal-form:has(.wao-modal-form-content .wao-modal-form-step.step-4)").addClass("wao-modal-padding-less");
+
+          CloseButton.click(function () {
+            counter = 1;
+            ModalForm.removeClass("is-active");
+            StepModal(1).show();
+            StepModal(2).hide();
+            StepModal(3).hide();
+            StepModal(4).hide();
+            NextButton1.css('display', 'block');
+            NextButton2.css('display', 'none');
+            NextButton3.css('display', 'none');
+            SubmitButton.css('display', 'none');
+            ProcessBar.css("width", "".concat(25, "%"));
+          });
+
+          StepModal(2).hide();
+          StepModal(3).hide();
+          StepModal(4).hide();
+          StepModal(1).show();
+
+          NextButton1.click(function () {
+            PrevButton.removeClass("closeModal");
+            counter = 1 && PrevButton.text("Quay lại");
+            StepModal(1).hide();
+            StepModal(2).show();
+            StepModal(3).hide();
+            StepModal(4).hide();
+            counter = 2;
+            NextButton1.css('display', 'none');
+            NextButton2.css('display', 'block');
+            NextButton3.css('display', 'none');
+            SubmitButton.css('display', 'none');
+            ProcessBar.css("width", "".concat(50, "%"));
+          })
+
+          NextButton2.click(function () {
+            PrevButton.removeClass("closeModal");
+            counter = 2 && PrevButton.text("Quay lại");
+            SubmitButton.css('display', 'none');
+            if ($(".wao-modal-form-step.step-2 textarea[name='title']").val().length > 19 &&
+              $(".wao-modal-form-step.step-2 textarea[name='description']").val().length > 49) {
+              StepModal(1).hide();
+              StepModal(2).hide();
+              StepModal(3).show();
+              StepModal(4).hide();
+              counter = 3;
+              NextButton1.css('display', 'none');
+              NextButton2.css('display', 'none');
+              NextButton3.css('display', 'block');
+              SubmitButton.css('display', 'none');
+              ProcessBar.css("width", "".concat(75, "%"));
+            } else {
+              counter = 2;
+              checkInputStep2()
+            }
+          })
+
+          NextButton3.click(function () {
+            PrevButton.removeClass("closeModal");
+            counter = 3 && PrevButton.text("Quay lại");
+            const image1 = $("#wao-upload-img-1").prop('files')[0];
+            const image2 = $("#wao-upload-img-2").prop('files')[0];
+            const image3 = $("#wao-upload-img-3").prop('files')[0];
+            const image4 = $("#wao-upload-img-4").prop('files')[0];
+            const img1 = $("#wao-hidden-img-1").attr('src');
+            const img2 = $("#wao-hidden-img-2").attr('src');
+            const img3 = $("#wao-hidden-img-3").attr('src');
+            const img4 = $("#wao-hidden-img-4").attr('src');
+            const existedImg = [
+              image1, image2, image3, image4,
+              img1, img2, img3, img4
+            ].filter(e => e).some(e => e.length > 0);
+            if (
+              $(".wao-modal-form-step.step-3 input[name='address1").val().length > 0 &&
+              $("input[data-type='date'").val().length > 0 && existedImg
+            ) {
+              StepModal(1).hide();
+              StepModal(2).hide();
+              StepModal(3).hide();
+              StepModal(4).show();
+              counter = 4;
+              NextButton1.css('display', 'none');
+              NextButton2.css('display', 'none');
+              NextButton3.css('display', 'none');
+              SubmitButton.css('display', 'block');
+              ProcessBar.css("width", "".concat(100, "%"));
+
+            } else {
+              counter = 3;
+              checkInputStep3();
+            }
+          })
+          PrevButton.click(function () {
+            counter === 2 && PrevButton.text("Hủy bỏ");
+            if (counter > 0) {
+              StepModal(counter).hide();
+              counter--;
+              StepModal(counter).show();
+            }
+
+            // counter = 1 | form 1
+            if (counter == 1) {
+              NextButton1.css('display', 'block');
+              NextButton2.css('display', 'none');
+              NextButton3.css('display', 'none');
+              SubmitButton.css('display', 'none');
+              ProcessBar.css("width", "".concat(25, "%"));
+            }
+
+            // counter = 2 | form 2
+            if (counter == 2) {
+              NextButton1.css('display', 'none');
+              NextButton2.css('display', 'block');
+              NextButton3.css('display', 'none');
+              SubmitButton.css('display', 'none');
+              ProcessBar.css("width", "".concat(50, "%"));
+            }
+
+            // counter = 3 | form 3
+            if (counter == 3) {
+              NextButton1.css('display', 'none');
+              NextButton2.css('display', 'none');
+              NextButton3.css('display', 'block');
+              SubmitButton.css('display', 'none');
+              ProcessBar.css("width", "".concat(75, "%"));
+
+            }
+
+            if (counter === 0) {
+              ModalForm.removeClass("is-active");
+              counter = 1;
+              StepModal(counter).show();
+            }
+
+          });
+
+  // End modal
+
+  var form_create_user = {
+    focusAgeFrom: 18,
+    focusAgeTo: 25
+  };
+
+  // format input cost
+  $(".wao-modal-form-step.step-4 .wao-modal-form-step-price input[name='cost']").on('keyup', function (evt) {
+    if (evt.which != 110) {
+      var n = parseFloat($(this).val().replace(/\,/g, ''), 10);
+      $(this).val(n.toLocaleString());
+    }
+  });
+  function allowNumbersOnly(e) {
+    var code = (e.which) ? e.which : e.keyCode;
+    if (code > 31 && (code < 48 || code > 57)) {
+      e.preventDefault();
+    }
+  }
+
+  // get some ino when submit form
+  const getInfoConcept = () => { //excep age + image + time
+    const focusGender = $(".wao-modal-form-select input[name='gender']:checked").val();
+    const focusAgeFrom = form_create_user.focusAgeFrom;
+    const focusAgeTo = form_create_user.focusAgeTo;
+
+    const title = $(".wao-modal-form-step.step-2 textarea[name='title']").val();
+
+    const description = $(".wao-modal-form-step.step-2 textarea[name='description']").val();
+
+    const content = $(".wao-modal-form-step.step-4 textarea[name='content']").val();
+
+    const address = [
+      $(".wao-modal-form-step.step-3 input[name='address1']").val(),
+      $(".wao-modal-form-step.step-3 input[name='address2']").val(),
+      $(".wao-modal-form-step.step-3 input[name='address3']").val()
+    ]
+    let status;
+
+    if ($(".wao-modal-wrapper-checkbox input[type='checkbox']:checked").val() === 'on') {
+      status = 1;
+    } else {
+      status = 0;
+    }
+    const cost = Number($(".wao-modal-form-step.step-4 .wao-modal-form-step-price input[name='cost']")
+      .val().replace(/,/g, ''));
+    const prayer = $('.wao-modal-form-step-buy .wrapper input[name="pay"]:checked').val();
+    const time = format_date($("input[data-type='date'").val());
+    return {
+      focusGender,
+      title, description,
+
+      address, time, status,//image
+      content, cost, prayer,
+      focusAgeTo, focusAgeFrom,
+    }
+  };
+
+  // submit form
+  $('.wao-modal-form-action button#submit-button').on('click', (e) => {
+    e.preventDefault();
+    let data = getInfoConcept();
+    let token = localStorage.getItem('token_waodate');
+    if (!token) {
+      toastr['warning']('Vui Lòng Đăng Nhập');
+      setTimeout(function () {
+        return window.location.href = '/dang-nhap'
+      }, 2000);
+    }
+    var fd = new FormData();
+    const image1 = $("#wao-upload-img-1").prop('files')[0];
+    const image2 = $("#wao-upload-img-2").prop('files')[0];
+    const image3 = $("#wao-upload-img-3").prop('files')[0];
+    const image4 = $("#wao-upload-img-4").prop('files')[0];
+    let imageArray = [image1, image2, image3, image4]
+    let imageObject = Object.assign({}, imageArray);
+    for (let index in imageObject) {
+      fd.append(`image_${index}`, imageObject[index]);
+    }
+    fd.append('data', JSON.stringify(data));
+    const slug = $(".wao-modal-form-action button#submit-button").attr('slug');
+
+    if (slug) {
+      update_user(token, slug, fd)
+    } else {
+      create_user(token, fd)
+    }
+  })
+
+  function update_user(token, slug, data) {
+    $.ajax({
+      url: `/ca-nhan/chinh-sua-concept/${slug}`,
+      method: 'POST',
+      data: data,
+      contentType: false,
+      processData: false,
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader("Authorization", 'Bearer ' + token);
+      },
+      success: function (resp) {
+        console.log(resp)
+        if (resp.error) {
+        } else {
+          $("#wao-modal-concept-success").addClass("wao-modal-success-show");
+        }
+      },
+      error: function (err) {
+        console.log(err.message);
+      }
+    });
+  }
+
+  function create_user(token, data) {
+    $.ajax({
+      url: `/ca-nhan/tao-buoi-hen-ho`,
+      method: 'POST',
+      data: data,
+      contentType: false,
+      processData: false,
+      beforeSend: function (xhr) {
+        xhr.setRequestHeader("Authorization", 'Bearer ' + token);
+      },
+      success: function (resp) {
+        console.log(resp)
+        if (resp.error) {
+          if (resp.message === `redirect_url_clear_session`) {
+            setTimeout(() => {
+              return window.location.href = '/clear-session';
+            }, 2000);
+          }
+        } else {
+          $("#wao-modal-concept-success").addClass("wao-modal-success-show");
+        }
+        // return window.location.href = '/ca-nhan/danh-sach-buoi-hen-ho';
+        // }, 2000);
+      },
+      error: function (err) {
+        console.log(err.message);
+      }
+    })
+  }
+
+  // get data from localStorage when click +
+  function detail_user(slug) {
+    
+    if (slug) {
+      $(".wao-modal-form-action button#submit-button").attr('slug', slug);
+      const list_user = JSON.parse(localStorage.getItem('list_user'));
+      const user = list_user.find(e => e.slug === slug);
+      if (user) {
+        (new Array(4).fill(null)).forEach((e, i) => {
+          $(`#wao-upload-img-${i + 1}`).attr('_conceptid', user._id);
+          $(`#btn-img${i + 1}`).attr('_conceptid', user._id);
+        })
+        user.image.forEach((e,i)=>{
+          $(`#btn-img${i + 1}`).attr('_image', e);
+        })
+        console.log(user)
+        form_create_user = {
+          focusGender: user.focusGender,
+          focusAgeFrom: user.focusAge.from,
+          focusAgeTo: user.focusAge.to,
+          title: user.title,
+          description: user.description,
+          content: user.content,
+          address1: user.address[0],
+          address2: user.address[1],
+          address3: user.address[2],
+          status: user.status,
+          cost: user.cost,
+          time: user.time,
+          prayer: user.prayer,
+          image: user.image
+        }
+        patchForm(form_create_user);
+      }
+    } else {
+      $(".wao-modal-form-action button#submit-button").attr('slug', '');
+      (new Array(4)).forEach((e, i) => {
+        $(`wao-hidden-img-${i + 1}`).attr('_sconceptid', '');
+        $(`#btn-img${i + 1}`).attr('_conceptid', '');
+        $(`#btn-img${i + 1}`).attr('_image', '');
+
+      })
+      form_create_user = {
+        focusGender: "0", focusAgeFrom: 18, focusAgeTo: 25,
+        title: '', desctiption: "",
+        address1: "", address2: "", address3: "", time: '', status: 0, image: [],
+        content: '', cost: "", prayer: 2,
+      }
+      patchForm(form_create_user);
+    }
+  }
+//// regex các dấu cho string cần lọc từ khóa bị block
+const replace_sign = /[-!$%^&*()_+|~=`{}[:;<>?,.@#\]]/g ;
+  // load default data if have slug
+  function patchForm(data) {
+    // gender
+    $('.wao-modal-form-select input:radio[name="gender"]').filter('[value="' + data.focusGender + '"]').attr('checked', true);
+    $("#wao-slider").slider('values', [data.focusAgeFrom, data.focusAgeTo]);
+    // title
+    $(".wao-modal-form-step.step-2 textarea[name='title']").val(data.title);
+    // description
+    $(".wao-modal-form-step.step-2 textarea[name='description']").val(data.description);
+    // content
+    $(".wao-modal-form-step.step-4 textarea[name='content']").val(data.content)
+    // address
+    $(".wao-modal-form-step.step-3 input[name='address1']").val(data.address1);
+    $(".wao-modal-form-step.step-3 input[name='address2']").val(data.address2);
+    $(".wao-modal-form-step.step-3 input[name='address3']").val(data.address3);
+    // time
+    $("input[data-type='date'").val(format_date(data.time, 'DD-MM-YYYY'))
+    // public
+    $(".wao-modal-wrapper-checkbox input[type='checkbox']")
+      .prop('checked', data.status === 1 ? true : false);
+    // cost
+    $(".wao-modal-form-step.step-4 .wao-modal-form-step-price input[name='cost']").val(
+      data.cost.toLocaleString())
+    // prayer
+    $('.wao-modal-form-step-buy input:radio[name="pay"]').attr('checked', false)
+    $('.wao-modal-form-step-buy input:radio[name="pay"]').filter('[value="' + data.prayer + '"]').attr('checked', true);
+    // image
+    data.image[0] ?
+      $(`#wao-hidden-img-1`).attr('src', '/files/users/' + data.image[0]) :
+      $(`#wao-hidden-img-1`).attr('src', '')
+    data.image[1] ?
+      $(`#wao-hidden-img-2`).attr('src', '/files/users/' + data.image[1]) :
+      $(`#wao-hidden-img-2`).attr('src', '')
+    data.image[2] ?
+      $(`#wao-hidden-img-3`).attr('src', '/files/users/' + data.image[2]) :
+      $(`#wao-hidden-img-3`).attr('src', '')
+    data.image[3] ?
+      $(`#wao-hidden-img-4`).attr('src', '/files/users/' + data.image[3]) :
+      $(`#wao-hidden-img-4`).attr('src', '')
+  }
+
+  // format date when show on client or post to server
+  function format_date(date, type) {
+    if (date) {
+      if (type = "DD-MM-YYYY") {
+        const split_date = date.substring(0, 10).split("-");
+        return `${split_date[2]}-${split_date[1]}-${split_date[0]}`;
+      } else {
+        const split_date = date.substring(0, 10).split("-");
+        return `${split_date[2]}-${split_date[1]}-${split_date[0]}`;
+      }
+    } else {
+      return '';
+    }
+  }
+
+  // ---------show message when keyup -----------
+  let arrBlockKey = <%- JSON.stringify(arrBlockKey)%>
+  // title
+  $(".wao-modal-form-step.step-2 textarea[name='title']").bind("keyup change", function () {
+  
+    if (this.value.length < 30) {
+      $(".wao-form-error-message-title").css('display', 'block')
+      console.log(arrBlockKey)
+    } else {
+      $(".wao-form-error-message-title").css('display', 'none')
+    }
+
+    if(checkphoneNumber(this.value)){
+      $(".wao-form-error-message-title1").css('display', 'block')
+    }else {
+      $(".wao-form-error-message-title1").css('display', 'none')
+    }
+    
+    if(!containsBlockingKey(this.value.replace(replace_sign, " "), arrBlockKey)){
+      $(".wao-form-error-message-title2").css('display', 'block')
+    }else {
+      $(".wao-form-error-message-title2").css('display', 'none')
+    }
+    
+  })
+  //description
+  $(".wao-modal-form-step.step-2 textarea[name='description']").bind("keyup change", function () {
+    if (this.value.length < 50) {
+      $(".wao-form-error-message-description").css('display', 'block')
+    } else {
+
+      $(".wao-form-error-message-description").css('display', 'none')
+    }
+    if(checkphoneNumber(this.value)){
+      $(".wao-form-error-message-description1").css('display', 'block')
+    }else {
+      $(".wao-form-error-message-description1").css('display', 'none')
+    }
+    if(containsBlockingKey(this.value.replace(replace_sign, " "), arrBlockKey)){
+      $(".wao-form-error-message-description2").css('display', 'block')
+    }else {
+      $(".wao-form-error-message-description2").css('display', 'none')
+    }
+  })
+  // address1
+  $(".wao-modal-form-step.step-3 input[name='address1").bind("keyup change", function () {
+    if (!this.value.length > 0) {
+      $(".wao-form-error-message-address1").css('display', 'block')
+    } else {
+
+      $(".wao-form-error-message-address1").css('display', 'none')
+    }
+  })
+  // date
+  $("input[data-type='date'").change(function () {
+    if (!this.value.length > 0) {
+      $(".wao-form-error-message-time").css('display', 'block')
+    } else {
+
+      $(".wao-form-error-message-time").css('display', 'none')
+    }
+  })
+  
+  //content
+  $(".wao-modal-form-step.step-4 textarea[name='content']").bind("keyup change", function () {
+    
+    if(checkphoneNumber(this.value)){
+      $(".wao-form-error-message-content").css('display', 'block')
+    }else {
+      $(".wao-form-error-message-content").css('display', 'none')
+    }
+    if(containsBlockingKey(this.value.replace(replace_sign," "), arrBlockKey)){
+      $(".wao-form-error-message-content1").css('display', 'block')
+    }else {
+      $(".wao-form-error-message-content1").css('display', 'none')
+    }
+  })
+
+ 
+  // image 
+  // var changeImageList =[];
+  // console.log(checkChangeImage)
+  $(document).on('change', '#wao-upload-img-1', function () {
+    if(this.value)  $(".wao-form-error-message-image").css('display', 'none')
+  })
+  $(document).on('change', '#wao-upload-img-2', function () {
+    if(this.value)  $(".wao-form-error-message-image").css('display', 'none')
+  })
+  $(document).on('change', '#wao-upload-img-3', function () {
+    if(this.value)  $(".wao-form-error-message-image").css('display', 'none')
+  })
+  $(document).on('change', '#wao-upload-img-4', function () {
+    if(this.value)  $(".wao-form-error-message-image").css('display', 'none')
+  })
+
+  // ---------End show message when keyup-----------
+  
+  function checkInputStep2() {
+    const titleStep2 = $(".wao-modal-form-step.step-2 textarea[name='title']").val();
+    const descriptionStep2 = $(".wao-modal-form-step.step-2 textarea[name='description']").val();
+        
+    if (titleStep2.length < 20) {
+      $(".wao-form-error-message-title").css('display', 'block')
+    } else {
+      $(".wao-form-error-message-title").css('display', 'none')
+    }
+    if (checkphoneNumber(titleStep2)) {
+      $(".wao-form-error-message-title1").css('display', 'block')
+    } else {
+      $(".wao-form-error-message-title1").css('display', 'none')
+    }
+    if (containsBlockingKey(titleStep2.replace(replace_sign," "), arrBlockKey)) {
+      $(".wao-form-error-message-title2").css('display', 'block')
+    } else {
+      $(".wao-form-error-message-title2").css('display', 'none')
+    }
+    if (descriptionStep2.length < 50) {
+      $(".wao-form-error-message-description").css('display', 'block')
+    } else {
+      $(".wao-form-error-message-description").css('display', 'none')
+    }
+    if (checkphoneNumber(descriptionStep2)) {
+      $(".wao-form-error-message-description1").css('display', 'block')
+    } else {
+      $(".wao-form-error-message-description1").css('display', 'none')
+    }
+    if (containsBlockingKey(descriptionStep2.replace(replace_sign, " "), arrBlockKey)) {
+      $(".wao-form-error-message-description2").css('display', 'block')
+    } else {
+      $(".wao-form-error-message-description2").css('display', 'none')
+    }
+    console.log('Google analytic step 2')
+    if (descriptionStep2.length >= 50 && titleStep2.length >= 20) {
+      $('#btn-trigger-create-concept-step-2').trigger('click')
+      
+    }
+    return
+  }
+
+  function checkInputStep3() {
+    let count = 0
+    if (!$(".wao-modal-form-step.step-3 input[name='address1").val().length > 0) {
+      $(".wao-form-error-message-address1").css('display', 'block')
+    } else {
+      count++;
+      $(".wao-form-error-message-address1").css('display', 'none')
+    }
+    if (!$("input[data-type='date'").val().length > 0) {
+      $(".wao-form-error-message-time").css('display', 'block')
+    } else {
+      count++;
+      $(".wao-form-error-message-time").css('display', 'none')
+    }
+    const image1 = $("#wao-upload-img-1").prop('files')[0];
+    const image2 = $("#wao-upload-img-2").prop('files')[0];
+    const image3 = $("#wao-upload-img-3").prop('files')[0];
+    const image4 = $("#wao-upload-img-4").prop('files')[0];
+    const img1 = $("#wao-hidden-img-1").attr('src');
+    const img2 = $("#wao-hidden-img-2").attr('src');
+    const img3 = $("#wao-hidden-img-3").attr('src');
+    const img4 = $("#wao-hidden-img-4").attr('src');
+    const existedImg = [
+      image1, image2, image3, image4,
+      img1, img2, img3, img4
+    ].filter(e => e).some(e => e.length > 0);
+    if (!existedImg) {
+      $(".wao-form-error-message-image").css('display', 'block')
+    } else {
+      count++;
+      $(".wao-form-error-message-image").css('display', 'none')
+    }
+
+    if (count >= 3) { 
+      $('#btn-trigger-create-concept-step-3').trigger('click')
+      console.log('Google analytic step 3')
+    }
+    return
+  }
+
+  // modal success - Hoan tat
+  $("#wao-modal-success-close").click(function () {
+   /*  $("#wao-modal-concept-success").removeClass("wao-modal-success-show");
+    $(".wao-modal-form").removeClass("is-active"); */
+    /* window.location.href = "/ca-nhan/tao-buoi-hen-ho";
+    location.reload(); */
+  })
+  // modal success - icon
+  $("#wao-modal-success-close-icon").click(function () {
+    /* $("#wao-modal-concept-success").removeClass("wao-modal-success-show"); */
+  })
+  // function update image
+  $(document).on('change', '#wao-upload-img-1', function () {
+    const element = this
+    if ($(element).attr('_conceptid')) {
+      updateImage(element)
+    }
+  })
+
+  $(document).on('change', '#wao-upload-img-2', function () {
+    const element = this
+    if ($(element).attr('_conceptid')) {
+      updateImage(element)
+    }
+  })
+  // function update image
+  $(document).on('change', '#wao-upload-img-3', function () {
+    const element = this
+    if ($(element).attr('concept')) {
+      updateImage(element)
+    }
+  })
+
+  $(document).on('change', '#wao-upload-img-4', function () {
+    const element = this
+    if ($(element).attr('_conceptid')) {
+      updateImage(element)
+    }
+  })
+
+  function updateImage(element) {
+    var fd = new FormData();
+    var image = $(element)[0].files;
+    let conceptID = $(element).attr('_conceptid');
+    let imageArray = Array.from(image);
+    let imageObject = Object.assign({}, imageArray);
+    for (let index in imageObject) {
+      fd.append(`image_${index}`, imageObject[index]);
+    }
+    fd.append('data', JSON.stringify({ conceptID }));
+    $.ajax({
+      url: `/ca-nhan/update-image-concept`,
+      method: 'POST',
+      data: fd,
+      contentType: false,
+      processData: false,
+      success: function (resp) {
+        if (!resp.error) {
+          let { _id, image } = resp.data;
+          if (image && image.length) {
+          } else {
+          }
+        } else {
+        }
+      },
+      error: function (error) {
+        alert(error)
+      }
+    })
+  }
+
+// remove Image
+  	$(document).on('click', '#btn-img1', function(){
+      const element = this
+      if ($(element).attr('_conceptid')&&$(element).attr('_image')) {
+        removeImage(element,1)
+      }
+    })
+  	$(document).on('click', '#btn-img2', function(){
+      const element = this
+      if ($(element).attr('_conceptid')&&$(element).attr('_image')) {
+        removeImage(element,2)
+      }
+    })
+  	$(document).on('click', '#btn-img3', function(){
+      const element = this
+      if ($(element).attr('_conceptid')&&$(element).attr('_image')) {
+        removeImage(element,3)
+      }
+    })
+  	$(document).on('click', '#btn-img4', function(){
+      const element = this
+      if ($(element).attr('_concept')&&$(element).attr('_image')) {
+        removeImage(element,4)
+      }
+    })
+
+    function removeImage(element,position){
+			let image = $(element).attr('_image');
+			let conceptID = $(element).attr('_conceptid');
+					$.ajax({	
+					url: `/ca-nhan/remove-image-concept`,
+					method: 'POST',
+					data: { conceptID, image },
+					success: function(resp){
+						if(!resp.error){
+							let { _id, image } = resp.data;
+              $(`#wao-hidden-img-${position}`).attr('src', "");
+              $(`#btn-img${position}`).attr('_image',"");
+						}else{
+						}
+					},
+					error: function(error){
+						alert(error)
+					}
+				})
+    }
+  })
+</script>

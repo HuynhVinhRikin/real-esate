@@ -1,0 +1,63 @@
+<div class="content-page">
+    <!-- Start content -->
+    <div class="content">
+        <div class="container-fluid">
+            <br><br>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+
+                            <div class="form-group row">
+                                <div class="col-md-6">
+                                    <label for="example-text-input" class="col-sm-2 col-form-label">Tên Gói</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="text"placeholder="Level 1" id="txtName">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group row">
+                                        <div class="col-md-4">
+                                            <label for="example-text-input" class="col-sm-12 col-form-label">% Hoa Hồng</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="text"placeholder="0.2" id="txtPercentCommission">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="example-text-input" class="col-sm-12 col-form-label">Ngưỡng Hoa Hồng</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="text"placeholder="120" id="txtThresholdTotatlCommission">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="example-text-input" class="col-sm-12 col-form-label">Thời Gian Reset</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="text"placeholder="365 (ngày)" id="txtTimeReset">
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Mô Tả</label>
+                                <div>
+                                    <textarea required="" class="form-control" id="txtDescription" rows="5"></textarea>
+                                </div>
+                            </div>
+                         
+                            <div class="form-group">
+                                <button type="button" class="btn btn-success waves-effect waves-light" style="margin: 0 auto;     display: inline-block;
+                                width: 100%; height: 50px;" id="btnAddPackageLevel" >Thêm Mới</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- container-fluid -->
+    </div>
+    <!-- content -->
+    <%include ./utils/footer.ejs%>
+</div>

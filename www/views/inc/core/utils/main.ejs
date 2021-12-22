@@ -1,0 +1,167 @@
+<script src="../../../../../template/toastr/toastr.min.js" type="text/javascript"></script>
+<style>
+.styleErrorInput{
+    border-color: red!important;
+}
+</style>
+<script>
+    $(document).ready(function(){
+
+    // START :::::::: CHỌN NGÔN NGỮ
+    $("body").on('click', '.btnLangSettting', async function(){
+        let valueLang = $(this).attr("_lang") || 'vn';
+        localStorage.setItem("trixgoLangSetting", valueLang);
+        // /setting-lang
+        let  dataCallAjax = {
+                url :'/setting-lang',
+                method :"post",
+                data:  { lang : valueLang }
+             }
+            let resultCallAjax = await ajax_HV({dataCallAjax});
+           window.location.reload();
+    });
+    // END   :::::::: CHỌN NGÔN NGỮ
+
+    // START ::::::::: CHỨC NĂNG ĐĂNG KÝ FORM SỬ DUNG TRIXGO
+    // kiểm tra số điện thoại hợp lệ
+    let arrayNumberPhoneAccept  = '0123456789';
+    let minLengthPhoneAccept    = 8;
+    let maxLengthPhoneAccept    = 12;
+    function isExitPhoneNumber({ phone }){
+        let isStop = false;
+        if(!phone){
+            return  { error : true };
+        }
+        for(let i = 0; i< phone.length; i++){
+            if(!arrayNumberPhoneAccept.includes(phone[i])){
+                isStop = true;
+                break;
+            }
+        }
+        if(isStop){
+            // hiển thị lỗi lên view
+            //
+            console.log('BugForDev : chứa ký tự không phải số');
+            return  { error : true };
+        }
+        return  { error : false };
+
+    }
+    // kiểm tra email
+    function getValueFormRegisterExperience() {
+        let name        = $('#input-fullname-req-form').val()      || '';
+        let companyName = $('#input-company-req-form').val()       || '';
+        let companyType = $('#input-type-company-req-form').val()  || '';
+        let phone       = $('#input-phone-req-form').val()         || '';
+        let email       = $('#input-email-req-form').val()         || '';
+        if(!name || !companyName || !companyType || !phone || !email){
+            return { error : true }
+        }
+        let _isExitPhoneNumber  = isExitPhoneNumber({phone});
+        if(_isExitPhoneNumber.error){
+            return { error : true, message:'phone_exit_character' }
+        }
+        return  {error : false, data : { name, companyName, companyType, phone, email }}
+    }
+    //
+    $('#input-phone-req-form').click(function (){
+        $('#input-phone-req-form').removeClass('styleErrorInput');
+
+    })
+    // Làm sạch form req
+    function clearFormRegisterExperience(){
+        $('#input-fullname-req-form').val('')   
+        $('#input-company-req-form').val('')      
+        $('#input-type-company-req-form').val('')  
+        $('#input-phone-req-form').val('')       
+        $('#input-email-req-form').val('')       
+    }
+        $('body').on('click','#send-req-join-with-trix', async function(){
+            // kiểm tra đầu vào
+            let getdata = getValueFormRegisterExperience();
+            if(getdata.error){
+                if(getdata.message = 'phone_exit_character'){
+                    $('#input-phone-req-form').addClass("styleErrorInput");
+                    return  toastr.warning('Có lẽ đó không phải là số điện thoại xin hãy nhập lại để chúng tôi có thể hỗ trợ doanh nghiệp của bạn, xin lỗi vì sự bất tiện này', 'Thông báo' )
+                }
+                return  toastr.warning('Xin vui lòng nhập đầy đủ thông tin để chúng tôi có thể hỗ trợ doanh nghiệp của bạn, xin lỗi vì sự bất tiện này', 'Thông báo' )
+            }
+            let { name, companyName, companyType, phone, email } = getdata.data;
+            let  dataCallAjax = {
+                url :'/add-contact',
+                method :"post",
+                data:  { name, companyName, companyType, phone, email }
+             }
+            let resultCallAjax = await ajax_HV({dataCallAjax});
+            if(resultCallAjax.error){
+                return  toastr.warning('Có lỗi xảy ra vui lòng tải lại trang và thử lại, xin lỗi vì sự bất tiện này', 'Thông báo' )
+            }
+            $('.close').trigger('click');
+            return  toastr.success('Đăng ký thành công, chúng tôi sẽ liên hệ lại sau xin cảm ơn', 'Thông báo' )
+        });
+    //END :::::::: CHỨC NĂNG ĐĂNG KÝ FORM SỬ DUNG TRIXGO
+
+
+    // START ::::::::: CHỨC NĂNG TÌM KIẾM BLOG
+    $('body').on('click', '#btn-search-blog', function(){
+        let key = $('#input-search-blog').val();
+        window.location.href = `/search-blog?key=${key}`
+    });
+    function newResultSearch(data){
+        console.log({data})
+        data && data.forEach(item=>{
+           let  element = 
+           `<div class="col-12 col-lg-4 t-product-slider-item">
+                <div class="t-product-slider-item-wrapper">
+                    <div class="t-product-slider-item-img">
+                        <img src="${item.image}" alt="Product" />
+                    </div>
+                    <p class="t-product-slider-item-title">${item.title}</p>
+                    <div class="t-product-slider-item-description">
+                        ${item.description}
+                    </div>
+                    <a class="t-product-slider-item-link" href="/details-blog/?slug=${item.slug}&category=${item.category}"><%- lang(langKey,'details')%> <img src="/template/images/icon-arrow-right.svg" alt="Arrow" /></a>
+                </div>
+            </div>`
+                        
+            $('#t-product-slider1').append(element)
+        })
+    }
+    let pageCurrent = 2;
+    $('body').on('click', '#btn-load-more-result-search', function(){
+        let key = urlQuery("key");
+        let dataToView ={}
+        let dataCallAjax = {
+            url : '/search-blog',
+            method : 'POST',
+            data : { key, pageCurrent } 
+        };
+        dataToView.showError = (error)=>{
+            pageCurrent ++;
+            console.log('nothing to show', error);
+        }
+        dataToView.showSuccess = (data)=>{
+            let allPage = data.allPage || 0;
+            if(pageCurrent < allPage){
+                console.log(data)
+                // let data = data.data
+                newResultSearch(data.data);
+            }else{
+                $('#btn-load-more-result-search').remove();
+            }
+            pageCurrent ++;
+        }
+        getDataServerAndMapView({ dataCallAjax, dataToView });
+    })
+    
+    // END   ::::::::: CHỨC NĂNG TÌM KIẾM BLOG
+
+    $('#input-search-blog').keyup(function(e){
+        if(e.keyCode == 13){
+            $('#btn-search-blog').trigger('click')
+        }
+    })
+
+    
+});
+</script>

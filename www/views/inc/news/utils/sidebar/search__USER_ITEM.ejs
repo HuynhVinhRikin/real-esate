@@ -1,0 +1,180 @@
+<%let formAge %>
+<%let toAge %>
+<%if(search && search.fromAge){%>
+<% formAge = search.fromAge %>
+<%}else{%>
+<% formAge = 16 %>
+<%}%> 
+<%if(search && search.toAge){%>
+<% toAge = search.toAge %>
+<%}else{%>
+<% toAge = 65 %>
+<%}%> 
+<div class="wao-filer-widget">
+    <p class="title">
+        Bộ lọc<img src="/template/front-end-new/img/home/title-arrow-down.svg" alt="" class="wao-mb">
+    </p>
+    <div class="filter-content">
+        <div class="filter-content-warrper">
+            <div class="form-group gender">
+                Giới tính
+                <p>
+                    <label for="sidebarmale">
+                        <input type="radio" class="gender_concept" name="gender" value="1"
+                        <%if(search && search.gender){%>
+<%if(Object.is(Number(search.gender), 1)){%>
+checked
+<%}%>
+                        <%}%> name="gender" id="sidebarmale">
+<span>Nam</span>
+</label>
+<label for="sidebarfemale">
+    <input type="radio" class="gender_concept" name="gender" value="0" <%if(search && search.gender){%>
+        <%if(Object.is(Number(search.gender), 0)){%> checked <%}%>
+                        <%}%> name="gender" id="sidebarfemale">
+    <span>Nữ</span>
+</label>
+</p>
+</div>
+<div class="form-group">
+    Tiêu đề
+    <input type="text" id="txtSearch" placeholder="VD: Nguyễn Văn A, ..(lớn hơn 2 kí tự)" <%if(search && search.key){%>
+        value="<%= search.key.replace(/"/g, '')%>" <%}%> >
+            </div>
+            <div class="form-group">
+                Sắp xếp theo
+                <div class="select-group">
+                    <i><img src="/template/front-end-new/img/home/select-arrow-down.svg" alt=""></i>
+                    <select name="" id="txtSort">
+                        <option value="-createAt"
+                        <%if(search && search.sort){%> <%if(Object.is(search.sort, '-createAt')){%> selected="selected" <%}%>
+                            <%}%>>Mới nhất</option>
+    <option value="createAt" <%if(search && search.sort){%> <%if(Object.is(search.sort, 'createAt')){%>
+        selected="selected" <%}%>
+                            <%}%>>Cũ nhất</option>
+    <option value="-amountView" <%if(search && search.sort){%> <%if(Object.is(search.sort, '-amountView')){%>
+        selected="selected" <%}%>
+                            <%}%>>Lượt Xem Nhiều Nhất</option>
+    <option value="amountView" <%if(search && search.sort){%> <%if(Object.is(search.sort, 'amountView')){%>
+        selected="selected" <%}%>
+                            <%}%>>Lượt Xem Ít Nhất</option>
+    <option value="-usersLikedMe" <%if(search && search.sort){%> <%if(Object.is(search.sort, '-usersLikedMe')){%>
+        selected="selected" <%}%>
+                            <%}%>>Lượt Thích Nhiều Nhất</option>
+    <option value="usersLikedMe" <%if(search && search.sort){%> <%if(Object.is(search.sort, 'usersLikedMe')){%>
+        selected="selected" <%}%>
+                            <%}%>>Lượt Thích Ít Nhất</option>
+    </select>
+</div>
+</div>
+<div class="form-group range-slider-filter">
+    <p>Độ tuổi</p>
+
+    <p class="text-rigth">
+        <label for="">
+            <span class="min-value" id="fromAge_concept">18</span> - <span id="toAge_concept"
+                class="max-value">65</span>
+        </label>
+    </p>
+    <div id="age-slider" class="age-slider" data-min="<%=formAge%>" data-max="<%=toAge%>">
+    </div>
+</div>
+
+<div class="form-group">
+    Địa chỉ
+    <div class="select-group">
+        <i><img src="/template/front-end-new/img/home/select-arrow-down.svg" alt=""></i>
+        <select name="" class="select2" id="province_concept">
+            <option value="null">Tỉnh/Thành phố</option>
+            <%for(let index in provinces) {%>
+            <option value="<%=provinces[index].code && provinces[index].code%>" <%if(search && search.province){%>
+                <%if(!Number.isNaN(Number(search.province))){%>
+                <%if(Object.is(Number(search.province), Number(provinces[index].code))){%> selected="selected" <%}%>
+                              <%}%> <%}%>      
+                      ><%=provinces[index].name && provinces[index].name%></option>
+                <%}%>
+                </select>
+    </div>
+    <div class="select-group">
+        <i><img src="/template/front-end-new/img/home/select-arrow-down.svg" alt=""></i>
+        <select name="" class="select2" id="district_concept">
+            <option value="null">Tất Cả</option>
+        <%if(listDistricts){%>
+        <%for(let index in listDistricts){%>
+        <option value="<%=listDistricts[index].code && listDistricts[index].code%>" <%if(infoUser){%>
+        <%if(!Number.isNaN(Number(infoUser.district))  && Number(infoUser.district) != -1){%>
+        <%if(Object.is(Number(infoUser.district), Number(listDistricts[index].code))){%> selected="selected" <%}%>
+                            <%}%> <%}%>
+                    ><%=listDistricts[index].name_with_type && listDistricts[index].name_with_type%></option>
+        <%}%>
+            <%}%>
+
+        <%if(listDistricts){%>
+        <%for(let index in listDistricts){%>
+        <option value="<%=listDistricts[index].code && listDistricts[index].code%>" <%if(search){%>
+        <%if(search.district){%> <%if(!Number.isNaN(Number(search.district))){%>
+        <%if(Object.is(Number(search.district), Number(listDistricts[index].code))){%> selected="selected" <%}%>
+                                <%}%> <%}%>
+                        <%}%>><%=listDistricts[index].name_with_type && listDistricts[index].name_with_type%>
+        </option>
+        <%}%>
+                <%}%>
+        </select>
+    </div>
+</div>
+
+    <!-- <div class="form-group wao-justi-space">
+        Ảnh đại diện
+        <p>
+            <label for="checkbox" class="checkbox-input">
+                <input class="switch" type="checkbox" id="txtHaveAvatar" <%#if(search && search.isHashAvatar){%>
+                    <%#if(Object.is(Number(search.isHashAvatar), 1)){%> checked="checked" <%#}%>
+                                <%#}%>>
+                <span></span>
+            </label>
+        </p>
+    </div>
+    <%#if(isLogin){%>
+    <div class="form-group wao-justi-space">
+        Người dùng đã xem mình
+        <p>
+            <label for="checkbox-2" class="checkbox-input">
+                <input class="switch" type="checkbox" id="txtUserView" <%#if(search && search.isUserView){%>
+                    <%#if(Object.is(Number(search.isUserView), 1)){%> checked="checked" <%#}%>
+                                <%#}%>>
+                <span></span>
+            </label>
+        </p>
+    </div>
+    <div class="form-group wao-justi-space">
+        Yêu thích
+        <p>
+            <label for="checkbox-3" class="checkbox-input">
+                <input class="switch" type="checkbox" id="txtUsersMeLike" <%#if(search && search.isUsersMeLike){%>
+                    <%#if(Object.is(Number(search.isUsersMeLike), 1)){%> checked="checked" <%#}%>
+                                <%#}%>>
+                <span></span>
+            </label>
+        </p>
+    </div>
+    <div class="form-group wao-justi-space">
+        Đã yêu thích tôi
+        <p>
+            <label for="checkbox-4" class="checkbox-input">
+                <input class="switch" type="checkbox" id="txtUsersLikeMe" <%#if(search && search.isUsersLikeMe){%>
+                    <%#if(Object.is(Number(search.isUsersLikeMe), 1)){%> checked="checked" <%#}%>
+                                <%#}%>>
+                <span></span>
+            </label>
+        </p>
+    </div>
+    <%#}%> -->
+            <%if (!flagPageSearch || flagPageSearch !== 1){%>
+<div class="form-group text-center">
+    <input type="submit" id="btnSearch" value="Áp dụng" class="wao-btn btnSearchNormal">
+</div>
+<%}%>
+          
+        </div>
+    </div>
+</div>

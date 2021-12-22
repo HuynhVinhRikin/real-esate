@@ -1,0 +1,110 @@
+<% if(render.code != 'INTRO_EVENT' && render.code != 'INTRO_EXPERIENCE'){ %>
+   <%
+        let classColorBaner ='t-invite-blue-mode'
+        if(render.code == 'HOME'){
+            classColorBaner = ''
+        }
+    %>
+    <div class="t-invite <%=classColorBaner%>">
+        <div class="container">
+            <p class="t-title">
+                <%- lang(langKey,'hay_trai_nghiem_san_pham_chung_toi')%>
+            </p>
+            <p class="t-description">
+                <%- lang(langKey,'experience_now')%>
+            </p>
+            <div class="t-invite-btn"><a class="btn" data-toggle="modal" href="#t-invite-modal"><%- lang(langKey,'join_us')%></a></div>
+        </div>
+    </div>
+<%}%>
+    
+<!--____________________________________REGISTER MODAL POPUP_______________________________________-->
+<div class="modal fade t-modal" id="t-invite-modal" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><%- lang(langKey,'title_form_req')%></h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <img src="/template/images/icon-close.svg" alt="Close" />
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="t-modal-input-item">
+                    <label><%- lang(langKey,'fullname')%></label>
+                    <input type="text" class="form-control"  id = 'input-fullname-req-form' placeholder="<%- lang(langKey,'press')%> <%- lang(langKey,'fullname')%>" />
+                </div>
+                <div class="t-modal-input-item">
+                    <label><%- lang(langKey,'company_name')%></label>
+                    <input type="text" class="form-control" id = 'input-company-req-form' placeholder="<%- lang(langKey,'press')%> <%- lang(langKey,'company_name')%>" />
+                </div>
+                <div class="t-modal-input-item">
+                    <label>Email</label>
+                    <input type="text" class="form-control" id = 'input-email-req-form' placeholder="<%- lang(langKey,'press') %> Email" />
+                </div>
+                <div class="t-modal-input-item">
+                    <label><%- lang(langKey,'company_type')%></label>
+                    <select id = 'input-type-company-req-form' class="form-control">
+                        <option value="0">Choose</option>
+                        <option value="1">Construction</option>
+                        <option value="2">Commerce</option>
+                        <option value="3">Manufacturing</option>
+                    </select>
+                </div>
+                <div class="t-modal-input-item">
+                    <label><%- lang(langKey,'phone')%></label>
+                    <input type="text" class="form-control"  id = 'input-phone-req-form' placeholder="<%- lang(langKey,'press')%> <%- lang(langKey,'phone')%>" />
+                </div>
+                <div class="t-modal-input-btn">
+                    <button id ='send-req-join-with-trix' class="btn"><%- lang(langKey,'send_req')%></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="t-footer">
+    <div class="container">
+        <div class="t-footer-text">
+            <img src="/template/images/logo2.png" alt="Logo" />
+            <p><%- lang(langKey,'address')%> : <%- lang(langKey,'address_of_us')%></p>
+            <p><%- lang(langKey,'phone')%>: +84 868 898 086</p>
+        </div>
+        <div class="t-footer-download">
+            <p><%- lang(langKey,'dowload_app_here')%>:</p>
+            <div>
+                <a href="https://apps.apple.com/us/app/trixgo/id1509530317"><img src="/template/images/footer-appstore.png" alt="Appstore" /></a>
+                <a href="https://play.google.com/store/apps/details?id=com.trixgo"><img src="/template/images/footer-googleplay.png" alt="Googleplay" /></a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="t-footer-sub">
+    <div class="container">
+        <div class="t-footer-sub-text">Trixgo</div>
+        <div class="t-footer-link">
+            <a href="https://app.trixgo.com/policy"><%- lang(langKey,'about_us')%></a>
+            <a href="https://app.trixgo.com/policy"><%- lang(langKey,'privacy_policy')%></a>
+            <a href="https://app.trixgo.com/policy"><%- lang(langKey,'terms')%></a>
+        </div>
+    </div>
+</div>
+
+<!--___________________________________________________________________________-->
+
+</body>
+<script type="text/javascript">
+
+$(document).ready(function() {
+    //___________________________INITIAL STORY SLIDER
+    $('#t-solution-story-slider').slick({
+        dots: false,
+        infinite: true,
+        slidesToShow: 1,
+        autoplay: true,
+        autoplaySpeed: 5000,
+        fade: true,
+        draggable: false,
+    });
+});
+</script>
+</html>

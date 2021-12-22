@@ -1,0 +1,20 @@
+<script>
+ $(document).ready(function(){
+     
+    $('#select_datatable_length').on('click', function(){
+        let amountItemShow = $(this).val();
+        let uri  = `/admin/list-report-user?`;
+        if (!Number.isNaN(Number(amountItemShow))) uri += `&amountItemShow=${amountItemShow}`;
+        return window.location.href = uri;
+    })
+
+    
+    $('#btnSearch').on('click', function(){
+        let key = $('#txtKey').val();
+        let uri  = `/admin/list-report-user?`;
+        if (key) uri += `&key=${key}`;
+        return window.location.href = uri;
+    })
+
+ })
+</script>

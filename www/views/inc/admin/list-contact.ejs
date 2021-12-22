@@ -1,0 +1,153 @@
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-primary">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-verified float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Tổng Khách <br><br></h6>
+                                <h4 class="mb-4">
+                                   <% if (listContact) { %>
+                                        <%= listContact.count || 0%>
+                                   <% } %>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tổng số user mới đăng ký (trong 24h qua) -->
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-info">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-gnome float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Tổng Khách Mới</h6>
+                                <h4 class="mb-4">
+                                   
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+            <div class="row">
+                 <div class="col-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <div class="row">
+                                <h4 class="mt-0 header-title" style="padding-left: 16px">Bộ Lọc và Sắp Xếp</h4>
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <div class="col-sm-8">
+                                         
+                                        </div>
+                                        <div class="col-md-12" >
+                                        Tên Khách
+                                            <div >
+                                                <input type="text" class="form-control" name="end" placeholder="Nhập Tên Khách" id="txtEndTime">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <span class="text-center"> 
+                                        <i>
+                                          
+                                        </i>
+                                    </span>
+                                    <button class="btn btn-info float-right" id="btnSearch">Tìm Kiếm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <table class="content-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        STT
+                                        &nbsp <input type="checkbox" name="#" value="" id="checkAll">
+                                    </th>
+                                    <th>Tên</th>
+                                    <th>Tên công ty</th>
+                                    <th>Loại công ty</th>
+                                    <th>Số điện thoại</th>
+                                    <th>email</th>
+
+                                </tr>
+                            </thead>
+                                <tbody>
+                                    <% if (listContact && listContact.length > 0) { %>
+                                        <% listContact.forEach(( contact, index ) => { %>
+                                            <% if (contact) { %>
+                                                <tr>
+                                                    <th>
+                                                        <%= index + 1 %> &nbsp <input type="checkbox" value="<%= contact._id && contact._id %>" class="ckbCategoryID">
+                                                    </th>
+                                                    <td>
+                                                        <i>
+                                                            <%= contact.name  %>
+                                                        </i>
+                                                    </td>
+                                                    <td>
+                                                        <i>
+                                                            <%= contact.companyName  %>
+                                                        </i>
+                                                    </td>
+                                                    <td>
+                                                        <%= contact.companyType  %>
+                                                    </td>
+                                                    <td>
+                                                        <%= contact.phone  %>
+                                                    </td>
+                                                    <td>
+                                                        <%= contact.email  %>
+                                                    </td>
+                                                </tr>
+                                            <% } %>
+                                        <% }) %>
+                                    <% } %>
+                                </tbody>
+                                <div class="row">
+                                    <div class="col-md-6"> 
+                                        <%- include ./utils/data-table-length.ejs%>
+                                        <div class="dropdown mo-mb-2" id="dropdownMenuOptionCategory" style="display: none">
+                                            <a class="btn btn-light dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Chọn Thao Tác
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 33px, 0px);">
+                                                <a class="dropdown-item btnUpdateStatusWithListCategory" _status="0" href="#">Tắt Hoạt Động</a>
+                                                <a class="dropdown-item btnUpdateStatusWithListCategory" _status="1" href="#">Mở Hoạt Động</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!-- PAGING (WEB ADMIN) -->
+                                        <%- include ./utils/paging.ejs%>
+                                        <!--END PAGING (WEB ADMIN) -->
+                                    </div>
+                                </div>
+                            </table>
+                                <!-- PAGING (WEB ADMIN) -->
+                                <%- include ./utils/paging.ejs%>
+                                <!--END PAGING (WEB ADMIN) -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

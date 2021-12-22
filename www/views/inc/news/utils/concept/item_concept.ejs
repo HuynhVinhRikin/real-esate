@@ -1,0 +1,229 @@
+<div class="wao-date-card">
+    <div class="left-card">
+        <div class="card-img">
+            <img src="/files/users/<%if(concept && concept.image){%><%=concept.image[0]%><%}%>" alt="<%if(concept && concept.title){%>
+            <%=concept.title%>
+        <%}%>" class="wao-mb">
+          <img src="/files/users/<%if(concept && concept.image){%><%=concept.image[0]%><%}%>" alt="<%if(concept && concept.title){%>
+            <%=concept.title%>
+        <%}%>" class="wao-pc">
+          <a class="wao-pc card-view-more" href="/buoi-hen-ho/<%=concept.slug&& concept.slug%>">
+            <img src="/template/front-end-new/img/home/arrow-down.svg" alt="icon">
+            Xem chi tiết
+            </a>
+        </div>
+        <p class="text-center wao-pc">
+
+            <%let flagShowButtonNotIsAuthor = true;%>
+            <%if(Number(concept.status) == 0){%>
+            <%if(isLogin){%>
+            <%if(infoUser._id.toString() == concept.author._id.toString()){%>
+            <%flagShowButtonNotIsAuthor = false;%>
+            <%}%>
+            <%}%>
+            <%if(!flagShowButtonNotIsAuthor) {%>
+
+            <%}else{%>
+            <a href="#" class="wao-btn wao-pc wao-popup-open requestParticipantion" data="wao-enjoy-date-popup"
+                _conceptid="<%=concept._id%>" _authorID='<%=concept.author._id%>'>
+                Tham gia
+            </a>
+            <%}%>
+        <%}%>
+
+        </p>
+    </div>
+    <div class="right-card">
+        <div class="right-top-card">
+            <div class="card-user" style="margin-bottom: 10px;">
+                <div class="avatar">
+                    <%let objUser = concept;%>
+                        <%- include ../image_RENDER-header.ejs%>
+                </div>
+                <div class="user-info">
+                    <p class="name"> <a href="/nguoi-dung/thong-tin/<%=concept.author.username%>">
+                            <%let user = concept.author;%>
+                            <%- include ../fullname_SPLIT.ejs%>
+                        </a></p>
+                    <ul class="meta">
+                        <li>
+                            <span><img src="/template/front-end-new/img/date-detail/eye_icon.svg" alt=""></span>
+                            <%if(concept && concept.amountView){%>
+                            <%=concept.amountView%>
+                            <%}%>  
+                   </li>
+                   <li>
+                       <span><img src="/template/front-end-new/img/date-detail/heart_icon.svg"
+                      alt=""></span>
+                         <%if(concept && concept.favorites){%>
+                            <%=concept.favorites.length%>
+                            <%}%>    
+                   </li>
+                   <li><span><img src="/template/front-end-new/img/home/location_icon.svg" alt=""></span>
+                    <%if(provinces){%>
+                        <%if(concept.author && !Number.isNaN(Number(concept.author.province))){%>
+                                <% var infoProvince = concept.author.province < 10 ? provinces['0'+concept.author.province] : provinces[concept.author.province]%>
+                                <%if(infoProvince){%>
+                                    <%if(concept.author && !Number.isNaN(Number(concept.author.district))  && Number(concept.author.district) != -1 && concept.author.district != null){%>
+                                        <% if(concept.author.district < 100) { %>
+                                            <% if(concept.author.district < 10){ %>
+                                                <%=districts["00"+concept.author.district].name_with_type%><%=", "  %>
+                                                <%=infoProvince.name%>
+                                            <% }else{ %> 
+                                                <%=districts["0"+concept.author.district].name_with_type%><%=", "  %>
+                                                <%=infoProvince.name%>
+                                            <%}%>
+                                        <% }else{  %>
+                                                <%=districts[concept.author.district].name_with_type%><%=", "  %> 
+                                                <%=infoProvince.name%>
+                                        <%}%>
+                                    <%}else{%>
+                                        <%=infoProvince.name%>
+                                    <%}%>
+                                <%}else{%>
+                                    Chưa Cập Nhật
+                                <%}%>
+                        <%}else{%>
+                            Chưa Cập Nhật
+                        <%}%>
+                    <%}%>
+                   
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <a href="" class="wao-like-btn wao-popup-open likeConcept 
+                <%if(infoUser){%>
+            <%let arrUserLikedConcept = concept.favorites.join('_');%>	
+            <%if(arrUserLikedConcept.includes(infoUser._id)){%>
+            active
+            <%}else{%>
+            <%}%>
+            <%}else{%>
+            <%}%>"
+            _conceptid="<%=concept._id%>" data="wao-favorite-popup">
+                <svg width="18" height="16" viewBox="0 0 18 16" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M9 16C8.74374 16 8.49669 15.9072 8.30415 15.7388C7.577 15.1035 6.87593 14.5065 6.2574 13.9799L6.25424 13.9772C4.44081 12.4332 2.87485 11.0998 1.78528 9.7863C0.567307 8.31791 0 6.92567 0 5.40473C0 3.92701 0.507156 2.56372 1.42795 1.56581C2.35973 0.556101 3.63826 0 5.02844 0C6.06747 0 7.01903 0.3282 7.8566 0.975406C8.2793 1.3021 8.66245 1.70192 9 2.16828C9.33769 1.70192 9.7207 1.3021 10.1435 0.975406C10.9811 0.3282 11.9327 0 12.9717 0C14.3617 0 15.6404 0.556101 16.5722 1.56581C17.493 2.56372 18 3.92701 18 5.40473C18 6.92567 17.4328 8.31791 16.2149 9.78616C15.1253 11.0998 13.5595 12.433 11.7463 13.9769C11.1267 14.5043 10.4245 15.1023 9.69571 15.739C9.50331 15.9072 9.25612 16 9 16Z">
+                    </path>
+                </svg>
+            </a>
+        </div>
+        <!-- <hr style="margin-bottom: 10px;border-color: rgba(8, 0, 0, 0.1);"> -->
+        <div class="card-content">
+            <p class="wao-pc">
+                <span class="wao-label">
+                    <%if(constants && constants.prayers){%>
+                    <%let indexPrayerConcept = constants.prayers.findIndex(prayer => Object.is(Number(prayer.value), Number(concept.prayer)));%>
+                    <%=constants.prayers[indexPrayerConcept].text%>
+                    <%}%>
+             </span>
+             <span class="wao-label wao-label-yellow">
+                <%=concept.participants.length%> đăng ký
+                </span>
+            </p>
+            <p class="title" style="margin-bottom: 15px;">
+                <a href="/buoi-hen-ho/<%=concept.slug&& concept.slug%>">
+                    <%if(concept && concept.title){%>
+                    <%=concept.title%>
+                    <%}%>
+              </a>
+          </p>
+          
+          <ul>
+             <li>
+                 <i><img src="/template/front-end-new/img/list-by-user/calendar_icon_2.svg" alt=""></i><b
+                class="label">Ngày diễn ra:</b>
+                <%if(concept && concept.time){%>
+                    <%= moment(concept.time).format('L');%>
+                    <%}%>	
+             </li>
+             <li style="display: flex;"><i><img src="/template/front-end-new/img/list-by-user/person_icon.svg" alt=""></i><b
+                class="label">Đối tượng:</b>
+                <%var genderFocus = null;%>
+                    <%if(concept && concept.focusGender && !Number.isNaN(Number(concept.focusGender)) && Object.is(Number(concept.focusGender), 1)){%>
+                    <%genderFocus = 'Nam'%>
+                    <%}else{%> <%genderFocus = 'Nữ'%>
+                    <%}%>
+                <%if(concept && concept.focusAge && concept.focusAge && concept.focusAge.from && concept.focusAge.to){%><%=genderFocus%>
+                    &nbsp; <%=concept.focusAge.from%> - <%=concept.focusAge.to%>
+                    <%}else{%>
+                    Chưa Có Thông Tin.
+                    <%}%>
+             </li>
+             <li class="wao-mb"><i><img src="/template/front-end-new/img/list-by-user/location_icon.svg"
+                alt=""></i><b class="label">Địa điểm:</b>
+                <%if(concept && concept.address){%>
+                    <%var conceptNew = concept.address.filter(Boolean);%>
+                    <span><%=conceptNew[0]%> (<%=conceptNew.length-1%> địa điểm khác)</span>
+                    <%}%>
+             </li>
+<!--              <li><i><img src="/template/front-end-new/img/home/save_money_icon.svg" alt=""></i><b
+                class="label">
+                Tổng chi phí:</b><b>
+                    <%if(concept && concept.cost){%>
+                    <span><%= formatCurrency('###,###.', concept.cost)%> VNĐ</span>
+                    <%}%>
+                </b></li> -->
+          </ul>
+          <ul class="ul-address wao-pc">
+             <li><i><img src="/template/front-end-new/img/list-by-user/location_icon.svg" alt=""></i><b
+                class="label">Địa điểm:</b>
+                <%if(concept && concept.address){%>
+                    <%var conceptNew = concept.address.filter(Boolean);%>
+                    <span><%=conceptNew[0]%> (<%=conceptNew.length-1%> địa điểm khác)</span>
+                    <%}%>
+             </li>
+          </ul>
+          <!-- [Minh] 10:35PM 24/05/2020 -->
+          <p class="wao-mb">
+            <span class="wao-label">
+               <%if(constants && constants.prayers){%>
+                    <%let indexPrayerConcept = constants.prayers.findIndex(prayer => Object.is(Number(prayer.value), Number(concept.prayer)));%>
+                    <%=constants.prayers[indexPrayerConcept].text%>
+                    <%}%>
+            </span>
+            <span class="wao-label wao-label-yellow">
+               <%=concept.participants.length%> đăng ký
+                    </span>
+            </p>
+
+            <!-- <p class="wao-mb">
+             <span class="wao-label">Người tạo buổi hẹn trả 100%</span>
+             <span class="wao-label wao-label-yellow">Người tạo buổi hẹn trả 100%</span>
+          </p> -->
+
+            <p class="desc" style="overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;">
+                <%if(concept && concept.description){%>
+                <%=concept.description%>
+                <%}%> 
+          </p>
+          <p class="text-center wao-mb">
+            
+            <%if(Number(concept.status) == 0){%>
+                <%if(isLogin){%>
+                <%if(infoUser._id.toString() == concept.author._id.toString()){%>
+                <%flagShowButtonNotIsAuthor = false;%>
+                <%}%>
+                <%}%>
+                <%if(!flagShowButtonNotIsAuthor) {%>
+
+                <%}else{%>
+                <!-- [Minh] 10:34PM 24/05/2020: Change class wao-pc to wao-mb -->
+                <a href="#" class="wao-btn wao-mb wao-popup-open requestParticipantion" data="wao-enjoy-date-popup"
+                    _conceptid="<%=concept._id%>" _authorID='<%=concept.author._id%>'>
+                    Tham gia
+                </a>
+                <!-- <a href="#" class="wao-btn wao-pc wao-popup-open requestParticipantion" data="wao-enjoy-date-popup" _conceptid="<%=concept._id%>" _authorID='<%=concept.author._id%>'>
+                        Tham gia
+                    </a> -->
+                <%}%>
+            <%}%>
+            </p>
+        </div>
+    </div>
+</div>

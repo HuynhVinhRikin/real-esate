@@ -1,0 +1,219 @@
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+            <br>
+            <br>
+            <div class="row">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-primary">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-verified float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Tổng Danh Mục <br><br></h6>
+                                <h4 class="mb-4">
+                                   <% if (infoOverview) { %>
+                                        <%= infoOverview.categoryAmount && infoOverview.categoryAmount || 0%>
+                                   <% } %>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tổng số user mới đăng ký (trong 24h qua) -->
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-info">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-gnome float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Tổng Danh Mục Mới Nhất</h6>
+                                <h4 class="mb-4">
+                                    <% if (infoOverview) { %>
+                                            <%= infoOverview.newCategoryAmount && infoOverview.newCategoryAmount || 0%>
+                                    <% } %>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tổng số user bị khóa -->
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-danger">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-lock float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Tổng Danh Mục Đang Khoá</h6>
+                                <h4 class="mb-4">
+                                    <% if (infoOverview) { %>
+                                        <%= infoOverview.categoryAmountBlocked && infoOverview.categoryAmountBlocked || 0%>
+                                    <% } %>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tổng số user trả phí -->
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-success">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-diamond float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Tổng Danh Mục Đang Hoạt Động</h6>
+                                <h4 class="mb-4">
+                                    <% if (infoOverview) { %>
+                                        <%= infoOverview.categoryAmountActive && infoOverview.categoryAmountActive || 0%>
+                                    <% } %>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                 <div class="col-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <div class="row">
+                                <h4 class="mt-0 header-title" style="padding-left: 16px">Bộ Lọc và Sắp Xếp</h4>
+                                <div class="col-md-12">
+                                    <div class="form-group row">
+                                        <div class="col-sm-8">
+                                            <input class="form-control" type="text" placeholder="Lọc theo tiêu đề" id="txtSearch" <% if (search) { %>
+                                                value="<%= search.key && search.key %>"
+                                            <% } %> >
+                                        </div>
+                                        <div class="col-md-4">
+                                            <select class="form-control" id="txtStatus">
+
+                                                <option value="-1">Lọc Theo Status</option>
+                                                <option value="1" <% if (search) { %>
+                                                    <% if(search.status && search.status == 1){ %>
+                                                        selected
+                                                    <% } %>
+                                                <% } %> >Hoạt Động</option>
+                                                <option value="0" <% if (search) { %>
+                                                    <% if(search.status && search.status == 0){ %>
+                                                        selected
+                                                    <% } %>
+                                                <% } %> >Không Hoạt Động</option>
+
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <span class="text-center"> 
+                                        <i>
+                                            <% if (amount) { %>
+                                                Có <strong style="color: #29bbe3"><%= amount || 0 %></strong> kết quả trả về 
+                                            <% } %>
+                                        </i>
+                                    </span>
+                                    <button class="btn btn-info float-right" id="btnSearch">Tìm Kiếm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <table class="content-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        STT
+                                        &nbsp <input type="checkbox" name="#" value="" id="checkAll">
+                                    </th>
+                                    <th>Tên Danh Mục</th>
+                                    <th>Mô Tả Ngắn</th>
+                                    <th>Trạng Thái</th>
+                                    <th>Tuỳ Chọn</th>
+                                </tr>
+                            </thead>
+                                <tbody>
+                                    <% if (categories && categories.length > 0) { %>
+                                        <% categories.forEach(( category, index ) => { %>
+                                            <% if (category) { %>
+                                                <tr>
+                                                    <th>
+                                                        <%= index + 1 %> &nbsp <input type="checkbox" value="<%= category._id && category._id %>" class="ckbCategoryID">
+                                                    </th>
+                                                    <td>
+                                                        <i>
+                                                            <%= category.title && category.title %>
+                                                        </i>
+                                                    </td>
+                                                    <td>
+                                                        <i>
+                                                            <%= category.description && category.description %>
+                                                        </i>
+                                                    </td>
+                                                    <td>
+                                                        <% if (category.status && category.status) { %>
+                                                            <span class="badge badge-pill badge-success">
+                                                                Hoạt Động
+                                                            </span>
+                                                        <% }else{ %>
+                                                            <span class="badge badge-danger">
+                                                                Không Hoạt Động
+                                                            </span>
+                                                        <% } %>
+                                                    </td>
+                                                    <td>
+                                                        <div class="btn-group mb-2">
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light" id="btnDropDownCategory_<%= category._id && category._id %>">
+                                                                Thao Tác
+                                                            </button>
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light dropdown-toggle-split dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <span class="sr-only">...</span>
+                                                            </button>
+                                                            <div class="dropdown-menu" x-placement="right-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(143px, 0px, 0px);">
+                                                                <a class="dropdown-item" href="/admin/update-category/<%= category.slug && category.slug %>/<%=category._id%>">Sửa Thông Tin</a>
+                                                                <% if (category.status) { %>
+                                                                    <a class="dropdown-item btnBlockUser btnToggleStatus" _status="0" _slug="<%= category.slug && category.slug %>" >Tắt Hoạt Động</a>
+                                                                <% }else{ %>
+                                                                    <a class="dropdown-item btnBlockUser btnToggleStatus" _status="1" _slug="<%= category.slug && category.slug %>" >Bật Hoạt Động</a>
+                                                                <% } %>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            <% } %>
+                                        <% }) %>
+                                    <% } %>
+                                </tbody>
+                                <div class="row">
+                                    <div class="col-md-6"> 
+                                        <%- include ./utils/data-table-length.ejs%>
+                                        <div class="dropdown mo-mb-2" id="dropdownMenuOptionCategory" style="display: none">
+                                            <a class="btn btn-light dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Chọn Thao Tác
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 33px, 0px);">
+                                                <a class="dropdown-item btnUpdateStatusWithListCategory" _status="0" href="#">Tắt Hoạt Động</a>
+                                                <a class="dropdown-item btnUpdateStatusWithListCategory" _status="1" href="#">Mở Hoạt Động</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!-- PAGING (WEB ADMIN) -->
+                                        <%- include ./utils/paging.ejs%>
+                                        <!--END PAGING (WEB ADMIN) -->
+                                    </div>
+                                </div>
+                            </table>
+                                <!-- PAGING (WEB ADMIN) -->
+                                <%- include ./utils/paging.ejs%>
+                                <!--END PAGING (WEB ADMIN) -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

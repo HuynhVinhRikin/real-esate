@@ -1,0 +1,94 @@
+<div class="zm-pagination-wrap mt-30">
+    <nav class="zm-pagination text-center">
+        <% if (pages > 1) { %>
+            <ul class="page-numbers">
+                <% if (current == 1) { %>
+                    <!-- DISABLE -->
+                    <!-- <li class="prev current">
+                        <a class="page-numbers larger" href="#">Trang đầu</a>
+                    </li> -->
+                    <li class="prev">
+                        <a class="page-numbers larger" href="#">Trước</a>
+                    </li>
+                <% } else { %>
+                    <!-- <li class="prev">
+                        <a class="page-numbers larger" href="
+                        <%if(!linkpage.includes('?')){%>
+                            <%=linkpage%>?&page=1
+                        <%}else{%>
+                            <%=linkpage%>&page=1
+                        <%}%>
+                        ">Trang đầu</a>
+                    </li> -->
+                    <li class="prev">
+                        <a class="page-numbers larger" href="
+                        <%if(!linkpage.includes('?')){%>
+                            <%=linkpage%>/<%=current-1%>
+                        <%}else{%>
+                            <%=linkpage%>/<%=current-1%>
+                        <%}%>
+                        ">Trước</a>
+                    </li>
+                <% } %>
+                <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                <% if (i !== 1) { %>
+                    <li ><a class="page-numbers larger wao-pagination__dots" href="#">...</a></li>
+                <% } %>
+
+                <% for (; i <= (Number(current) + 2) && i <= pages; i++) { %>
+                    <% if (i == current) { %>
+                        <!-- ACTIVE CLASS -->
+                        <li class="current">
+                            <a class="page-numbers larger" href="#"><%= i %></a>
+                        </li>
+                    <% } else { %>
+                        <li >
+                        <a class="page-numbers larger" href="
+                            <%if(!linkpage.includes('?')){%>
+                                <%=linkpage%>/<%= i %>
+                            <%}else{%>
+                                <%=linkpage%>/<%= i %>
+                            <%}%>
+                            "><%= i %></a>
+                        </li>
+                    <% } %>
+                    
+                    <% if (i == Number(current) + 4 && i < pages) { %>
+                        <!-- DISABLE -->
+                        <li ><a class="page-numbers larger wao-pagination__dots" href="#">...</a></li>
+                    <% } %>
+                <% } %>
+
+                <% if (current == pages) { %>
+                    <!-- DISABLE -->
+                    <li class="next">
+                        <a class="page-numbers larger" href="#">Sau</a>
+                    </li>
+                    <!-- <li class="next current">
+                        <a class="page-numbers larger" href="#">Trang Cuối</a>
+                    </li> -->
+                <% } else { %>
+                    <%let pageNext = Number(current) + 1%>
+                    <li class="next">
+                        <a class="page-numbers larger" href="
+                            <%if(!linkpage.includes('?')){%>
+                                <%=linkpage%>/<%= pageNext%>
+                            <%}else{%>
+                                <%=linkpage%>/<%= pageNext%>
+                            <%}%>
+                        ">Sau</a>
+                    </li>
+                    <!-- <li class="next">
+                        <a class="page-numbers larger" href="
+                            <%if(!linkpage.includes('?')){%>
+                                <%=linkpage%>?&page=<%= pages %>
+                            <%}else{%>
+                                <%=linkpage%>&page=<%= pages %>
+                            <%}%>    
+                        ">Trang Cuối</a>
+                    </li> -->
+                <% } %>
+            </ul>
+        <% } %>
+    </nav>
+</div>

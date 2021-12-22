@@ -1,0 +1,882 @@
+<script>
+	function ResizeUploads(btnUpload, popupUpload) {
+		$(btnUpload).on('change', function () {
+			$(popupUpload).addClass('active');
+		});
+	}
+
+	$(document).ready(function () {
+		ResizeUploads('#upload-avatar', '#popup-avatar');
+		ResizeUploads('#upload-cover', '#popup-cover');
+	});
+
+	$('#btnRemoveUser').on('click', function (e) {
+		e.preventDefault();
+		let userID = $(this).attr('_id');
+		swal({
+			title: "Bạn Chắc Chắn Muốn Xóa Không?",
+			text: "Bạn sẽ không thể khôi phục tập tin này!",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonClass: "btn-danger",
+			confirmButtonText: "Xác nhận!",
+			closeOnConfirm: false
+		},
+			function () {
+				$.ajax({
+					url: `/ca-nhan/remove-user/${userID}`,
+					method: 'GET',
+					success: function (resp) {
+						if (!resp.error) {
+							swal("Xóa thành công!", "", "success");
+							localStorage.removeItem("token");
+							window.location.href = "/clear-session";
+						}
+					},
+					error: function (error) {
+					}
+				})
+			});
+	});
+
+	function readURLImageCMND(input) {
+		if (input.files) {
+			var filesAmount = input.files.length;
+			for (i = 0; i < filesAmount; i++) {
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					$('#imgPreviewCMND').append(`
+						<img src="${e.target.result}" style="padding-bottom: 20px">
+					`)
+				}
+				reader.readAsDataURL(input.files[i]);
+			}
+		}
+	}
+
+	$('.upload-cm__img').on('click', function () {
+		$('.handleOpenInput').trigger('click');
+		// console.log($(this).children('#inputAddImageCMND'));
+	})
+
+	$("#inputAddImageCMND").change(function () {
+		readURLImageCMND(this);
+	});
+
+	$('#btnUpdateCMND').on('click', function () {
+		let that = this;
+		// disableAndLoading(that);
+		let userID = $(this).attr('_userID');
+		// let imageCMND = $('#inputAddImageCMND')[0].files;
+		let numberCMND = 'true';
+		let imageCMND = [];
+		let imageCMNDFront = $('#inputImageCMNDFront')[0].files;
+		let imageCMNDBack = $('#inputImageCMNDBack')[0].files;
+		console.log("imageCMNDFront", imageCMNDFront)
+		console.log("imageCMNDBack", imageCMNDBack)
+
+
+		if (!imageCMNDFront.length) {
+			return toastr.error('Vui lòng thêm hình ảnh mặt trước CMND', 'Thông Báo');
+		}
+
+		if (!imageCMNDBack.length) {
+			return toastr.error('Vui lòng thêm hình ảnh mặt sau CMND', 'Thông Báo');
+		}
+
+		imageCMND.push(imageCMNDFront[0], imageCMNDBack[[0]]);
+
+		let fd = new FormData();
+		fd.append('data', JSON.stringify({ numberCMND }));
+		fd.append('image', imageCMND);
+		for (let i = 0; i < imageCMND.length; i++) {
+			fd.append(`image_${i}`, imageCMND[i]);
+		}
+
+		$.ajax({
+			url: `/ca-nhan/update-CMND`,
+			method: 'POST',
+			data: fd,
+			enctype: 'multipart/form-data',
+			contentType: false,
+			processData: false,
+			success: function (resp) {
+				if (!resp.error) {
+					toastr.success('Bạn đã gửi xác thực danh sách tính, vui lòng chờ xác nhận', 'Thông Báo');
+					setTimeout(function () {
+						location.reload();
+					}, 3000);
+				} else {
+					toastr.error('Cập nhật CMND thất bại.', 'Thông Báo');
+				}
+			},
+			error: function (error) {
+				toastr.error('Cập nhật CMND thất bại.', 'Thông Báo');
+			}
+		})
+
+	})
+	$('.btn-close-verify').on('click', function (e) {
+		e.preventDefault();
+		$(this).parents('.wao-popup-verify').removeClass('active')
+		$('#inputImageCMNDFront').val('');
+		$('#inputImageCMNDBack').val('');
+
+		$('#imageCMNDFront').attr('src', '');
+		$('#imageCMNDBack').attr('src', '');
+	})
+
+	$('#inputImageCMNDFront').change(function () {
+		let validImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
+		if (this.files.length && validImageTypes.includes(this.files[0].type)) {
+			var reader = new FileReader();
+			reader.onload = function (e) {
+				$('#imageCMNDFront').attr('src', e.target.result);
+			}
+
+			reader.readAsDataURL(this.files[0]);
+		}
+		else {
+			$('#inputImageCMNDFront').val('');
+			$('#imageCMNDFront').attr('src', '');
+		}
+	});
+
+	$('#inputImageCMNDBack').change(function () {
+		let validImageTypes = ['image/gif', 'image/jpeg', 'image/png'];
+		if (this.files.length && validImageTypes.includes(this.files[0].type)) {
+			var reader = new FileReader();
+			reader.onload = function (e) {
+				$('#imageCMNDBack').attr('src', e.target.result);
+			}
+
+			reader.readAsDataURL(this.files[0]);
+		}
+		else {
+			$('#inputImageCMNDBack').val('');
+			$('#imageCMNDBack').attr('src', '');
+		}
+	});
+
+	$('.fancybox-gallery').fancybox({
+		helpers: {
+			overlay: {
+				locked: false
+			}
+		}
+	});
+	//Remove image user
+	let arrImageID = [];
+	$('.gallery-item-action').on('click', function (e) {
+		arrImageID = [];
+		e.preventDefault();
+		const imageType = $(e.target).attr("type");
+		if (imageType === "COVER") {
+			$("#session_to_avatar").hide();
+		} else {
+			$("#session_to_avatar").show();
+		}
+		let img = $(this).children('.gallery-img').children();
+		console.log("img", img)
+		arrImageID.push((img).attr('data-image'));
+		let popupGallery = $(this).parents('.user-info-body').find('.wao-popup-gallery');
+		console.log("popupGallery", popupGallery)
+		let elImage = $(popupGallery).find('.wao-popup-gallery__image');
+		let elLinkFancybox = $(popupGallery).find('.fancybox-gallery');
+		$(elImage).attr('src', $(img).attr('src'));
+		$(elLinkFancybox).attr('href', $(img).attr('src'));
+
+		$(popupGallery).addClass('active');
+	})
+
+	$('.gallery-private-item-action').on('click', function (e) {
+		arrImageID = [];
+		e.preventDefault();
+		const imageType = $(e.target).attr("type");
+		if (imageType === "COVER") {
+			$("#session_to_avatar_private").hide();
+		} else {
+			$("#session_to_avatar_private").show();
+		}
+		let img = $(this).children('.gallery-img').children('img');
+		console.log("img", img)
+		arrImageID.push((img).attr('data-image'));
+		let popupGallery = $(this).parents('.user-info-body').find('.wao-popup-gallery-private-item');
+		console.log("popupGallery", popupGallery)
+		let elImage = $(popupGallery).find('.wao-popup-gallery__image');
+		let elLinkFancybox = $(popupGallery).find('.gallery-img');
+		$(elImage).attr('src', $(img).attr('src'));
+		$(elLinkFancybox).attr('href', $(img).attr('src'));
+
+		$(popupGallery).addClass('active');
+	})
+
+	$('.gallery-cover-item-action').on('click', function (e) {
+		arrImageID = [];
+		e.preventDefault();
+		let img = $(this).children('.gallery-img').children('img');
+		console.log("img", img)
+		arrImageID.push((img).attr('data-image'));
+		let popupGallery = $(this).parents('.user-info-body').find('.wao-popup-gallery-cover-item');
+		console.log("popupGallery", popupGallery)
+		let elImage = $(popupGallery).find('.wao-popup-gallery__image');
+		let elLinkFancybox = $(popupGallery).find('.gallery-img');
+		$(elImage).attr('src', $(img).attr('src'));
+		$(elLinkFancybox).attr('href', $(img).attr('src'));
+
+		$(popupGallery).addClass('active');
+	})
+
+	$('.close-gallery-btn').on('click', function (e) {
+		e.preventDefault();
+		arrImageID = [];
+		$(this).parents('.user-info-body').find('.wao-popup-gallery').removeClass('active');
+		$(this).parents('.user-info-body').find('.wao-popup-gallery-private-item').removeClass('active');
+		$(this).parents('.user-info-body').find('.wao-popup-gallery-cover-item').removeClass('active');
+	})
+
+	$('.btn-remove-image').on('click', function (e) {
+		e.preventDefault();
+		if (arrImageID.length < 1)
+			return alert('Vui lòng chọn hình ảnh cần xóa!');
+
+		swal({
+			title: "Bạn có chắc chắc xóa?",
+			text: "Bạn sẽ không thể khôi phục tập tin này!",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonClass: "btn-danger",
+			confirmButtonText: "Xác nhận!",
+			closeOnConfirm: false
+		},
+
+			function () {
+				$.ajax({
+					url: `/ca-nhan/remove-gallery`,
+					method: 'POST',
+					data: { arrImageID },
+					success: function (resp) {
+						if (resp.error)
+							return alert("Xóa Thất Bại!");
+						swal("Xóa thành công!", "", "success");
+						arrImageID.forEach(imageID => {
+							$(`#image_id_${imageID}`).parent().fadeOut(300, function () {
+								$(this).remove();
+							});
+							$(`#img_${imageID}`).remove();
+						});
+						arrImageID = [];
+						$('.wao-popup-gallery').removeClass('active')
+						$('.wao-popup-gallery-private-item').removeClass('active')
+						$('.wao-popup-gallery-cover-item').removeClass('active')
+					},
+					error: function (error) {
+						return alert("Xóa Thất Bại!");
+					}
+				})
+			});
+	})
+
+	$('.btn-to-image-private').on('click', function (e) {
+		e.preventDefault();
+		if (arrImageID.length < 1) {
+			return alert('Vui lòng chọn hình ảnh cần chuyển thành riêng tư!');
+		}
+		const imageId = arrImageID[0];
+		swal({
+			title: "Bạn đồng ý chuyển sang ảnh riêng tư?",
+			text: "Bạn sẽ không thể khôi phục tập tin này!",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonClass: "btn-danger",
+			confirmButtonText: "Xác nhận!",
+			closeOnConfirm: false
+		},
+
+			function () {
+				$.ajax({
+					url: `/ca-nhan/gallery-private`,
+					method: 'POST',
+					data: { imageId },
+					success: function (resp) {
+						if (resp.error)
+							return alert("Chuyển thành ảnh riêng tư không thành công");
+						swal({
+							title: "Chuyển thành ảnh riêng tư thành công!",
+							text: "",
+							type: "success"
+						},
+							() => {
+								window.location.reload();
+							}
+						);
+					},
+					error: function (error) {
+						return alert("Chuyển thành ảnh riêng tư không thành công");
+					}
+				})
+			});
+	})
+
+	$('#btn-to-image-public').on('click', function (e) {
+		e.preventDefault();
+		if (arrImageID.length < 1) {
+			return alert('Vui lòng chọn hình ảnh cần chuyển thành công khai!');
+		}
+		const imageId = arrImageID[0];
+		swal({
+			title: "Bạn đồng ý chuyển sang ảnh công khai?",
+			text: "Bạn sẽ không thể khôi phục tập tin này!",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonClass: "btn-danger",
+			confirmButtonText: "Xác nhận!",
+			closeOnConfirm: false
+		},
+
+			function () {
+				$.ajax({
+					url: `/ca-nhan/gallery-public`,
+					method: 'POST',
+					data: { imageId },
+					success: function (resp) {
+						if (resp.error)
+							return alert("Chuyển thành ảnh công khai không thành công");
+						swal({
+							title: "Chuyển thành ảnh công khai thành công!",
+							text: "",
+							type: "success"
+						},
+							() => {
+								window.location.reload();
+							}
+						);
+					},
+					error: function (error) {
+						return alert("Chuyển thành ảnh công khai không thành công");
+					}
+				})
+			});
+	})
+
+	$('.btn-to-image-avatar').on('click', function (e) {
+		e.preventDefault();
+		if (arrImageID.length < 1) {
+			return alert('Vui lòng chọn hình ảnh cần chuyển thành ảnh đại diện!');
+		}
+		const imageId = arrImageID[0];
+		swal({
+			title: "Bạn đồng ý chuyển sang ảnh đại diện?",
+			text: "Bạn sẽ không thể khôi phục tập tin này!",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonClass: "btn-danger",
+			confirmButtonText: "Xác nhận!",
+			closeOnConfirm: false
+		},
+
+			function () {
+				$.ajax({
+					url: `/ca-nhan/gallery-avatar`,
+					method: 'POST',
+					data: { imageId },
+					success: function (resp) {
+						if (resp.error)
+							return alert("Chuyển thành ảnh đại diện không thành công");
+						swal({
+							title: "Chuyển thành ảnh đại diện thành công!",
+							text: "",
+							type: "success"
+						},
+							() => {
+								window.location.reload();
+							}
+						);
+
+						arrImageID = [];
+						$('.wao-popup-gallery').removeClass('active')
+					},
+					error: function (error) {
+						return alert("Chuyển thành ảnh đại diện không thành công");
+					}
+				})
+			});
+	})
+
+
+
+	//Update Password
+	$('#btnUpdatePass').on('click', function (e) {
+		e.preventDefault()
+		let that = this;
+		let userID = $(this).attr('_userID');
+		let currentPass = $('#txtPassCurrent').val();
+		let newPass = $('#txtPassNew').val();
+		let newPassConfirm = $('#txtPassNewConfirm').val();
+
+		if (!currentPass) {
+			return toastr.warning('Vui lòng nhập mật khẩu hiện tại!', 'Thông Báo');
+		}
+		if (!newPass) {
+			return toastr.warning('Vui lòng nhập mật khẩu mới!', 'Thông Báo');
+		}
+		if (!newPassConfirm) {
+			return toastr.warning('Vui lòng nhập xác nhận mật khẩu!', 'Thông Báo');
+		}
+		$.ajax({
+			url: `/ca-nhan/update-pass`,
+			method: 'POST',
+			data: { currentPass, newPass, newPassConfirm },
+			success: function (resp) {
+				if (!resp.error) {
+					swal({
+						title: "<h4>Mật khẩu được tạo thành công</h4>",
+						type: "success",
+						html: true,
+						confirmButtonText: "Xác nhận!",
+					}, function () {
+						window.location.href = '/clear-session';
+					});
+				} else {
+					if (resp.message == "password_not_exist")
+						return toastr.warning('Mật khẩu hiện tại không đúng!', 'Thông Báo');
+					if (resp.message == "confirm_new_password_faild")
+						return toastr.warning('Vui lòng xác nhận lại mật khẩu mới!', 'Thông Báo');
+					return toastr.error('Thất bại!', 'Thông Báo');
+				}
+			},
+			error: function (error) {
+				toastr.error('Thất bại!', 'Thông Báo');
+			}
+		})
+	})
+
+	//Create Password - Tạo password mới dành cho account google, facebook
+	$('#btnCreatePass').on('click', function (e) {
+		e.preventDefault()
+		let that = this;
+		let userID = $(this).attr('_userID');
+		let newPass = $('#txtCreatePassNew').val();
+		let newPassConfirm = $('#txtCreatePassNewConfirm').val();
+
+		if (!newPass) {
+			return toastr.warning('Vui lòng nhập mật khẩu mới!', 'Thông Báo');
+		}
+		if (!newPassConfirm) {
+			return toastr.warning('Vui lòng nhập xác nhận mật khẩu!', 'Thông Báo');
+		}
+		$.ajax({
+			url: `/ca-nhan/create-pass`,
+			method: 'POST',
+			data: { newPass, newPassConfirm },
+			success: function (resp) {
+				if (!resp.error) {
+					swal({
+						title: "<h4>Mật khẩu được tạo thành công</h4>",
+						type: "success",
+						confirmButtonText: "Xác nhận!",
+						html: true,
+					}, function () {
+						window.location.reload();
+					});
+				} else {
+					if (resp.message == "confirm_new_password_faild")
+						return toastr.warning('Vui lòng xác nhận lại mật khẩu mới!', 'Thông Báo');
+					return toastr.error('Thất bại!', 'Thông Báo');
+				}
+			},
+			error: function (error) {
+				toastr.error('Thất bại!', 'Thông Báo');
+			}
+		})
+	})
+
+	$('.open-password-popup').on('click', function (e) {
+		e.preventDefault();
+		$(this).parents('.user-info-body').find('.wao-popup-password').addClass('active')
+	})
+	$('.btn-close-pass').on('click', function (e) {
+		e.preventDefault();
+		$('#txtPassCurrent').val('');
+		$('#txtPassNew').val('');
+		$('#txtPassNewConfirm').val('');
+		$(this).parents('.user-info-body').find('.wao-popup-password').removeClass('active');
+	})
+
+	$('.btn-close-create-pass').on('click', function (e) {
+		e.preventDefault();
+		$('#txtCreatePassNew').val('');
+		$('#txtCreatePassNewConfirm').val('');
+		$(this).parents('.user-info-body').find('.wao-popup-password').removeClass('active');
+	})
+
+	//Công cụ chuyển link
+	$('#btnGenerateLinkAffiliate').on('click', function (e) {
+		e.stopPropagation();
+		e.preventDefault();
+		if (!token) {
+			alert('Vui Lòng Đăng Nhập');
+			return window.location.href = '/dang-nhap'
+		}
+
+		let urlOrigin = $('#txtLinkOrigin').val();
+
+		if (urlOrigin.indexOf('waodate.com') == -1)
+			return toastr['error']('Vui Lòng Copy đúng đường dẫn Waodate', 'Thông Báo');
+
+		$.ajax({
+			url: `/ca-nhan/tao-link-affiliate`,
+			method: 'POST',
+			data: {
+				urlOrigin
+			},
+			success: function (resp) {
+				if (resp && !resp.error) {
+					let { data: { code } } = resp;
+					$('#txtLinkReward').val(`https://waodate.com/share-link?code=${code}`);
+				} else {
+					if (resp.message === 'cannot_enough_balance')
+						return toastr['error']('Tài Khoản không đủ để thực hiện giao dịch');
+					return toastr['error']('Vui Lòng Thử Lại');
+				}
+			},
+			error: function (err) {
+				console.log(err.message)
+				return toastr['error']('Vui Lòng Thử Lại');
+			}
+		})
+
+	})
+
+	$('#txtPriceForWithdraw').keyup(function () {
+		let val = $(this).val();
+		$(this).attr('_valueOrigin', val);
+	})
+	var cleave = new Cleave('#txtPriceForWithdraw', {
+		numeral: true,
+	});
+
+	$('#btnWithdraw').on('click', function (e) {
+		e.preventDefault();
+		swal({
+			title: "Bạn có chắc chắn RÚT TIỀN!",
+			text: "",
+			type: "warning",
+			showCancelButton: true,
+			confirmButtonClass: "btn-danger",
+			confirmButtonText: "Xác nhận!",
+			closeOnConfirm: false
+		},
+			function () {
+				let totalPrice = Number($('#txtPriceForWithdraw').attr('_valueOrigin').replace(/,/g, ''));
+
+				if (Math.sign(Number(totalPrice)) == -1 || Number.isNaN(Number(totalPrice)))
+					return alert('Vui lòng nhập số tiền đúng');
+
+				$.ajax({
+					url: `/ca-nhan/yeu-cau-rut-tien`,
+					method: 'POST',
+					data: {
+						totalPrice
+					},
+					success: function (resp) {
+						if (resp && !resp.error) {
+							swal("Yêu Cầu Thành Công!", "", "success");
+							return window.location.reload(true);
+						} else {
+							if (resp.message === 'cannot_enough_balance')
+								return toastr['error']('Tài Khoản không đủ để thực hiện giao dịch');
+							return toastr['error']('Vui Lòng Thử Lại');
+						}
+					},
+					error: function (err) {
+						console.log(err.message)
+						return toastr['error']('Vui Lòng Thử Lại');
+					}
+				})
+			});
+	})
+	$(document).ready(() => {
+		let croppieObject = null;
+
+		const closeModal = () => {
+			if (croppieObject) {
+				croppieObject.destroy();
+			}
+			$("#mask_avatar").removeClass("active");
+		}
+
+		$(".icon-add").on("click", () => {
+			$("#avatar_upload").trigger("click");
+		});
+
+		$("#btn-cancel-upload").on("click", closeModal)
+
+		$(document).keyup(function (e) {
+			if (e.keyCode == 27) {
+				closeModal();
+			}
+		});
+
+		$("#avatar_upload").on("change", function (event) {
+			console.log('hello')
+			const isValidImage = checkValidImage(this);
+			if (!isValidImage) {
+				toastr['warning']('Không đúng định dạng ảnh.');
+				return;
+			} 
+			const croppieElement = document.getElementById("image-position");
+
+			const croppieOptions = {
+				showZoomer: true,
+				enableOrientation: true,
+				mouseWheelZoom: "ctrl",
+				viewport: {
+					width: 300,
+					height: 300,
+					type: "square"
+				},
+				boundary: {
+					height: "50vh"
+				}
+			};
+			croppieObject = new Croppie(croppieElement, croppieOptions);
+			console.log(croppieObject)
+			const reader = new FileReader();
+			const file = event.target.files[0];
+			reader.readAsDataURL(file);
+			reader.onload = () => {
+				croppieObject.bind({ url: reader.result });
+			};
+			reader.onerror = function (error) {
+				console.log("Error: ", error);
+			};
+
+			console.log(document.querySelector('#mask_avatar'))
+			$("#mask_avatar").addClass("active");
+		});
+
+		$("#btn-upload").on("click", async () => {
+			if (!croppieObject) {
+				alert("Vui lòng chọn hình ảnh!");
+				closeModal();
+				return;
+			}
+			const base64 = await croppieObject.result("base64");
+			$.ajax({
+				url: `/ca-nhan/upload-avatar-image`,
+				method: 'POST',
+				type: "application/json",
+				data: { image: base64 },
+				success: function (resp) {
+					if (resp.error) {
+						swal({
+							title: "Tải lên ảnh đại diện thất bại!",
+							text: "",
+							type: "error"
+						},
+							closeModal
+						);
+						return;
+					}
+					swal({
+						title: "Tải lên ảnh đại diện thành công!",
+						text: "",
+						type: "success"
+					},
+						() => {
+							$("img.avatar").length && $("img.avatar").attr("src", base64);
+							$("img.wao-header-avatar").length && $("img.wao-header-avatar").attr("src", base64);
+							$("#image_avatar_chat").attr("src", base64);
+							closeModal();
+						}
+					);
+				},
+				error: function (error) {
+					swal({
+						title: "Tải lên ảnh đại diện thất bại!",
+						text: "",
+						type: "error"
+					},
+						closeModal
+					);
+				}
+			})
+		});
+
+		$("#add-cover").on("click", () => {
+			$("#upload-cover-image").trigger("click");
+		});
+
+		let croppieCoverObject = null;
+		const closeModalCover = () => {
+			if (croppieCoverObject) {
+				croppieCoverObject.destroy();
+			}
+			$("#mask_cover").removeClass('active');
+		}
+
+		const getDimensionImage = async (file) => {
+			return new Promise((resolve, reject) => {
+				try {
+					const URL = window.URL || window.webkitURL;
+					if (file) {
+						img = new Image();
+						var objectUrl = URL.createObjectURL(file);
+						img.onload = function () {
+							resolve({
+								width: this.width,
+								height: this.height
+							})
+							URL.revokeObjectURL(objectUrl);
+						};
+						img.src = objectUrl;
+					}
+				} catch (error) {
+					reject();
+				}
+			})
+		}
+
+
+		const showAllerError = (title, callback, text = "") => {
+			swal({
+				title: title,
+				text,
+				type: "error",
+				customClass: "swal_custom"
+			},
+				callback
+			);
+		}
+		const sendAjax = (base64, callackSuccess, callbackFail) => {
+			$.ajax({
+				url: `/ca-nhan/upload-cover`,
+				method: 'POST',
+				type: "application/json",
+				data: { image: base64 },
+				success: function (resp) {
+					if (resp.error) {
+						showAllerError(
+							"Tải lên ảnh bìa thất bại!",
+							callbackFail
+						)
+						return;
+					}
+					swal({
+						title: "Tải lên ảnh bìa thành công!",
+						text: "",
+						type: "success"
+					},
+						callackSuccess
+					);
+				},
+				error: function (error) {
+					showAllerError(
+						"Tải lên ảnh bìa thất bại!",
+						callbackFail
+					)
+				}
+			})
+		}
+
+		$("#upload-cover-image").on("change", async (event) => {
+			const viewport = {
+				width: 800,
+				height: 312,
+				type: "square"
+			}
+			const fileTypeSpecify = ["png", "jpg", "jpeg"];
+			const file = event.target.files[0];
+			const fileType = file.type.split("/")[1];
+			if (fileTypeSpecify.indexOf(fileType) === -1) {
+				showAllerError("Bạn phải chọn tệp là hình ảnh", closeModalCover)
+				return;
+			}
+			const { width, height } = await getDimensionImage(file);
+			let title = "Kích thước ảnh không hợp lệ! ";
+			const textError = "Kích thước hợp lệ là 800x320"
+			if (width < viewport.width || height < viewport.height) {
+				showAllerError(title, closeModalCover, textError)
+				return;
+			}
+
+
+			const reader = new FileReader();
+			reader.readAsDataURL(file);
+			if ($(window).width() < 800) {
+				reader.onload = () => {
+					const base64 = reader.result;
+					swal({
+						title: "Bạn có muốn chọn ảnh này làm ảnh bìa ?",
+						text: "",
+						type: "warning",
+						confirmButtonClass: "btn-primary",
+						cancelButtonClass: "btn-default-custom",
+						confirmButtonText: "Đồng ý!",
+						cancelButtonText: "Không đồng ý!",
+						showCancelButton: true,
+						closeOnConfirm: false,
+						closeOnCancel: true
+					},
+						(isConfirm) => {
+							if (isConfirm) {
+								const callbackSuccess = () => {
+									window.location.reload();
+								}
+								const callbackFail = () => { }
+								sendAjax(base64, callbackSuccess, callbackFail);
+								return;
+							}
+						})
+				};
+				return;
+			}
+
+			const croppieElement = document.getElementById("image-cover-position");
+			const croppieOptions = {
+				showZoomer: true,
+				enableOrientation: true,
+				mouseWheelZoom: "ctrl",
+				viewport,
+				boundary: {
+					height: "70vh"
+				},
+			};
+			croppieCoverObject = new Croppie(croppieElement, croppieOptions);
+
+			reader.onload = () => {
+				croppieCoverObject.bind({ url: reader.result });
+			};
+			reader.onerror = function (error) {
+				console.log("Error: ", error);
+			};
+			$("#mask_cover").addClass('active');
+		});
+		$("#btn-upload-cover").on("click", async () => {
+			if (!croppieCoverObject) {
+				alert("Vui lòng chọn hình ảnh!");
+				closeModalCover();
+				return;
+			}
+			const base64 = await croppieCoverObject.result("base64");
+			const callbackSuccess = () => {
+				window.location.reload();
+			}
+
+			sendAjax(base64, callbackSuccess, closeModalCover)
+		});
+
+		$("#btn-cancel-upload-cover").on("click", () => {
+			$("#modalUploadCover").modal('hide');
+		})
+
+		setTimeout(() => {
+			const currentUrl = new URL(window.location.href);
+			const imageId = currentUrl.searchParams.get("imgId");
+			if (imageId) {
+				document.getElementById("view_image_" + imageId).click();
+			}
+		}, 500)
+	})
+</script>

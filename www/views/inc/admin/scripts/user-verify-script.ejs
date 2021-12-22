@@ -1,0 +1,103 @@
+<script>
+    $(document).ready(function(){
+
+        <% if (search && search.status) { %>
+            $('#txtStatus').val(<%= search.status%>);
+        <% } %>
+
+         <% if (search && search.keySearchUser) { %>
+            $('#txtKey').val(<%= search.keySearchUser%>);
+        <% } %>
+
+        
+
+        $('.btnConfirmCMND').on('click', function(){
+            let userID = $(this).attr('_useID');
+            let cmnd = $(this).attr('_CMND');
+            let userVerifyID = $(this).attr('_userVerifyID');
+            let status = $(this).attr('_status');
+
+            swal({
+                title: "Bạn có chắc chắn CMND này đúng không?",
+                text: "Nó sẽ là chứng thực của bạn",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Xác nhận!",
+                closeOnConfirm: false
+                },
+            function(){
+                  $.ajax({
+                    url: `/admin/update-cmnd-for-user`,
+                    method: 'POST',
+                    data: { userID, cmnd, userVerifyID, status },
+                    success: function(resp){
+                        if(!resp.error){
+                            swal("Cập nhật thành công!", "", "success");
+                            return location.reload();
+                        }
+                    },
+                    error: function(error){
+                    }
+                })
+            });
+        })
+
+        $('.btnCancelCMND').on('click', function(){
+            let userID = $(this).attr('_useID');
+            let userVerifyID = $(this).attr('_userVerifyID');
+            let status = $(this).attr('_status');
+            let cmnd = $(this).attr('_CMND');
+
+            swal({
+                title: "Bạn có chắc chắn CMND này đúng không?",
+                text: "Đây là thông tin dùng để xác thực của bạn!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Xác nhận!",
+                closeOnConfirm: false
+                },
+            function(){
+                  $.ajax({
+                    url: `/admin/update-cmnd-for-user`,
+                    method: 'POST',
+                    data: { userID, userVerifyID, status },
+                    success: function(resp){
+                        if(!resp.error){
+                            swal("Cập nhật thành công!", "", "success");
+                            location.reload();
+                        }
+                    },
+                    error: function(error){
+                    }
+                })
+            });
+        })
+
+        let getFormSearchAndFilter = () => {
+            let keySearchUser = $('#txtKey').val();
+            let starttime = $('#txtStartTime').val();
+            let endtime = $('#txtEndTime').val();
+            let status = $('#txtStatus').val();
+            let amountItemShow = $('#select_datatable_length').val();
+
+            return { keySearchUser, starttime, endtime, status, amountItemShow };
+        }
+
+        let  buildAndGoURI = function(){
+            let { keySearchUser, starttime, endtime, status, amountItemShow   } = getFormSearchAndFilter();
+            let uri = `/admin/list-user-verify?`;
+            if(keySearchUser && keySearchUser.length > 0) uri += `&keySearchUser=${keySearchUser}`;
+            if(starttime && endtime) uri += `&starttime=${starttime}&endtime=${endtime}`;
+            if(status != -1 && !Number.isNaN(Number(status))) uri +=`&status=${status}`;
+            if(amountItemShow) uri += `&amountItemShow=${Number(amountItemShow)}`;
+            return window.location.href = uri;
+        }
+
+        $('#btnSearch').on('click', function(e){
+            e.preventDefault();
+            buildAndGoURI();
+        });
+    })
+</script>

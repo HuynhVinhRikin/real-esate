@@ -1,0 +1,861 @@
+<style>
+    .avatar-upload {
+        position: relative;
+        max-width: 205px;
+        margin: 35px auto;
+        }
+        .avatar-upload .avatar-edit {
+        position: absolute;
+        right: 12px;
+        z-index: 1;
+        top: 10px;
+        }
+        .avatar-upload .avatar-edit input {
+        display: none;
+        }
+        .avatar-upload .avatar-edit input + label {
+        display: inline-block;
+        width: 34px;
+        height: 34px;
+        margin-bottom: 0;
+        border-radius: 100%;
+        background: #FFFFFF;
+        border: 1px solid transparent;
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+        cursor: pointer;
+        font-weight: normal;
+        transition: all 0.2s ease-in-out;
+        }
+        .avatar-upload .avatar-edit input + label:hover {
+        background: #f1f1f1;
+        border-color: #d6d6d6;
+        }
+        .avatar-upload .avatar-edit input + label:after {
+        content: "\f040";
+        font-family: 'FontAwesome';
+        color: #757575;
+        position: absolute;
+        top: 10px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        margin: auto;
+        }
+        .avatar-upload .avatar-preview {
+        width: 192px;
+        height: 192px;
+        position: relative;
+        border-radius: 100%;
+        border: 6px solid #F8F8F8;
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+        }
+        .avatar-upload .avatar-preview > div {
+        width: 100%;
+        height: 100%;
+        border-radius: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        }
+        .qrcode-preview {
+            width: 190px;
+            height: 190px;
+            position: relative;
+            border: 6px solid #F8F8F8;
+            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+            margin: 30px auto;
+        }
+        .qrcode-preview > img {
+            width: 100%
+        }
+    }
+</style>
+<div class="content-page">
+    <!-- Start content -->
+    <div class="content">
+        <div class="container-fluid">
+        <br>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-4">
+                                    <!-- ... -->
+                                    <%let objUser = infoUser;%>
+                                    <a href="/nguoi-dung/thong-tin/<%- infoUser.username %> ">
+                                        <%-include ./utils/image_RENDER_ADMIN.ejs%>
+                                    </a>
+                                    SDT backup: <%= infoUser.phoneBackup &&  infoUser.phoneBackup || infoUser.phone && infoUser.phone %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <h4 class="mt-0 header-title">Thông tin cá nhân</h4>
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <label class="col-form-label">Họ Tên</label>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <input class="form-control" type="text" value="<%= infoUser && infoUser.fullname && infoUser.fullname%>" id="txtFullname">
+                                        </div>
+                                    </div> 
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <label class="col-form-label">Ngày Sinh</label>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <%if(infoUser && infoUser.birthday){%>
+                                                <input class="form-control txtBirthday" type="text" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy" value="<%= moment(infoUser.birthday).format('L'); %>" id="datepicker">
+                                            <% } else { %>
+                                                <% var dateNow = new Date(); %>
+                                                <input class="form-control txtBirthday" type="text" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy" value="<%= moment(dateNow).format('L'); %>" id="datepicker">
+                                            <% } %>
+                                        </div>
+                                    </div>  
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label class="col-form-label">Tuổi</label>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <input class="form-control" min="18" max="100" type="number" value="<%= infoUser && infoUser.age && infoUser.age%>" id="txtAge">
+                                        </div>
+                                    </div> 
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <label class="col-form-label">Chiều cao (cm)</label>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <input class="form-control" type="number"  value="<%= infoUser && infoUser.height && infoUser.height%>" id="txtHeight">
+                                        </div>
+                                    </div> 
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <label class="col-form-label">Giới tính</label>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <select class="form-control" id="txtGender">
+                                                <option value="1" <% if (infoUser) { %>
+                                                    <% if (infoUser.gender &&  infoUser.gender == 1) { %>
+                                                        selected
+                                                    <% } %>
+                                                <% } %> >Nam</option>
+                                                <option value="0"  <% if (infoUser) { %>
+                                                    <% if (infoUser.gender == 0) { %>
+                                                        selected
+                                                    <% } %>
+                                                <% } %> >Nữ</option>
+                                            </select>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label class="col-form-label">Tình trạng hôn nhân</label>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                           <select class="form-control" id="txtMarital">
+                                                <% if (maritals && maritals.length > 0) { %>
+                                                    <% maritals.forEach(marital => { %>
+                                                        <option value="<%= marital.value %>" <% if (infoUser && infoUser.marital && infoUser.marital === marital.value ) { %>
+                                                            selected
+                                                        <% } %> ><%= marital.text %></option>
+                                                    <% }) %>
+                                                <% } %>
+                                            </select>
+                                        </div>
+                                    </div> 
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <label class="col-form-label">Học vấn</label>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <select class="form-control" id="txtEducation">
+                                                <% if (educations && educations.length > 0) { %>
+                                                    <% educations.forEach(education => { %>
+                                                        <option value="<%= education.value %>" <% if (infoUser && infoUser.education && infoUser.education === education.value) { %>
+                                                            selected
+                                                        <% } %> ><%= education.text %></option>
+                                                    <% }) %>
+                                                <% } %>
+                                            </select>
+                                        </div>
+                                    </div> 
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <label class="col-form-label">Thân hình</label>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <select class="form-control" id="txtBody">
+                                                <% if (bodys && bodys.length > 0) { %>
+                                                    <% bodys.forEach(body => { %>
+                                                        <option value="<%= body.value %>" <% if (infoUser && infoUser.body && infoUser.body === body.value) { %>
+                                                            selected
+                                                        <% } %> ><%= body.text %></option>
+                                                    <% }) %>
+                                                <% } %>
+                                            </select>
+                                        </div>
+                                    </div> 
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label class="col-form-label">Nghề nghiệp</label>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <select class="form-control" id="txtJob">
+                                                <% if (jobs && jobs.length > 0) { %>
+                                                    <% jobs.forEach(job => { %>
+                                                        <option value="<%= job.value %>" <% if (infoUser && infoUser.job && infoUser.job == job.value) { %>
+                                                            selected
+                                                        <% } %> ><%= job.text %></option>
+                                                    <% }) %>
+                                                <% } %>
+                                            </select>
+                                        </div>
+                                    </div> 
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <label class="col-form-label">Tôn giáo</label>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <select class="form-control" id="txtReligion">
+                                                <% if (religions && religions.length > 0) { %>
+                                                    <% religions.forEach(religion => { %>
+                                                        <option value="<%= religion.value %>" <% if (infoUser && infoUser.religion && infoUser.religion === religion.value) { %>
+                                                            selected
+                                                        <% } %> ><%= religion.text %></option>
+                                                    <% }) %>
+                                                <% } %>
+                                            </select>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label class="col-form-label">Thu nhập hàng tháng</label>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <select class="form-control" id="txtRevenue">
+                                                <% if (revenues && revenues.length > 0) { %>
+                                                    <% revenues.forEach(revenue => { %>
+                                                        <option value="<%= revenue.value %>" <% if (infoUser && infoUser.revenue && infoUser.revenue === revenue.value) { %>
+                                                            selected
+                                                        <% } %> ><%= revenue.text %></option>
+                                                    <% }) %>
+                                                <% } %>
+                                            </select>
+                                        </div>
+                                    </div> 
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <label class="col-form-label">Hút thuốc</label>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <select class="form-control" id="txtSmoking">
+                                                <% if (smokings && smokings.length > 0) { %>
+                                                    <% smokings.forEach(smoking => { %>
+                                                        <option value="<%= smoking.value %>" <% if (infoUser && infoUser.smoking && infoUser.smoking === smoking.value) { %>
+                                                            selected
+                                                        <% } %> ><%= smoking.text %></option>
+                                                    <% }) %>
+                                                <% } %>
+                                            </select>
+                                        </div>
+                                    </div> 
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <label class="col-form-label">Uống rượu</label>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <select class="form-control" id="txtDrink">
+                                                <% if (drinks && drinks.length > 0) { %>
+                                                    <% drinks.forEach(drink => { %>
+                                                        <option value="<%= drink.value %>" <% if (infoUser && infoUser.drink && infoUser.drink === drink.value) { %>
+                                                            selected
+                                                        <% } %> ><%= drink.text %></option>
+                                                    <% }) %>
+                                                <% } %>
+                                            </select>
+                                        </div>
+                                    </div> 
+                                </div>
+
+                            </div>
+
+
+
+                            <div class="col-12 form-group">
+                                <div class="form-select-2">
+                                    <div class="form-select">
+                                    <label>Tỉnh/Thành Phố</label>
+                                        <select class="form-control select2" name="province__update_site" id="province__update_site">
+                                            <option value="-1">- Tỉnh/Thành phố</option>
+                                            <%for(let index in provinces) {%>
+                                                <option 
+                                                    value="<%=provinces[index].code && provinces[index].code%>"
+                                                    <%if(infoUser){%>
+                                                        <%if(!Number.isNaN(Number(infoUser.province)) && Number(infoUser.province) != -1){%>
+                                                            <%if(Object.is(Number(infoUser.province), Number(provinces[index].code))){%>
+                                                                selected="selected"
+                                                            <%}%>
+                                                        <%}%>
+                                                    <%}%>
+                                                ><%=provinces[index].name && provinces[index].name%></option>
+                                            <%}%>
+                                        </select>
+                                    </div>
+                                    <div class="form-select">
+                                        <label>Quận/Huyện</label>
+                                        <select class="form-control select2" name="district__update_site" id="district__update_site">
+                                            <option value="-1">-Huyện/Quận</option>
+                                            <%if(districts){%>
+                                                <%for(let index in districts){%>
+                                                    <option
+                                                        value="<%=districts[index].code && districts[index].code%>"
+                                                        <%if(infoUser){%>
+                                                            <%if(!Number.isNaN(Number(infoUser.district)) && Number(infoUser.district) != -1){%>
+                                                                <%if(Object.is(Number(infoUser.district), Number(districts[index].code))){%>
+                                                                    selected="selected"
+                                                                <%}%>
+                                                            <%}%>
+                                                        <%}%>
+                                                    ><%=districts[index].name_with_type && districts[index].name_with_type%></option>
+                                                <%}%>
+                                            <%}%>   
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="col-form-label">Sở thích</label>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                           <textarea required="" class="form-control" id="txtHobies" rows="4"><% if (infoUser && infoUser.hobies && infoUser.hobies) { %><%= infoUser.hobies %><% } %></textarea>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <label class="col-form-label">Mô tả ngắn về bản thân</label>
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                           <textarea required="" class="form-control" id="txtIntro" rows="4"><% if (infoUser && infoUser.intro && infoUser.intro) { %><%= infoUser.intro %><% } %></textarea>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card m-b-30">
+                                <div class="card-body">
+                                    <h4 class="mt-0 header-title">Thư viện ảnh</h4>
+                                    <div class="popup-gallery">
+                                        <% if (images && images.length) { %>
+                                            <% images.forEach(image => { %>
+                                                 <a class="float-left" href="/files/users/<%= image.name%>" target="_blank" title="Project 1">
+                                                    <div class="img-responsive"><img src="/files/users/<%= image.name%>" alt="" width="120"></div>
+                                                </a>
+                                            <% }) %>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <div class="row">
+                        <div class="card m-b-20 col-sm-12">
+                            <div class="card-body">
+                                <h4 class="mt-0 header-title">Mong muốn hẹn hò cùng</h4>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <label class="col-form-label">Giới tính </label>
+                                        <div class="form-group row">
+                                            <div class="col-sm-12">
+                                                <select class="form-control" id="txtFocusGender">
+                                                    <option value="1" <% if (infoUser) { %>
+                                                    <% if (infoUser.focusGender &&  infoUser.focusGender == 1) { %>
+                                                        selected
+                                                    <% } %>
+                                                <% } %> >Nam</option>
+                                                <option value="0"  <% if (infoUser) { %>
+                                                    <% if (infoUser.focusGender == 0) { %>
+                                                        selected
+                                                    <% } %>
+                                                <% } %> >Nữ</option>
+                                                </select>
+                                            </div>
+                                        </div> 
+                                    </div>
+
+                                    <div class="col-sm-8">
+                                        <label class="col-form-label">Tuổi</label>
+                                        <div class="form-group row">
+                                            <div class="col-sm-6">
+                                                <select class="form-control" id="txtFocusAgeFrom">
+                                                    <% for(let i =  18 ; i <= 100; i ++){ %>
+                                                        <option value="<%= i %>" <% if (infoUser && infoUser.focusAge && infoUser.focusAge.from && infoUser.focusAge.from == i ) { %>
+                                                            selected
+                                                        <% } %> ><%= i %></option>
+                                                    <% } %>
+                                                </select>
+                                            </div>
+                                           
+                                            <div class="col-sm-6">
+                                                <select class="form-control" id="txtFocusAgeTo">
+                                                    <% for(let i =  18 ; i <= 100; i ++){ %>
+                                                        <option value="<%= i %>" <% if (infoUser && infoUser.focusAge && infoUser.focusAge.to && infoUser.focusAge.to == i ) { %>
+                                                            selected
+                                                        <% } %> ><%= i %></option>
+                                                    <% } %>
+                                                </select>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label class="col-form-label">Tình trạng hôn nhân</label>
+                                        <div class="form-group row">
+                                            <div class="col-sm-12">
+                                                <select class="form-control" id="txtFocusMarital">
+                                                    <% if (maritals && maritals.length > 0) { %>
+                                                        <% maritals.forEach(marital => { %>
+                                                            <option value="<%= marital.value %>" <% if (infoUser && infoUser.focusMarital && infoUser.focusMarital == marital.value ) { %>
+                                                                selected
+                                                            <% } %> ><%= marital.text %></option>
+                                                        <% }) %>
+                                                    <% } %>
+                                                </select>
+                                            </div>
+                                        </div> 
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <label class="col-form-label">Nơi sống</label>
+                                        <div class="form-group row">
+                                            <div class="col-sm-12">
+                                                <select class="form-control" id="txtFocusProvince">
+                                                    <% if (provinces) { %>
+                                                        <% for(let province in provinces ) { %>
+                                                            <option value="<%= province %>" <% if (infoUser && infoUser.focusProvince && infoUser.focusProvince == province) { %>
+                                                                selected
+                                                            <% } %>><%= provinces[province].name %></option>
+                                                        <% } %>
+                                                    <% } %>
+                                                </select>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </div>
+                            
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="card m-b-20">
+                            <div class="card-body">
+                                <h4 class="mt-0 header-title">Thông tin user vip</h4>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label class="col-form-label">Thường/Vip</label>
+                                        <div class="form-group row">
+                                            <div class="col-sm-12">
+                                                <select class="form-control" id="txtUserType">
+                                                    <option value="0">User thường</option>
+                                                    <option value="1" <% if (userIsPayer) { %>
+                                                        selected
+                                                    <% } %> >User víp</option>
+                                                </select>
+                                            </div>
+                                        </div> 
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <label class="col-form-label">Ngày hết hạn user vip</label>
+                                        <div class="form-group row">
+                                            <div class="col-sm-12">
+                                               <input class="form-control datapicker_date_expired" type="text" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy" 
+                                               id="datepicker-autoclose" disabled value="<%= infoUser && infoUser.dateExpired && moment(infoUser.dateExpired).format('L')%>">
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </div>
+                            
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="card m-b-20 col-sm-12">
+                            <div class="card-body">
+                                <h4 class="mt-0 header-title">Package VIP</h4>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <label class="col-form-label">Chọn gói</label>
+                                        <div class="form-group row">
+                                            <div class="col-sm-12">
+                                                <select class="form-control" id="txtPackageVIP">
+                                                    <option value="0">Không có</option>
+                                                    <% if (packageLevels && packageLevels.length) { %>
+                                                        <% packageLevels.forEach(packageLevel => { %>
+                                                            <option value="<%= packageLevel._id %>"
+                                                                <% if (infoUser && infoUser.packageVIP && infoUser.packageVIP._id.toString() == packageLevel._id.toString() ) { %>
+                                                                    selected
+                                                                <% } %>
+                                                            ><%= packageLevel.name%> - <%= packageLevel.amountUser%></option>
+                                                        <% }) %>
+                                                    <% } %>
+                                                </select>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </div>
+                            
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="card m-b-20 col-sm-12">
+                            <div class="card-body">
+                                <h4 class="mt-0 header-title">Đổi mật khẩu</h4>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <input type="checkbox" name="" value="" id="checkedForChangePass">Check vào đây để thay đổi mật khẩu<br>
+                                        <div class="form-group row">
+                                            <div class="col-sm-12">
+                                                <input type="password" name="" value="" class="form-control" id="txtNewPassword" disabled>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </div>
+                            
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="row">
+                        <div class="card m-b-20 col-sm-12">
+                            <div class="card-body">
+                                <h4 class="mt-0 header-title">Cập nhật avatar</h4>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="container">
+                                            <div class="avatar-upload">
+                                                <div class="avatar-edit">
+                                                    <input type="file" id="imageUpload" _userID="<%= infoUser._id %>" accept=".png, .jpg, .jpeg">
+                                                    <label for="imageUpload"></label>
+                                                </div>
+                                                <div class="avatar-preview">
+                                                    <div id="imagePreview" style="background-image: url('/files/users/<%= infoUser.avatar.name%>');"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary btnRemoveAvatar" _userID="<%= infoUser._id%>">Xóa avatar</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="card m-b-20 col-sm-12">
+                            <div class="card-body">
+                                <div class="row"> 
+                                    <button type="button" class="btn" id="btnUpdate" _userID="<%= infoUser && infoUser._id && infoUser._id%>" style="width: 100%; height: 50px"> Cập Nhật</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            
+                            <div class="row">
+                                <h4 class="mt-0 header-title">
+                                    <strong><i>Danh Sách Giao Dịch Influencer</i></strong>
+                                </h4>
+                                <div class="col-12">
+                                    <div class="card m-b-20">
+                                        <div class="row" style="margin-left: 10px;">
+                                            <div class="col-md-5 form-group">
+                                                <label>Từ Ngày</label>
+                                                <input class="form-control txtFromDate" type="date" id="fromDate_datatable_listInfluencerLevel1">
+                                            </div>
+                                            <div class="col-md-5 form-group">
+                                                <label>Tới Ngày</label>
+                                                <input class="form-control txtToDate" type="date" id="toDate_datatable_listInfluencerLevel1">
+                                            </div>
+                                            <div class="col-md-2 form-group" style="padding-top: 28px;">
+                                                <button class="btn btn-primary" type="button" id="btnFilter_datatable_listInfluencerLevel1">Lọc</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-body">
+                                            <table id="datatable_listInfluencerLevel1" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>User Giới Thiệu</th>
+                                                        <th>User Nạp Tiền</th>
+                                                        <th>Thời Gian Dùng(ClickTime)</th>
+                                                        <th>Trạng Thái</th>
+                                                        <th>Hoa Hồng (%)</th>
+                                                        <th>Tổng Gói/Tổng Hoa Hồng</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                        <%if(listTransactions.length === 0){%>
+                                                            <tr>
+                                                                <th colspan="7">
+                                                                    <i style="margin-left: 45%; font-weight: bold">Không Có Dữ Liệu</i>
+                                                                </th>
+                                                            </tr>
+                                                        <%}%>
+                                                        <%listTransactions && listTransactions.length > 0 && listTransactions.forEach((itemTransaction, index) => {%>
+                                                            <tr>
+                                                                <td scope="row"><%=index + 1%></td>
+                                                                <td>
+                                                                    <a href="/admin/view-user/<%=itemTransaction.refUser.username%>">
+                                                                        <%let objUser = itemTransaction.refUser%>
+                                                                        <%-include ./utils/image_RENDER_ADMIN.ejs%>
+                                                                        
+                                                                        <%=itemTransaction.refUser.fullname%>(<%if(itemTransaction.refUser.age){%><%=itemTransaction.refUser.age%><%}%>)
+                                                                        <small>
+                                                                            <%=itemTransaction.refUser.email%>
+                                                                        </small>
+                                                                        <p class="m-0 text-muted font-8" style="font-size: 10px; padding-left: 40px">
+                                                                            <%=itemTransaction.refUser.percentCommission%>/
+                                                                            <%= formatCurrency('###,###.', itemTransaction.refUser.totalAmountCommission)%>
+                                                                        </p>
+                                                                    </a>
+                                                                        
+                                                                </td>
+                
+                                                                <td>
+                                                                    <a href="/admin/view-user/<%=itemTransaction.user.username%>">
+                                                                        <%objUser = itemTransaction.user%>
+                                                                        <%-include ./utils/image_RENDER_ADMIN.ejs%>
+                                                                        
+                                                                        <%=itemTransaction.user.fullname%>(<%if(itemTransaction.user.age){%><%=itemTransaction.user.age%><%}%>)
+                                                                        <small>
+                                                                            <%=itemTransaction.user.email%>
+                                                                        </small>
+                                                                        
+                                                                    </a>
+                                                                    
+                                                                </td>
+                
+
+                                                                <td>
+                                                                    <%= moment(itemTransaction.clickTime).format('L');%>
+                                                                </td>
+                    
+                                                                <td>
+                                                                    <%if(!Number.isNaN(Number(itemTransaction.status))){%>
+                                                                        <%if(Object.is(Number(itemTransaction.status), 1)){%>
+                                                                            <i class="mdi mdi-checkbox-blank-circle text-success"></i> Thành Công
+                                                                        <%}else if(Object.is(Number(itemTransaction.status), -1)){%>
+                                                                            <i class="mdi mdi-checkbox-blank-circle text-danger"></i> Link Hết Hạn
+                                                                        <%}else if(Object.is(Number(itemTransaction.status), 0)){ %>
+                                                                            <i class="mdi mdi-checkbox-blank-circle text-warning"></i> Chưa Mua Gói
+                                                                        <% } %>
+                                                                    <%}%>
+                                                                </td>
+                
+                                                                <td>
+                                                                    <strong>
+                                                                        (<%= itemTransaction.percentCommissionCurrentOfUser * 100%>%)
+                                                                    </strong>
+                                                                </td>
+                
+                                                                <td>
+                                                                    <%= formatCurrency('###,###.', itemTransaction.totalPackagePrice) || 0%>/
+                                                                    <strong>
+                                                                        <%= formatCurrency('###,###.', itemTransaction.totalCommissionPrice) || 0%>
+                                                                    </strong>
+                                                                </td>
+                                                            </tr>
+                                                            
+                                                        <%})%>
+                                                        <tfoot>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <th style="font-size: 18px">
+                                                                <%= formatCurrency('###,###.', totalPriceOfPackages)%>/
+                                                                <strong>
+                                                                    <%= formatCurrency('###,###.', totalCommissionOfUser)%>
+                                                                </strong> VNĐ
+                                                            </th>
+                                                        </tfoot>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end col -->
+                            </div>
+                            <!-- end row -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                    <div class="col-12">
+                        <div class="card m-b-20">
+                            <div class="card-body">
+                                <div class="row">
+                                    
+                                    <h4 class="mt-0 header-title">
+                                        <i>Danh Sách Level 2</i>
+                                        <strong>
+                                            <br>
+                                            <%if(infoUser.packageVIP){%>
+                                                <strong><%=infoUser.packageVIP.name%></strong>
+                                                <span>(
+                                                    <%=infoUser.packageVIP.percentCommission%>/<%=formatCurrency('###,###.', infoUser.packageVIP.thresholdTotatlCommission) || 0%>
+                                                )</span>
+                                            <%}%>
+                                        </strong>
+                                    </h4>
+                                    <div class="col-12">
+                                        <div class="card m-b-20">
+                                            <div class="row" style="margin-left: 10px;">
+                                                <div class="col-md-5 form-group">
+                                                    <label>Từ Ngày</label>
+                                                    <input class="form-control txtFromDate" type="date" id="fromDate_datatable_listInfluencerLevel2">
+                                                </div>
+                                                <div class="col-md-5 form-group">
+                                                    <label>Tới Ngày</label>
+                                                    <input class="form-control txtToDate" type="date" id="toDate_datatable_listInfluencerLevel2">
+                                                </div>
+                                                <div class="col-md-2 form-group" style="padding-top: 28px;">
+                                                    <button class="btn btn-primary" type="button" id="btnFilter_datatable_listInfluencerLevel2">Lọc</button>
+                                                </div>
+                                            </div>
+                                            <table id="datatable_listInfluencerLevel2" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                                <thead class="thead-default">
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>User Nạp Tiền</th>
+                                                        <th>Hoa Hồng (%)</th>
+                                                        <th>Thời Gian</th>
+                                                        <th>Tổng Gói/Tổng Hoa Hồng</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <%if(listTransactionsLevel2.length === 0){%>
+                                                        <tr>
+                                                            <th colspan="7">
+                                                                <i style="margin-left: 45%; font-weight: bold">Không Có Dữ Liệu</i>
+                                                            </th>
+                                                        </tr>
+                                                    <%}%>
+                                                    <%listTransactionsLevel2 && listTransactionsLevel2.length > 0 && listTransactionsLevel2.forEach((itemTransactionLevel2, index) => {%>
+                                                        <tr>
+                                                            <td scope="row"><%=index + 1%></td>
+                                                            <td>
+                                                                <a href="/nguoi-dung/thong-tin/<%=itemTransactionLevel2.user.username%>">
+                                                                    <%=itemTransactionLevel2.user.fullname%>(<%if(itemTransactionLevel2.user.age){%><%=itemTransactionLevel2.user.age%><%}%>)
+                                                                    <small>
+                                                                        <%=itemTransactionLevel2.user.email%>
+                                                                    </small>
+                                                                    
+                                                                </a>
+                                                                
+                                                            </td>
+                                                            
+                                                            <td>
+                                                                <strong>
+                                                                    (<%= itemTransactionLevel2.percentCommissionCurrentOfUser * 100%>%)
+                                                                </strong>
+                                                            </td>
+
+                                                            <td>
+                                                                <%= moment(itemTransactionLevel2.createAt).format('L');%>
+                                                            </td>
+                                        
+                                                            <td>
+                                                                <%= formatCurrency('###,###.', itemTransactionLevel2.totalPackagePrice) || 0%>/
+                                                                <strong>
+                                                                    <%= formatCurrency('###,###.', itemTransactionLevel2.totalCommissionPrice) || 0%>
+                                                                </strong>
+                                                            </td>
+                                                        </tr>
+                                                        
+                                                    <%})%>
+                                                    <tfoot>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <th style="font-size: 18px">
+                                                            <%= formatCurrency('###,###.', totalPriceOfPackagesLevel2) || 0%>/
+                                                            <strong>
+                                                                <%= formatCurrency('###,###.', totalCommissionOfUserLevel2) || 0%>
+                                                            </strong> VNĐ
+                                                        </th>
+                                                    </tfoot>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end col -->
+            </div>
+        </div>
+    </div>
+    <!-- content -->
+    <%include ./utils/footer.ejs%>
+</div>

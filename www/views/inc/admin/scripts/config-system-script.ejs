@@ -1,0 +1,53 @@
+<script>
+    $(document).ready(function(){
+
+        let getFormConfigSystem = () => {
+            let seo, linkFanpage, prohibitKeys;
+            seo = $('#txtSEO').val();
+            linkFanpage = $('#txtLinkFanpage').val();
+            prohibitKeys = $('#txtProhibitKeys').val();
+            return { seo, linkFanpage, prohibitKeys }
+        }
+      
+        $('#btnAdd').on('click', function(){
+            let data = getFormConfigSystem();
+            $.ajax({
+                url        : `/admin/config-system`,
+                method     : 'POST',
+                data       : data,
+                // beforeSend: function (xhr) {
+                //     xhr.setRequestHeader("Authorization", 'Bearer '+ token);
+                // },
+                success    : function(resp) { 
+                    if (!resp.error) 
+                       return location.reload();
+                    return alert('THÊM THẤT BẠI');
+                },
+                error: function(err) {
+                    return alert('THÊM THẤT BẠI');
+                }
+            });
+        });
+
+        $('#btnUpdate').on('click', function(){
+            let data = getFormConfigSystem();
+            let configSystemID = $(this).attr('_id');
+            $.ajax({
+                url        : `/admin/update-config-system`,
+                method     : 'POST',
+                data       : { ...data, configSystemID },
+                // beforeSend: function (xhr) {
+                //     xhr.setRequestHeader("Authorization", 'Bearer '+ token);
+                // },
+                success    : function(resp) { 
+                    if (!resp.error) 
+                       return location.reload();
+                    return alert('CẬP NHẬT THẤT BẠI');
+                },
+                error: function(err) {
+                    return alert('CẬP NHẬT THẤT BẠI');
+                }
+            });
+        });
+    });    
+</script>

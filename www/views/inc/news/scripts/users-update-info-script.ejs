@@ -1,0 +1,281 @@
+<script>
+  $(document).ready(function(){
+      let arrBlockKey = <%- JSON.stringify(arrBlockKey)%>
+
+        //// regex các dấu cho string cần lọc từ khóa bị block
+        const replace_sign = /[-!$%^&*()_+|~=`{}[:;<>?,.@#\]]/g ;
+      //_______ Hàm chặn từ khóa(chantukhoa)
+      function containsBlockingKey(str, substrings) {
+          for (var i = 0; i != substrings.length; i++) {
+              var substring = substrings[i].trim();
+              let substringLength = substring.length;
+              // if (str.replace(/<[^>]*>?/gm, '').toLocaleLowerCase().indexOf(substring+"") != - 1) {
+              //     return resolve(substring);
+              // }
+              let formatStr = str.replace(/<[^>]*>?/gm, '').toLocaleLowerCase();
+              let keyBlock = formatStr.substr(formatStr.indexOf(substring), substringLength+1).trim();
+              
+              // Nếu kí tự phía sau là số thì chặn theo sdt
+              if(keyBlock.substring(0, keyBlock.length - 1) == substring && Number(keyBlock)){
+                  return substring;
+              }else{
+                  if(formatStr.includes(substring+ ' ')){
+                      return substring;
+                  }
+              }
+              
+              if(keyBlock == substring){
+                  return substring;
+              }
+          }
+          return null; 
+      }
+
+
+      const getFormUpdate = () => {
+          const fullname  = $('#fullname__update_site').val();
+          const birthday  = $('#birthday__update_site').val();
+          const marital   = $('#marital__update_site').val();
+          const education = $('#education__update_site').val();
+          const job       = $('#job__update_site').val();
+          const religion  = $('#religion__update_site').val();
+          const revenue   = $('#revenue__update_site').val();
+          const smoking   = $('#smoking__update_site').val();
+          const drink     = $('#drink__update_site').val();
+          const province  = $('#province__update_site').val();
+          const district  = $('#district__update_site').val();
+          const hobies    = $('#hobies__update_site').val();
+          const intro     = $('#intro__update_site').val();
+          const body      = $('#body__update_site').val();
+
+          const gender    = $('#gender__update_site').val();
+          const age       = $('#age__update_site').val();
+          const height    = $('#height__update_site').val();
+          const phone    = $('#phone__update_site').val();
+          const email    = $('#email__update_site').val();
+          
+          // FOCUS
+          const focusGender       = $('#focusGender__update_site').val();
+          const focusAgeFrom      = $('#focusAgeFrom__update_site').val();
+          const focusAgeTo        = $('#focusAgeTo__update_site').val();
+          const focusMarital      = $('#focusMarital__update_site').val();
+          const focusProvince     = $('#focusProvince__update_site').val();
+          return {
+              fullname, birthday, marital, education, job, religion,
+              revenue, smoking, drink, province, district, hobies,
+              intro, focusGender, focusAgeFrom, focusAgeTo, focusMarital, focusProvince, body,
+              gender, age, height, phone, email
+          };
+      };
+
+      $('.btnUpdateSite').on('click', function(e){
+          console.log("e", e)
+          e.preventDefault(); 
+          let that = this;
+
+          let token = localStorage.getItem('token_waodate');
+          if (!token)
+          {
+              toastr['warning']('Vui Lòng Đăng Nhập');
+              return window.location.href = '/dang-nhap'
+          }
+
+          let hobbydescription = $("#hobies__update_site").val();
+          if(checkphoneNumber(hobbydescription)){
+            return toastr.warning(`Vui lòng không nhập số điện thoại!`);
+          }
+
+          const data = getFormUpdate();
+          let { fullname, age, height, gender, body, marital , district, focusGender, drink ,smoking, education, job, religion, revenue, province, intro, hobies, phone, email } = data;
+          // if( !fullname || !age || !height || gender == -1 || body == -1 || marital == -1 ||district == -1 || focusGender == -1 || drink == -1 || smoking == -1 || education == -1 || job == -1 || religion == -1 || revenue == -1)
+          if (!fullname)
+              return toastr['warning']('Vui lòng nhập Họ Tên.');
+          if (Number.isNaN(Number(age)) || age < 18 || !age || age > 100)   
+              return toastr['warning']('Vui lòng nhập tuổi trên 18 và dưới 100');
+          if (Number.isNaN(Number(age)) || age == -1 || !age)
+              return toastr['warning']('Vui lòng nhập Tuổi.');
+          if (Number.isNaN(Number(height)) || height == -1 || !height)
+              return toastr['warning']('Vui lòng nhập  Chiều Cao.'); 
+          if (Number.isNaN(Number(province)) || province == -1)
+              return toastr['warning']('Vui lòng Chọn Tỉnh Thành'); 
+
+          let checkIntroContainBlockingKey = containsBlockingKey(intro.replace(replace_sign, " "), arrBlockKey);
+          if(checkIntroContainBlockingKey){
+              return toastr['warning'](`Mô tả ngắn của bạn có chứa từ khóa bị chặn vì vi phạm quy định sử dụng Waodate`);
+          }
+
+          let checkHobiesContainBlockingKey = containsBlockingKey(hobies.replace(replace_sign, " "), arrBlockKey);
+          if(checkHobiesContainBlockingKey){
+              return toastr['warning'](`Sở thích của bạn có chứa từ khóa bị chặn vì vi phạm quy định sử dụng Waodate`);
+          }
+
+        let validPhone =  /^\d+$/;
+        if(!validPhone.test(phone) || phone.length > 10 || phone.length < 10) 
+            return toastr['warning']('Vui lòng nhập đúng định dạng số điện thoại (10 số)');
+        
+        let validEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if(!validEmail.test(email))
+            return toastr['warning']('Vui lòng nhập đúng định dạng email');
+
+          //kiểm tra tuổi > 18
+        //   if(data.birthday){
+        //       let currentYear = new Date().getFullYear();
+        //       let birthdayYear = Number(data.birthday.substr(0, 4));
+        //       // console.log(birthdayYear);
+        //       if(currentYear - birthdayYear < 18)
+        //           return toastr['warning']('Bạn chưa đủ 18 tuổi');
+        //   }
+              // console.log("data", data)
+              // return;  
+          var fd     = new FormData();
+          // var avatar = $('#avatar__update_site')[0].files[0];
+          // var cover  = $('#cover__update_site')[0].files[0];
+          // fd.append('avatar', avatar);
+          // fd.append('cover', cover);
+          fd.append('data', JSON.stringify(data));
+          // console.log({ fd })
+          $.ajax({
+              url        : `/ca-nhan/cap-nhat-thong-tin`,
+              method     : 'POST',
+              data       : fd,
+              contentType: false,
+              processData: false,
+              beforeSend: function (xhr) {
+                  xhr.setRequestHeader("Authorization", 'Bearer '+ token);
+              },
+              success    : function(resp) { 
+                  if (resp.error) {
+                      if (resp.message === `redirect_url_clear_session`) 
+                          return window.location.href = '/clear-session';
+                      // enableAndStopLoading(that, "Lưu");
+                      return toastr['error']('Lỗi Cập Nhật');
+
+                  } else if (!resp.error)
+                      // disableAndLoading(that)
+                      toastr['success']('Cập Nhật Thành Công');  
+                      window.location.href = "/ca-nhan/thong-tin";
+                      // $(that).parents('.user-info-body').removeClass('is-edit');
+                      setTimeout(function(){ 
+                          window.location.href = "/ca-nhan/thong-tin";
+                      }, 300);
+              },
+              error: function(err) { 
+                  enableAndStopLoading(that, "Lưu");
+                  return toastr['error']('Lỗi Cập Nhật');
+              }
+          })
+      });
+
+      $('.btnUpdateSiteBio').on('click', function(e){
+          console.log("e", e)
+          e.preventDefault(); 
+          let that = this;
+
+          let token = localStorage.getItem('token_waodate');
+          if (!token)
+          {
+              toastr['warning']('Vui Lòng Đăng Nhập');
+              return window.location.href = '/dang-nhap'
+          }
+
+          let biodescription = $("#intro__update_site").val();
+          if(checkphoneNumber(biodescription)){
+            return toastr.warning(`Vui lòng không nhập số điện thoại!`);
+          }
+         
+          const data = getFormUpdate();
+          let { fullname, age, height, gender, body, marital , district, focusGender, drink ,smoking, education, job, religion, revenue, province, intro, hobies, phone, email } = data;
+          // if( !fullname || !age || !height || gender == -1 || body == -1 || marital == -1 ||district == -1 || focusGender == -1 || drink == -1 || smoking == -1 || education == -1 || job == -1 || religion == -1 || revenue == -1)
+          if (!fullname)
+              return toastr['warning']('Vui lòng nhập Họ Tên.');
+          if (Number.isNaN(Number(age)) || age < 18 || !age || age > 100)   
+              return toastr['warning']('Vui lòng nhập tuổi trên 18 và dưới 100');
+          if (Number.isNaN(Number(age)) || age == -1 || !age)
+              return toastr['warning']('Vui lòng nhập Tuổi.');
+
+          let checkIntroContainBlockingKey = containsBlockingKey(intro.replace(replace_sign, " "), arrBlockKey);
+          if(checkIntroContainBlockingKey){
+              return toastr['warning'](`Mô tả ngắn của bạn có chứa từ khóa bị chặn vì vi phạm quy định sử dụng Waodate`);
+          }
+          //kiểm tra tuổi > 18
+        //   if(data.birthday){
+        //       let currentYear = new Date().getFullYear();
+        //       let birthdayYear = Number(data.birthday.substr(0, 4));
+        //       // console.log(birthdayYear);
+        //       if(currentYear - birthdayYear < 18)
+        //           return toastr['warning']('Bạn chưa đủ 18 tuổi');
+        //   }
+          var fd     = new FormData();
+          // var avatar = $('#avatar__update_site')[0].files[0];
+          // var cover  = $('#cover__update_site')[0].files[0];
+          // fd.append('avatar', avatar);
+          // fd.append('cover', cover);
+          fd.append('data', JSON.stringify(data));
+          // console.log({ fd })
+          $.ajax({
+              url        : `/ca-nhan/cap-nhat-thong-tin`,
+              method     : 'POST',
+              data       : fd,
+              contentType: false,
+              processData: false,
+              beforeSend: function (xhr) {
+                  xhr.setRequestHeader("Authorization", 'Bearer '+ token);
+              },
+              success    : function(resp) { 
+                  if (resp.error) {
+                      if (resp.message === `redirect_url_clear_session`) 
+                          return window.location.href = '/clear-session';
+                      // enableAndStopLoading(that, "Lưu");
+                      return toastr['error']('Lỗi Cập Nhật');
+
+                  } else if (!resp.error)
+                      // disableAndLoading(that)
+                      toastr['success']('Cập Nhật Thành Công');  
+                      window.location.href = "/ca-nhan/thong-tin";
+                      // $(that).parents('.user-info-body').removeClass('is-edit');
+                      setTimeout(function(){ 
+                          window.location.href = "/ca-nhan/thong-tin";
+                      }, 300);
+              },
+              error: function(err) { 
+                  enableAndStopLoading(that, "Lưu");
+                  return toastr['error']('Lỗi Cập Nhật');
+              }
+          })
+      });
+      
+      $("#birthday__update_site").on("change", function() {
+          const data = getFormUpdate();   
+          if(data.birthday){
+              let currentYear  = new Date().getFullYear();
+              let birthdayYear = Number(data.birthday.substr(0, 4));
+              let age          = currentYear-birthdayYear;
+              $('#age__update_site').val(age);    
+          }
+
+      }).trigger("change");
+
+      $('#province__update_site').on('change', function(e) {
+          const provinceID = $(this).val();
+          $.ajax({
+              url: `/get-district/${provinceID}`,
+              method: 'GET',
+              success: function(listDistricts) {
+                  if (listDistricts) {
+                      $('#district__update_site').empty();
+                      for (let index in listDistricts) {
+                          $('#district__update_site').append(`
+                              <option value="${listDistricts[index].code}">${listDistricts[index].name_with_type}</option>
+                          `);
+                      }
+                  } else {
+                      return toastr['error']('Tỉnh Không Có Huyện');
+                  }
+              },
+              error: function(err){
+                  console.log(err.message)
+              }
+          })
+      });
+  });
+</script>

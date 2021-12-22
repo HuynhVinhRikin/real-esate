@@ -1,0 +1,13 @@
+<%if(!_lodash.get(objUser, 'avatar.name', 'image-default.jpg').includes('http')){%>
+    <img 
+        class="thumb-lg mr-2"
+        src="/files/blog/<%=_lodash.get(objUser, 'avatar', 'image-default.jpg')%>" 
+        alt="<%=_lodash.get(objUser, 'fullname', 'WAODATE')%>"
+    />
+<%}else{%>
+    <img
+        class="thumb-lg mr-2"
+        src="<%=_lodash.get(objUser, 'avatar', 'image-default.jpg')%>" 
+        alt="<%=_lodash.get(objUser, 'fullname', 'WAODATE')%>"
+    />
+<%}%>

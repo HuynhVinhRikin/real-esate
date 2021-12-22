@@ -1,0 +1,298 @@
+<script>
+    $(document).ready(function(){
+        let pageCurrent = 1;
+        let infoUserID = '<%=infoUser._id%>';
+        let arrBlockKey = <%- JSON.stringify(arrBlockKey)%>
+
+        $(".chat-content__footer").on('keyup', '#txtMessage', function (e) {
+            if (e.keyCode === 13)
+                return sendMessage();
+        });
+
+        $('.chat-content__body').on('scroll', function() {
+            let receiverID = $(this).attr('_receiverID');
+
+            var scrollTop = $(this).scrollTop();
+            if (scrollTop <= 0) {
+                // CALL AJAX
+                pageCurrent++;
+                $.ajax({
+                    url: `/ca-nhan/them-tin-nhan?page=${pageCurrent}`,
+                    method: 'POST',
+                    data: {
+                        receiverID
+                    },
+                    success: function(resp) {
+                        if (resp.error) 
+                            return toastr['error']('Lỗi Tải Thêm Tin');
+
+                        else if (!resp.error) {
+                            let { messages } = resp.data;
+                            messages.reverse().forEach(itemMessage => {
+                                let isAuthor = Object.is(itemMessage.author._id.toString(), infoUserID.toString());
+                                if (isAuthor) {
+                                    $(`.chat-content__body`).prepend(`
+                                        <div class="chat-content__me">
+                                            <div class="chat-content__message chat-content__message-me">
+                                                <p>
+                                                    ${itemMessage.body}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    `);
+                                } else {
+                                    const { avatar: { name: avatarName } } = itemMessage.author;
+                                   
+                                    let pathImage = '';
+                                    if (avatarName.includes('http')) {
+                                        pathImage = avatarName;
+                                    } else {
+                                        pathImage = `/files/users/${avatarName}`;
+                                    }
+                                    $(`.chat-content__body`).prepend(`
+                                        <div class="chat-content__friend">
+                                            <img src="${pathImage}">
+                                            <div class="chat-content__message chat-content__message-friend">
+                                                <p>
+                                                    ${itemMessage.body}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    `);
+                                }
+                                
+                            });
+                        }
+                    },
+                    error: function(err){
+                        console.log(err.message)
+                    }
+                })
+            } 
+        });
+
+        let chatBody = $('.chat-content__body');
+        if(chatBody.length !== 0){
+            chatBody.animate({
+                scrollTop: chatBody[0].scrollHeight
+            }, 2000);
+        }   
+    
+        $('#btnSendMessagePrivite').on('click', function(e){
+            e.preventDefault();
+            return sendMessage();
+        })
+        
+         //check số điện thoại
+
+           //// regex các dấu cho string cần lọc từ khóa bị block
+            const replace_sign = /[-!$%^&*()_+|~=`{}[:;<>?,.@#\]]/g ;
+        //_______ Hàm chặn từ khóa
+        function containsBlockingKey(str, substrings) {
+            for (var i = 0; i != substrings.length; i++) {
+                var substring = substrings[i].trim();
+                let substringLength = substring.length;
+               
+                let formatStr = str.replace(/<[^>]*>?/gm, '').toLocaleLowerCase();
+                let keyBlock = formatStr.substr(formatStr.indexOf(substring), substringLength+1).trim();
+                // Nếu kí tự phía sau là số thì chặn theo sdt
+                if(keyBlock.substring(0, keyBlock.length - 1) == substring && Number(keyBlock)){
+                    return substring;
+                }
+
+                if(keyBlock == substring){
+                    return substring;
+                }
+            }
+            return null;
+        }
+
+        let sendMessage = () => {
+            let message = $('#txtMessage').val();
+            const pathname = window.location.pathname.split("/");
+            const lastPathname = pathname.length && pathname[pathname.length -1];
+            if(lastPathname === "waodatesupport"){
+              $('#txtMessage').val('');
+              return toastr["warning"]("Bạn không thể gửi tin nhắn cho support!")
+            }
+            if (!message) return;
+            let receiverID = $('#btnSendMessagePrivite').attr('_receiverID');
+            let isBlockingKey = containsBlockingKey(message.replace(replace_sign, ""), arrBlockKey);
+            let isNumberKey = checkphoneNumber(message);
+            if(!isBlockingKey && !isNumberKey){
+                $(`.message-content`).append(`
+                    <p class="my-message">
+                        <span>${message}</span>
+                    </p>
+                `);
+                $('#txtMessage').val('');
+
+                // $('.chat-content__body')
+                // .animate({
+                //     scrollTop: $('.chat-content__body')[0].scrollHeight
+                // }, 1000);
+
+                socket.emit('SEND_MESSAGE_CSS', {
+                    message, receiverID
+                });
+
+                $(`#conversisation_${receiverID}`).attr(`data-position`, flagForAutoShowDataPosition);
+                flagForAutoShowDataPosition++;
+
+                // sort conversition
+                $(function() {
+                    $(".user-list .user-message").sort(sort_li).appendTo('.user-list .mCSB_container');
+                    function sort_li(a, b) {
+                        let bSort = $(b).data('position');
+                        let aSort = $(a).data('position');
+
+                        return bSort < aSort ? -1 : 1;
+                    }
+                });
+            }else{
+                // isBlockingKey
+                return toastr.warning(`Tin nhắn của bạn có chứa từ khóa bị chặn vì vi phạm quy định sử dụng Waodate`);
+            }
+        }
+
+        $('.removeConversation').on('click', function(){
+            let conversationID = $(this).attr('_conversationID');
+            // alert(conversationID.toString())
+            let that = this;
+            swal({
+                title: "Bạn có chắc chắc xóa?",
+                text: "Bạn sẽ không thể khôi phục tập tin này!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Xác nhận!",
+                closeOnConfirm: false
+                },
+            function(){
+                $.ajax({
+                    url: `/ca-nhan/remove-conversation`,
+                    method: 'POST',
+                    data: { conversationID },
+                    success: function(resp){
+                        let itemRemove = $(that).closest('.wao-user--seen');
+                        itemRemove.remove();
+                        swal("Xóa thành công!", "", "success");
+                        window.location.href = "/ca-nhan/tin-nhan/";
+                    },
+                    error: function(error){
+                    }
+                })
+            });
+            
+        })
+        $('.menu-btn-delete').on('click', function(){
+            let conversationID = $(this).attr('_conversationID');
+            // alert(conversationID.toString())
+            let that = this;
+            swal({
+                title: '<label class="title-alert">Bạn chắc chắn muốn xóa tin nhắn này chứ??</label>' + '<img src="/template/front-end-new/img/image-popup-delete-message.svg" />',
+                text: "Bạn sẽ xóa tin nhắn này vĩnh viễn khỏi lịch sử cuộc hội thoại",
+                html: true,
+                showCancelButton: true,
+                confirmButtonClass: "btn-danger",
+                confirmButtonText: "Có",
+                closeOnConfirm: false,
+                cancelButtonText: "Không",
+                customClass: "confirm-delete-message",
+                position: "top-start"
+                },
+            function(){
+                $.ajax({
+                    url: `/ca-nhan/remove-conversation`,
+                    method: 'POST',
+                    data: { conversationID },
+                    success: function(resp){
+                        let itemRemove = $(that).closest('.wao-user--seen');
+                        itemRemove.remove();
+                        swal("Xóa thành công!", "", "success");
+                        window.location.href = "/ca-nhan/tin-nhan/";
+                    },
+                    error: function(error){
+                    }
+                })
+            });
+            
+        })
+
+        $('.menu-message').click(function(e) {
+            e.preventDefault();
+            $(this).children('.menu-btn').hide();
+            console.log("$(this)", $(this))
+            $(this).children('.menu-btn-delete').show();
+        })
+
+        $('.wao-message .user-message').hover(function(){
+            if($(this).children('.menu-message')) $(this).children('.menu-message').show();
+        }, function(){
+            $(this).children('.menu-message').hide();
+            $(this).children('.menu-message').children('.menu-btn').show();
+            $(this).children('.menu-message').children('.menu-btn-delete').hide()
+        })
+
+        var startTime, endTime;
+        var gbMove = false;
+
+        window.addEventListener('touchstart',function(event) {
+            startTime = new Date().getTime(); 
+            gbMove = false;        
+        },false);
+
+        window.addEventListener('touchmove',function(event) {
+        gbMove = true;
+        },false);
+
+        window.addEventListener('touchend',function(event) {
+            endTime = new Date().getTime();
+            if(!gbMove && (endTime-startTime)/1000 > 2 && $('.wao-message .user-message')){
+                event.preventDefault();
+                if($(this).children('.menu-message')) $(this).children('.menu-message').show();
+            }   
+        },false);
+    
+        // chat 
+        let inputText = document.querySelector('#txtMessage');
+        let menu = document.querySelector('.wao-header-mobile.is-login');
+        let formCreateConcept = document.querySelector('.wao-modal-form.waodate-modal');
+        let khungChat = document.querySelector('#message-1');
+        let btnBack = document.querySelector('.back-message-btn.wao-mb')
+        let listClassKhungChat = khungChat.getAttribute('class').split(' ');
+
+        let check = false;
+        listClassKhungChat.forEach(value => {
+            if(value == 'active'){
+                check = true
+            }
+        })
+
+        function hiddenMenu() {  
+            menu.style.display = "none"
+            formCreateConcept.style.display = "none"
+        }
+
+        function displayMenu() {  
+            menu.style.display = "block"
+            formCreateConcept.style.display = "block"
+        }
+
+        function displayNoneMenuBottom (){
+            if(check){
+                hiddenMenu();
+            }else{
+                displayMenu();
+            }
+        }
+
+        if(window.innerWidth < 420) {
+            displayNoneMenuBottom()
+            btnBack.addEventListener('click', ()=> {
+                check = false;
+                displayNoneMenuBottom()
+            })
+        }
+    })
+</script>

@@ -1,0 +1,50 @@
+<%if(objUser){%>
+    <%if(objUser.gender == 1){%>
+        <%if(_lodash.get(objUser, 'avatar.name', 'image-default.jpg').includes('http')){%>
+			<a data-fancybox="gallery2" class="fancybox-gallery" href="https://scontent.fsgn2-4.fna.fbcdn.net/v/t1.6435-9/139189930_1540976232773275_2446469927733857766_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=x2ebnVXJf30AX_naIET&_nc_ht=scontent.fsgn2-4.fna&oh=00_AT-6kV2nAvlACBDxdIZPSwl-VPfw434R1rKl7djDixJ-BQ&oe=61E960C2">
+				<!-- <img class="" 
+					src="<%=_lodash.get(objUser, 'avatar.name', 'image-default.jpg')%>" 
+					alt="<%=_lodash.get(objUser, 'fullname', 'WAODATE')%>"
+				/> -->
+				<img class="" 
+					src="https://scontent.fsgn2-4.fna.fbcdn.net/v/t1.6435-9/139189930_1540976232773275_2446469927733857766_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=x2ebnVXJf30AX_naIET&_nc_ht=scontent.fsgn2-4.fna&oh=00_AT-6kV2nAvlACBDxdIZPSwl-VPfw434R1rKl7djDixJ-BQ&oe=61E960C2" 
+					alt="<%=_lodash.get(objUser, 'fullname', 'WAODATE')%>"
+					id="image_avatar_chat"
+				/>
+			</a>
+        <%}else{%>
+			<a data-fancybox="gallery2" class="fancybox-gallery" href="/files/users/<%=_lodash.get(objUser, 'avatar.name', 'image-default.jpg') == 'image-default.jpg' ? 'image-default.jpg' : _lodash.get(objUser, 'avatar.name')  %>">
+				<img class="" 
+					src="/files/users/<%=_lodash.get(objUser, 'avatar.name', 'image-default.jpg') == 'image-default.jpg' ? 'image-default.jpg' : _lodash.get(objUser, 'avatar.name')  %>" 
+						alt="<%=_lodash.get(objUser, 'fullname', 'WAODATE')%>"
+					id="image_avatar_chat"
+
+				/>
+			</a>
+        <%}%>
+    <%}else{%>    
+        <%if(_lodash.get(objUser, 'avatar.name', 'default_women.jpg').includes('http')){%>
+			<a data-fancybox="gallery2" class="fancybox-gallery" href="/files/users/default_women.jpg">
+				<!-- <img class="" 
+					src="<%=_lodash.get(objUser, 'avatar.name', 'default_women.jpg')%>" 
+					alt="<%=_lodash.get(objUser, 'fullname', 'WAODATE')%>"
+				/> -->
+				<img class="" 
+					src="/files/users/default_women.jpg" 
+					alt="<%=_lodash.get(objUser, 'fullname', 'WAODATE')%>"
+					id="image_avatar_chat"
+
+				/>
+			</a>
+        <%}else{%>
+			<a data-fancybox="gallery2" class="fancybox-gallery" href="/files/users/<%=_lodash.get(objUser, 'avatar.name', 'default_women.jpg') == 'default_women.jpg' || _lodash.get(objUser, 'avatar.name', 'default_women.jpg') == 'image-default.jpg' ? 'default_women.jpg' : _lodash.get(objUser, 'avatar.name'); %>">
+				<img class="" 
+					src="/files/users/<%=_lodash.get(objUser, 'avatar.name', 'default_women.jpg') == 'default_women.jpg' || _lodash.get(objUser, 'avatar.name', 'default_women.jpg') == 'image-default.jpg' ? 'default_women.jpg' : _lodash.get(objUser, 'avatar.name'); %>" 
+						alt="<%=_lodash.get(objUser, 'fullname', 'WAODATE')%>"
+						id="image_avatar_chat"
+
+				/>
+			</a>	
+        <%}%>
+    <%}%>
+<%}%>

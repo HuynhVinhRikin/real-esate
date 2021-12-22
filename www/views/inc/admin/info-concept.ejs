@@ -1,0 +1,303 @@
+<style>
+      .avatar-upload {
+        position: relative;
+        max-width: 205px;
+        margin: 35px auto;
+        }
+        .avatar-upload .avatar-edit {
+        position: absolute;
+        right: 12px;
+        z-index: 1;
+        top: 10px;
+        }
+        .avatar-upload .avatar-edit input {
+        display: none;
+        }
+        .avatar-upload .avatar-edit input + label {
+        display: inline-block;
+        width: 34px;
+        height: 34px;
+        margin-bottom: 0;
+        border-radius: 100%;
+        background: #FFFFFF;
+        border: 1px solid transparent;
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.12);
+        cursor: pointer;
+        font-weight: normal;
+        transition: all 0.2s ease-in-out;
+        }
+        .avatar-upload .avatar-edit input + label:hover {
+        background: #f1f1f1;
+        border-color: #d6d6d6;
+        }
+        .avatar-upload .avatar-edit input + label:after {
+        content: "\f040";
+        font-family: 'FontAwesome';
+        color: #757575;
+        position: absolute;
+        top: 10px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        margin: auto;
+        }
+        .avatar-upload .avatar-preview {
+        width: 192px;
+        height: 192px;
+        position: relative;
+        border-radius: 100%;
+        border: 6px solid #F8F8F8;
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+        }
+        .avatar-upload .avatar-preview > div {
+        width: 100%;
+        height: 100%;
+        border-radius: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        }
+        .qrcode-preview {
+            width: 190px;
+            height: 190px;
+            position: relative;
+            border: 6px solid #F8F8F8;
+            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.1);
+            margin: 30px auto;
+        }
+        .qrcode-preview > img {
+            width: 100%
+        }
+}
+</style>
+<div class="content-page">
+    <div class="content">
+    <div class="container-fluid">
+        <br><br>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card m-b-20">
+                    <div class="card-body">
+                         <label class="col-form-label">GIỚI THIỆU VỀ BUỔI HẸN HÒ</label>
+
+                        <div class="form-group row">
+                            <label for="example-text-input" class="col-sm-2 col-form-label">Tiêu Đề</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="text" placeholder="Nhập tên bài viết" id="txtTitle" value="<%= infoConcept && infoConcept.title && infoConcept.title %>">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Mô Tả</label>
+                            <div>
+                                <textarea required="" class="form-control" id="txtDescription" rows="5"><%= infoConcept && infoConcept.description && infoConcept.description %></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card m-b-20">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label class="col-form-label">NỘI DUNG BUỔI HẸN HÒ</label>
+                            <div id="conceptContent">
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="card m-b-20">
+                    <div class="card-body">
+                        <div class="form-group">
+                           <button class="btn btn-primary" _conceptID = "<%= infoConcept && infoConcept._id && infoConcept._id %>" style="padding: 10px 100px; display: block; margin: 0 auto" id="btnUpdate">Cập nhật</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card m-b-20">
+                    <div class="card-body">
+                        <label class="col-form-label">THÔNG TIN NGƯỜI ĐĂNG</label>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <%let objUser = infoConcept.author;%>
+                                <a href="/admin/view-user/<%- objUser.username %> ">
+                                <%-include ./utils/image_RENDER_ADMIN.ejs%>
+                                </a>
+                            </div>
+                            <div class="col-sm-9">
+                                <div>Tên: 
+                                        <%= infoConcept && infoConcept.author.fullname && infoConcept.author.fullname %>
+                                </div>
+                                <div>Email: <%= infoConcept && infoConcept.author.email && infoConcept.author.email %></div>
+                                <div>SDT: <%= infoConcept && infoConcept.author.phone && infoConcept.author.phone %></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card m-b-20">
+                    <div class="card-body">
+                        <label class="col-form-label">THÔNG TIN VỀ BUỔI HẸN HÒ</label>
+                        <br>
+                        <div>
+                            <label class="col-form-label">Link Youtube</label>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <input class="form-control" type="text" placeholder="Link Youtube" id="txtLinkYoutube" value="<%= infoConcept && infoConcept.linkVideo && infoConcept.linkVideo %>">
+                                </div>
+                            </div> 
+
+                            <label class="col-form-label">Địa điểm 1</label>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <input class="form-control" type="text" placeholder="Địa điểm 1" id="txtAddress1" value="<%= infoConcept && infoConcept.address[0] && infoConcept.address[0] %>">
+                                </div>
+                            </div> 
+
+                            <label class="col-form-label">Địa điểm 2</label>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <input class="form-control" type="text" placeholder="Địa điểm 2" id="txtAddress2" value="<%= infoConcept && infoConcept.address[1] && infoConcept.address[1] %>">
+                                </div>
+                            </div> 
+
+                            <label class="col-form-label">Địa điểm 3</label>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <input class="form-control" type="text" placeholder="Địa điểm 3" id="txtAddress3" value="<%= infoConcept && infoConcept.address[2] && infoConcept.address[2] %>">
+                                </div>
+                            </div> 
+
+                            <label class="col-form-label">Thời gian</label>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <input class="form-control txtTime" type="text" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy" id="datepicker" value="<%= moment(infoConcept && infoConcept.time && infoConcept.time).format('L'); %>">
+                                </div>
+                            </div> 
+
+                            <label class="col-form-label">Chi phí hẹn hò</label>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <input class="form-control" type="text" id="txtCost" value="<%= infoConcept && infoConcept.cost && infoConcept.cost %>">
+                                </div>
+                            </div> 
+
+                            <label class="col-form-label">Người chi trả</label>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <select class="form-control" id="txtPrayer">
+                                         <% if (prayers && prayers.length > 0) { %>
+                                            <% prayers.forEach(prayer => { %>
+                                                <option value="<%= prayer.value %>" <% if (infoConcept && infoConcept.prayer && infoConcept.prayer === prayer.value) { %>
+                                                    selected
+                                                <% } %> ><%= prayer.text %></option>
+                                            <% }) %>
+                                        <% } %>
+                                    </select>
+                                </div>
+                            </div> 
+                            <label class="col-form-label">THÔNG TIN VỀ  ĐỐI TƯỢNG HẸN HÒ</label>
+                            <br>
+                            <label class="col-form-label">Giới Tính</label>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <select class="form-control" id="txtFocusGender">
+                                        <option value="1" <% if (infoConcept) { %>
+                                            <% if (infoConcept.focusGender == 1) { %>
+                                                selected
+                                            <% } %>
+                                        <% } %> >Nam</option>
+
+                                        <option value="0" <% if (infoConcept) { %>
+                                            <% if (infoConcept.focusGender == 0) { %>
+                                                selected
+                                            <% } %>
+                                        <% } %> >Nữ</option>
+                                    </select>
+                                </div>
+                            </div> 
+
+                            <label class="col-form-label">Tuổi</label>
+                            <div class="form-group row">
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="txtFocusAgeFrom">
+                                        <% for( let age = 15; age < 100; age++ ) { %>
+                                            <option value="<%= age %>" <% if (infoConcept && infoConcept.focusAge.from && infoConcept.focusAge.from == age ) { %>
+                                                selected
+                                            <% } %> ><%= age %></option>
+                                        <% } %>
+                                    </select>
+                                </div>
+                                <div class="col-sm-6">
+                                    <select class="form-control" id="txtFocusAgeTo">
+                                        <% for( let age = 15; age < 100; age++ ) { %>
+                                            <option value="<%= age %>" <% if (infoConcept && infoConcept.focusAge.to && infoConcept.focusAge.to == age ) { %>
+                                                selected
+                                            <% } %> ><%= age %></option>
+                                        <% } %>
+                                    </select>
+                                </div>
+                            </div> 
+
+                            <label class="col-form-label">Trạng Thái</label>
+                            <div class="form-group row">
+                                <div class="col-sm-12">
+                                    <select class="form-control" id="txtStatus">
+                                        <option value="0" <% if (infoConcept) { %>
+                                            <% if (infoConcept.status == 0) { %>
+                                                selected
+                                            <% } %>
+                                        <% } %> >Đang mở</option>
+                                        <option value="1" <% if (infoConcept) { %>
+                                            <% if (infoConcept.status == 1) { %>
+                                                selected
+                                            <% } %>
+                                        <% } %> >Đã Đóng</option>
+                                        <option value="2" <% if (infoConcept) { %>
+                                            <% if (infoConcept.status == 2) { %>
+                                                selected
+                                            <% } %>
+                                        <% } %> >Đã Khóa</option>
+                                    </select>
+                                </div>
+                            </div> 
+
+
+                            <div id="txtTimeUpdate" style="display: none">
+                                <label class="col-form-label">Ngay Hẹn Hò Mới</label>
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <input class="form-control txtTimeUpdate" type="text" data-date-format="dd/mm/yyyy" placeholder="dd/mm/yyyy" id="datepicker-autoclose">
+                                    </div>
+                                </div> 
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card m-b-20">
+                       <div class="card-body">
+                            <label class="col-form-label">HÌNH ẢNH</label>
+                            <br>
+                            <div class="container">
+                                <div class="avatar-upload">
+                                    <div class="avatar-edit">
+                                        <input type="file" id="imageUpload" accept=".png, .jpg, .jpeg">
+                                        <label for="imageUpload"></label>
+                                    </div>
+                                    <div class="avatar-preview">
+                                        <div id="imagePreview" style="background-image: url(/files/users/<%=infoConcept && infoConcept.image && infoConcept.image %>);"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <!-- container-fluid -->
+</div>
+</div>

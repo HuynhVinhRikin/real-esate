@@ -1,0 +1,15 @@
+<script>
+    $(document).ready(function(){
+       <% if (blogInfo) { %>
+            let content_render = `<%= blogInfo.content %>`;
+                if (content_render !== '' || !content_render) {
+                    let html_parse_content = $.parseHTML(content_render)[0].data;
+                    // $('#contentSummernote').summernote('code' ,`<div>${html_parse_content}</div>`);
+                    $('#content-blog').append(`<div>${html_parse_content}</div>`);
+                }
+                else {
+                    $('#content-blog').append(`<h3>không có nội dung</h3>`);
+                }
+        <% } %>
+    })
+</script>

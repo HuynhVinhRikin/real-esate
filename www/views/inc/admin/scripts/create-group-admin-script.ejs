@@ -1,0 +1,160 @@
+<script>
+    $(document).ready(function(){
+        let getData = () => {
+            let name = $('#txtTitle').val();
+            let description = $('#txtDescription').val();
+            let key = $('#txtKey').val();
+            return { name, description, key };
+        }
+    
+        $('#btnCreateGroup').on('click', function(e){
+            // e.preventDefault();
+            let data = getData();
+            let token = localStorage.getItem('token_admin');
+            if (!token)
+                return window.location.href = '/admin/clear-session-admin';
+                
+            $.ajax({
+                url: `/admin/create-group-admin`,
+                method: 'POST',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", 'Bearer '+ token);
+                },
+                data: data,
+                success: function(resp) {
+                    if (resp.error) {
+                        if (resp.message === 'redirect_url_clear_session_admin') 
+                        {
+                            alert(`Phiên Hoạt Động Hết Hạn`);
+                            setTimeout(function(){
+                                window.location.href = '/admin/clear-session-admin';
+                            }, 200);   
+                            return;
+                        }  
+                        return alert('Tạo Group Thất Bại');
+                    } else if(!resp.error) 
+                        return alert('Tạo Group Thành Công')
+                },
+                error: function(err){
+                    console.log(err.message)
+                }
+            })
+        });
+
+        $('#btnCreateGroupAndGoBack').on('click', function(e){
+            // e.preventDefault();
+            let data = getData();
+            let token = localStorage.getItem('token_admin');
+            if (!token)
+                return window.location.href = '/admin/clear-session-admin';
+                
+            $.ajax({
+                url: `/admin/create-group-admin`,
+                method: 'POST',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", 'Bearer '+ token);
+                },
+                data: data,
+                success: function(resp) {
+                    if (resp.error) {
+                        if (resp.message === 'redirect_url_clear_session_admin') 
+                        {
+                            alert(`Phiên Hoạt Động Hết Hạn`);
+                            setTimeout(function(){
+                                window.location.href = '/admin/clear-session-admin';
+                            }, 200);   
+                            return;
+                        }  
+                        return alert('Tạo Group Thất Bại');
+                    } else if(!resp.error) {
+                        alert('Tạo Group Thành Công')
+                        setTimeout(function(){
+                            window.location.href = `/admin/list-group-admin`
+                        }, 200);
+                        return;
+                    }
+                },
+                error: function(err){
+                    console.log(err.message)
+                }
+            })
+        });
+
+        $('#btnUpdateGroup').on('click', function(e){
+            // e.preventDefault();
+            let data = getData();
+            let token = localStorage.getItem('token_admin');
+            if (!token)
+                return window.location.href = '/admin/clear-session-admin';
+                
+
+            let groupID = $(this).attr('_groupID');
+            $.ajax({
+                url: `/admin/update-group-admin/${groupID}`,
+                method: 'POST',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", 'Bearer '+ token);
+                },
+                data: data,
+                success: function(resp) {
+                    if (resp.error) {
+                        if (resp.message === 'redirect_url_clear_session_admin') 
+                        {
+                            alert(`Phiên Hoạt Động Hết Hạn`);
+                            setTimeout(function(){
+                                window.location.href = '/admin/clear-session-admin';
+                            }, 200);   
+                            return;
+                        } 
+                        return alert('Cập nhật thất bại');
+                    } else if(!resp.error) 
+                        return alert('Cập Nhật Group Thành Công')
+                },
+                error: function(err){
+                    console.log(err.message)
+                }
+            })
+        });
+        $('#btnUpdateGroupAndGoBack').on('click', function(e){
+            // e.preventDefault();
+            let data = getData();
+            let token = localStorage.getItem('token_admin');
+            if (!token)
+                return window.location.href = '/admin/clear-session-admin';
+                
+
+            let groupID = $(this).attr('_groupID');
+            $.ajax({
+                url: `/admin/update-group-admin/${groupID}`,
+                method: 'POST',
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", 'Bearer '+ token);
+                },
+                data: data,
+                success: function(resp) {
+                    console.log({ resp })
+                    if (resp.error) {
+                        if (resp.message === 'redirect_url_clear_session_admin') 
+                        {
+                            alert(`Phiên Hoạt Động Hết Hạn`);
+                            setTimeout(function(){
+                                window.location.href = '/admin/clear-session-admin';
+                            }, 200);   
+                            return;
+                        } 
+                        return alert('Cập nhật thất bại');
+                    } else if(!resp.error) {
+                        alert('Cập Nhật Group Thành Công')
+                        setTimeout(function(){
+                            window.location.href = `/admin/list-group-admin`
+                        }, 200);
+                        return;
+                    }
+                },
+                error: function(err){
+                    console.log(err.message)
+                }
+            })
+        });
+    });
+</script>

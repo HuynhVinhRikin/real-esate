@@ -1,0 +1,723 @@
+<div class="content-page">
+    <!-- Start content -->
+    <div class="content">
+        <div class="container-fluid">
+            <br><br>
+            <!-- TOP | THÔNG TIN CÁC BLOCK -->
+            <div class="row">
+                <!-- Hiển thị tổng số user đã đăng ký -->
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-primary">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-verified float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Tổng User Đã Đăng Ký</h6>
+                                <h4 class="mb-4">
+                                    <%if(signalOverview){%>
+                                        <%if(signalOverview._allUserAmount.length > 0){%>
+                                            <%if(signalOverview._allUserAmount[0]._allUserAmount){%>
+                                                <%=signalOverview._allUserAmount[0]._allUserAmount%>
+                                            <%}%>
+                                        <%}else{%>
+                                            0
+                                        <%}%>
+                                    <%}else{%>
+                                        0
+                                    <%}%>
+                                </h4>
+                                <!-- <span class="badge badge-info">
+                                    +11% 
+                                </span>
+                                <span class="ml-2">From previous period</span> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tổng số user mới đăng ký (trong 24h qua) -->
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-info">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-gnome float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">User Mới Đăng Ký</h6>
+                                <h4 class="mb-4">
+                                    <%if(signalOverview){%>
+                                        <%if(signalOverview._allUserAmountLastest24hRegister.length > 0){%>
+                                            <%if(signalOverview._allUserAmountLastest24hRegister[0]._allUserAmountLastest24hRegister){%>
+                                                <%=signalOverview._allUserAmountLastest24hRegister[0]._allUserAmountLastest24hRegister%>
+                                            <%}%>
+                                        <%}else{%>
+                                            0
+                                        <%}%>
+                                    <%}%>
+                                </h4>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tổng số user bị khóa -->
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-danger">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-lock float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Tổng User Bị Khoá</h6>
+                                <h4 class="mb-4">
+                                    <%if(signalOverview){%>
+                                        <%if(signalOverview._allUserHasBeenBlockedAmount.length > 0){%>
+                                            <%if(signalOverview._allUserHasBeenBlockedAmount[0]._allUserHasBeenBlockedAmount){%>
+                                                <%=signalOverview._allUserHasBeenBlockedAmount[0]._allUserHasBeenBlockedAmount%>
+                                            <%}%>
+                                        <%}else{%>
+                                            0
+                                        <%}%>
+                                    <%}%>
+                                </h4>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tổng số user trả phí -->
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-success">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-diamond float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Tổng User Trả Phí</h6>
+                                <h4 class="mb-4">
+                                    <%if(signalOverview){%>
+                                        <%if(signalOverview._allUserPrayer.length > 0){%>
+                                            <%if(signalOverview._allUserPrayer[0]._allUserPrayer){%>
+                                                <%=signalOverview._allUserPrayer[0]._allUserPrayer%>
+                                            <%}%>
+                                        <%}else{%>
+                                            0
+                                        <%}%>
+                                    <%}%>
+                                </h4>
+                                <br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END TOP | THÔNG TIN CÁC BLOCK -->
+            <!-- LIST USER -->
+            <div class="row">
+                <div class="col-xl-12 col-md-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <!-- <h4 class="mt-0 m-b-30 header-title">Latest Orders</h4> -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="m-b-20">
+                                        <div>
+                                            <h4 class="mt-0 header-title">Bộ Lọc và Sắp Xếp</h4>
+                                            <br>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                <div class="form-group row">
+                                                    <div class="col-sm-12">
+                                                        <input 
+                                                            class="form-control" 
+                                                            type="text" 
+                                                            placeholder="Tìm kiếm theo tên" 
+                                                            id="txtSearch"
+                                                            <%if(search){%>
+                                                                <%if(search.key){%>
+                                                                    value="<%=search.key%>"
+                                                                <%}%>
+                                                            <%}%>
+                                                        >
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <br>
+                                            </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>Ngày Tham Gia</label>
+                                                        <div>
+                                                            <div class="input-daterange input-group" data-date-format="dd/mm/yyyy" id="date-range">
+                                                                <input type="text" class="form-control" name="start" placeholder="Ngày Bắt Đầu" id="txtStartTime"
+                                                                    <%if(search){%>
+                                                                        <%if(search.starttime){%>
+                                                                            value="<%=search.starttime%>"
+                                                                        <%}%>
+                                                                    <%}%>
+                                                                > 
+                                                                <input type="text" class="form-control" name="end" placeholder="Ngày Kết Thúc" id="txtEndTime"
+                                                                    <%if(search){%>
+                                                                        <%if(search.endtime){%>
+                                                                            value="<%=search.endtime%>"
+                                                                        <%}%>
+                                                                    <%}%>
+                                                                >
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <br>
+                                                       <div class="form-group row">
+                                                        <div class="col-md-6">
+                                                            <!-- <label for="example-date-input" class="col-form-label">Giới Tính</label>
+                                                            <div class="float-left">
+                                                                <input 
+                                                                    type="checkbox" 
+                                                                    id="switchGender" 
+                                                                    switch="dark" 
+                                                                    <%if(search){%>
+                                                                        <%if(search.gender){%>
+                                                                           <%if(Object.is(Number(search.gender), 1)){%>
+                                                                                checked="checked"
+                                                                            <%}%>
+                                                                        <%}%>
+                                                                    <%}%>
+                                                                >
+                                                                <label for="switchGender" data-on-label="Nam" data-off-label="Nữ"></label>
+                                                            </div> -->
+                                                            <select class="form-control" id="txtGender">
+                                                                <option value="-2" >Giới Tính</option>
+                                                                <option value="1" 
+                                                                    <%if(search){%>
+                                                                        <%if(!Number.isNaN(Number(search.gender))){%>
+                                                                            <%if(Object.is(Number(search.gender), 1)){%>
+                                                                                selected="selected"
+                                                                            <%}%>
+                                                                        <%}%>
+                                                                    <%}%>    
+                                                                >Nam</option>
+                                                                <option value="0" 
+                                                                    <%if(search){%>
+                                                                        <%if(!Number.isNaN(Number(search.gender))){%>
+                                                                            <%if(Object.is(Number(search.gender), 0)){%>
+                                                                                selected="selected"
+                                                                            <%}%>
+                                                                        <%}%>
+                                                                    <%}%>    
+                                                                >Nữ</option>
+                                                                <option value="-1" 
+                                                                    <%if(search){%>
+                                                                        <%if(!Number.isNaN(Number(search.gender))){%>
+                                                                            <%if(Object.is(Number(search.gender), 1)){%>
+                                                                                selected="selected"
+                                                                            <%}%>
+                                                                        <%}%>
+                                                                    <%}%>    
+                                                                >None</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <!-- <label for="example-date-input" class="col-form-label">Trả Phí</label>
+                                                            <div class="float-left">
+                                                                <input 
+                                                                    type="checkbox" 
+                                                                    id="swithIsFree" 
+                                                                    switch="dark" 
+                                                                    <%if(search){%>
+                                                                        <%if(!Number.isNaN(Number(search.isFree))){%>
+                                                                           <%if(Object.is(Number(search.isFree), 1)){%>
+                                                                                checked="checked"
+                                                                            <%}%>
+                                                                        <%}%>
+                                                                    <%}%>    
+                                                                >
+                                                                <label for="swithIsFree" data-on-label="Có" data-off-label="Không"></label>
+                                                            </div> -->
+                                                            <select class="form-control" id="txtIsFree">
+                                                                <option value="-1" >Loại Tham Gia</option>
+                                                                <option value="0" 
+                                                                    <%if(search){%>
+                                                                        <%if(!Number.isNaN(Number(search.isFree))){%>
+                                                                            <%if(Object.is(Number(search.isFree), 0)){%>
+                                                                                selected="selected"
+                                                                            <%}%>
+                                                                        <%}%>
+                                                                    <%}%>  
+                                                                >Trả Phí</option>
+                                                                <option value="1" 
+                                                                <%if(search){%>
+                                                                    <%if(!Number.isNaN(Number(search.isFree))){%>
+                                                                        <%if(Object.is(Number(search.isFree), 1)){%>
+                                                                            selected="selected"
+                                                                        <%}%>
+                                                                    <%}%>
+                                                                <%}%>  
+                                                                >Miễn Phí</option>
+                                                            </select>
+                                                        </div>
+                                                        
+                                                        <!-- <div class="col-md-4">
+                                                                <label for="example-date-input" class="col-form-label">Top Hiển Thị</label>
+                                                                <div class="float-left">
+                                                                    <input type="checkbox" id="switchIsFeature" switch="dark" checked="checked">
+                                                                    <label for="switchIsFeature" data-on-label="Nam" data-off-label="Nữ"></label>
+                                                                </div>
+                                                            </div> -->
+                                                    </div>
+                                                    <!-- <div class="form-group row">
+                                                        <div class="col-sm-12">
+                                                                <select 
+                                                                    class="select2 form-control select2-multiple" 
+                                                                    multiple="multiple"
+                                                                    data-placeholder="Tỉnh/Thành Phố"
+                                                                    id="txtProvince"
+                                                                    >
+                                                                    <optgroup label="Tỉnh/Thành Phố">
+                                                                        <option value="CT">Connecticut</option>
+                                                                        <option value="DE">Delaware</option>
+                                                                        <option value="FL">Florida</option>
+                                                                        <option value="GA">Georgia</option>
+                                                                        <option value="IN">Indiana</option>
+                                                                        <option value="ME">Maine</option>
+                                                                        <option value="MD">Maryland</option>
+                                                                        <option value="MA">Massachusetts</option>
+                                                                        <option value="MI">Michigan</option>
+                                                                        <option value="NH">New Hampshire</option>
+                                                                        <option value="NJ">New Jersey</option>
+                                                                        <option value="NY">New York</option>
+                                                                        <option value="NC">North Carolina</option>
+                                                                        <option value="OH">Ohio</option>
+                                                                        <option value="PA">Pennsylvania</option>
+                                                                        <option value="RI">Rhode Island</option>
+                                                                        <option value="SC">South Carolina</option>
+                                                                        <option value="VT">Vermont</option>
+                                                                        <option value="VA">Virginia</option>
+                                                                        <option value="WV">West Virginia</option>
+                                                                    </optgroup>
+                                                                </select>
+                                                        </div>
+                                                    </div> -->
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group row">
+                                                        <div class="col-md-12">
+                                                            <label for="example-date-input" class="col-form-label">Tuổi</label>
+                                                            <div>
+                                                                <input type="number" class="form-control" id="txtMinAge" placeholder="Min tuổi">
+                                                            </div>
+                                                            </br>
+                                                            <div>
+                                                                <input type="number" class="form-control" id="txtMaxAge" placeholder="Max tuổi">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
+                                                        <div class="col-md-12">
+                                                            <label for="example-date-input" class="col-form-label">Điểm Nổi Bật</label>
+                                                            <div class="">
+                                                                <input type="number" class="form-control" id="txtMinFeature" placeholder="Min điểm nổi bật">
+                                                            </div>
+                                                            </br>   
+                                                            <div class="">
+                                                                <input type="number" class="form-control" id="txtMaxFeature" placeholder="Max điểm nổi bật">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                 
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="m-b-20" style="margin-top: 39px;">
+                                                        <div class="form-group row" style="width: 100%; margin: auto;">
+                                                            <select class="form-control" id="txtSort">
+                                                                <option value="-1" 
+                                                                    <%if(search){%>
+                                                                        <%if(search.sort){%>
+                                                                            <%if(Object.is(Number(search.sort), -1)){%>
+                                                                                selected
+                                                                            <%}%>
+                                                                        <%}%>
+                                                                    <%}%>    
+                                                                >Sắp Xếp Theo</option>
+                                                                <option value="amountView"
+                                                                    <%if(search){%>
+                                                                        <%if(search.sort){%>
+                                                                            <%if(Object.is(search.sort, 'amountView')){%>
+                                                                                selected
+                                                                            <%}%>
+                                                                        <%}%>
+                                                                    <%}%>    
+                                                                >Lượt View Tăng Dần</option>
+                                                                <option value="-amountView"
+                                                                    <%if(search){%>
+                                                                        <%if(search.sort){%>
+                                                                            <%if(Object.is(search.sort, '-amountView')){%>
+                                                                                selected="selected"
+                                                                            <%}%>
+                                                                        <%}%>
+                                                                    <%}%>    
+                                                                >Lượt View Giảm Dần</option>
+                                                                <option value="usersLikedMe"
+                                                                    <%if(search){%>
+                                                                        <%if(search.sort){%>
+                                                                            <%if(Object.is(search.sort, 'usersLikedMe')){%>
+                                                                                selected="selected"
+                                                                            <%}%>
+                                                                        <%}%>
+                                                                    <%}%>    
+                                                                >Lượt Favorite Tăng Dần</option>
+                                                                <option value="-usersLikedMe"
+                                                                    <%if(search){%>
+                                                                        <%if(search.sort){%>
+                                                                            <%if(Object.is(search.sort, '-usersLikedMe')){%>
+                                                                                selected="selected"
+                                                                            <%}%>
+                                                                        <%}%>
+                                                                    <%}%>    
+                                                                >Lượt Favorite Giảm Dần</option>
+                                                                <option value="-createAt"
+                                                                    <%if(search){%>
+                                                                        <%if(search.sort){%>
+                                                                            <%if(Object.is(search.sort, '-createAt')){%>
+                                                                                selected="selected"
+                                                                            <%}%>
+                                                                        <%}%>
+                                                                    <%}%>    
+                                                                >Ngày Tạo Mới Nhất</option>
+                                                                <option value="createAt"
+                                                                    <%if(search){%>
+                                                                        <%if(search.sort){%>
+                                                                            <%if(Object.is(search.sort, 'createAt')){%>
+                                                                                selected="selected"
+                                                                            <%}%>
+                                                                        <%}%>
+                                                                    <%}%>    
+                                                                >Ngày Tạo Cũ Nhất</option>
+
+                                                                <option value="isFeature"
+                                                                    <%if(search){%>
+                                                                        <%if(search.sort){%>
+                                                                            <%if(Object.is(search.sort, 'isFeature')){%>
+                                                                                selected="selected"
+                                                                            <%}%>
+                                                                        <%}%>
+                                                                    <%}%>    
+                                                                >Lượt Nổi Bật Tăng Dần</option>
+
+                                                                <option value="-isFeature"
+                                                                    <%if(search){%>
+                                                                        <%if(search.sort){%>
+                                                                            <%if(Object.is(search.sort, '-isFeature')){%>
+                                                                                selected="selected"
+                                                                            <%}%>
+                                                                        <%}%>
+                                                                    <%}%>    
+                                                                >Lượt Nổi Bật Giảm Dần</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="m-b-20" style="margin-top: 39px;">
+                                                        <div class="form-group row" style="width: 100%; margin: auto;">
+                                                            <select class="form-control" id="txtStatus">
+                                                                <option value="-2">Trạng thái</option>
+                                                                <option value="-1">Chưa kích hoạt</option>
+                                                                <option value="1">Hoạt động</option>
+                                                                <option value="0">Khóa</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="m-b-20" style="margin-left: 0px;">
+                                                        <div class="form-group row">
+                                                            <div class="col-md-12">
+                                                                <label for="example-date-input" class="col-form-label">Số lượng concept</label>
+                                                                <div class="">
+                                                                    <input type="Number" class="form-control" id="txtNumberConcept" 
+                                                                        <%if(search){%>
+                                                                            <%if(search.amountConcept){%>
+                                                                                value="<%=search.amountConcept%>"
+                                                                            <%}%>
+                                                                        <%}%>
+                                                                    >
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <span class="text-center"> 
+                                                        <i>
+                                                            <% if (!Number(Number.isNaN(amount))) { %>
+                                                                Có <strong style="color: #29bbe3"><%= amount|| 0%></strong> kết quả trả về 
+                                                            <% } %>
+                                                        </i>
+                                                    </span>
+                                                    <button class="btn btn-info" id="exportListUserPDF">
+                                                        Xuất PDF
+                                                        <i style="margin-left: 5px" class="dripicons-export"></i>
+                                                    </button>
+                                                    <button class="btn btn-info" id="exportListUserExcel" onclick="download_table_as_csv('list-user-table')">
+                                                            Xuất Excel
+                                                            <i style="margin-left: 5px" class="dripicons-export"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-md-8">
+                                                          <div class="form-group row">
+                                                            <div class="col-md-12">
+                                                              <select class="form-control" id="view_column">
+                                                                <option value="-1">Chọn cột hiển thị</option>
+                                                                <option value="account" >Tài khoản</option>
+                                                                <option value="date_modified" >Ngày sửa đổi</option>
+                                                                <option value="time_link" >Time link</option>
+                                                                <option value="rose_lv1" >Hoa hồng Cấp 1</option>
+                                                              </select>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                          <button class="btn btn-info"  id="btnSearch">
+                                                            Tìm Kiếm
+                                                            <i style="margin-left: 5px" class="dripicons-search"></i>
+                                                          </button>
+                                                        </div>
+                                                    </div>
+                                                  </div>
+                                            </div>
+                                        </div>
+                                     </div>
+                                    <!-- end col -->
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="list-user-table" class="content-table" style ="margin: 0 !important">
+                                    <thead>
+                                        <tr>
+                                            <th>...</th>
+                                            <th>
+                                                <strong>Avatar</strong>
+                                            </th>
+                                            <th class="account"><strong>Tài Khoản</strong>
+                                              <i class="fa fa-times close_column" data-close="account" aria-hidden="true" title="Ẩn cột"></i>
+                                            </th>
+                                            <th>
+                                                <strong>Tên/Email</strong>
+                                            </th>
+											                      <th>
+                                                <strong>Giới Tính</strong>
+                                            </th>
+                                            <th>
+                                                <strong>Số Điện Thoại</strong>
+                                            </th>
+                                            <th>
+                                                <strong>Trạng Thái</strong>
+                                            </th>
+                                            <th style="padding: 0px;">
+                                                <strong>Lượt Xem</strong>
+                                            </th>
+                                            <th>
+                                                <strong>Nổi Bật</strong>
+                                            </th>
+                                            <th class="time_link">
+                                                <strong>Time Link</strong>
+                                                <i class="fa fa-times close_column" data-close="time_link" aria-hidden="true" title="Ẩn cột"></i>
+                                            </th>
+                                            <th class="rose_lv1">
+                                                <strong>Hoa Hồng Cấp 1</strong>
+                                                <i class="fa fa-times close_column" data-close="rose_lv1" aria-hidden="true" title="Ẩn cột"></i>
+                                            </th>
+                                            <th style="padding: 0px;">
+                                                <strong>SL Concept</strong>
+                                            </th>
+                                            <th>
+                                                <strong>Last Login</strong>
+                                            </th>
+                                            <th>
+                                                <strong>Ngày Tham Gia</strong>
+                                            </th>
+                                            <th class="date_modified">
+                                                <strong>Ngày Sửa Đổi</strong>
+                                                <i class="fa fa-times close_column" data-close="date_modified" aria-hidden="true" title="Ẩn cột"></i>
+                                            </th>
+                                            <th>
+                                               <strong> Tuỳ Chọn</strong>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <%if (users){%>
+                                            <%if(users.length > 0){%>
+                                                <%users.forEach((user, index) => {%>
+                                                    <tr>
+                                                        <th>
+                                                            <%= index + 1%> &nbsp <input type="checkbox" value="<%= user._id && user._id %>" class="ckbUserID">
+                                                        </th>
+                                                        <td >
+                                                            <a href="/nguoi-dung/thong-tin/<%= _lodash.get(user, 'username', 'demo1')%>" target="_blank">
+                                                            <%let objUser = user%>
+                                                            <%-include ./utils/image_RENDER_ADMIN.ejs%>
+                                                            </a>
+                                                        </td>
+                                                        <td class="account"> <div class="userNotActive" style="white-space: nowrap;  width: 90px;overflow: hidden;text-overflow: ellipsis; " title="<%=user.username %> ">
+                                                            <%=user.username%>
+                                                        </div> </td>
+                                                        <td>
+                                                          <%=user.fullname%>(<%if(user.age){%><%=user.age%><%}%>) <br/>
+                                                          <div class="emailUserNotActive" style="white-space: nowrap;  width: 90px; overflow: hidden;text-overflow: ellipsis;" title="<%=user.email %>">
+                                                            <%=user.email%>
+                                                          </div>
+                                                        </td>
+														                            <td>
+                                                            <%= (user.gender == 0) ? 'Nữ' : ((user.gender == 1) ? 'Nam' : 'None') %> 
+                                                        </td>
+                                                        <td>
+                                                            <%if(user.phone){%>
+                                                                <%=user.phone%>
+                                                            <%}%>
+                                                        </td>
+                                                        <td>
+                                                            <%if(!Number.isNaN(Number(user.status))){%>
+                                                                <%if(Object.is(Number(user.status), 1)){%>
+                                                                    <span class="badge badge-pill badge-success">Đang Hoạt Động</span>
+                                                                <%}else if(Object.is(Number(user.status), -1)){%>
+                                                                    <span class="badge badge-pill badge-warning">Chưa Kích Hoạt</span>
+                                                                <%}else if(Object.is(Number(user.status), 0)){ %>
+                                                                    <span class="badge badge-pill badge-danger">Bị Chặn</span>
+                                                                <% } %>
+                                                            <%}%>
+                                                        </td>
+														
+                                                        <td style="padding: 0px;">
+                                                            <%if(!Number.isNaN(Number(user.amountView))){%>
+                                                                <%=user.amountView%>
+                                                            <%}%>
+                                                        </td>
+                                                        <td>
+                                                            <a href="#" class="updatePointField" data-type="text" data-pk="1" data-title="Nhập Point Feature" __userID="<%=user._id%>">
+                                                                <%if(Object.is(user.isFeature, 0)){%>
+                                                                    0 
+                                                                <%}else{%>
+                                                                    <%=user.isFeature%>
+                                                                <%}%> </a> điểm
+                                                            
+                                                        </td>
+                                                        <td class="time_link">
+                                                            <a href="#" class="updateTimeAliveLinkAffiliate" data-type="text" data-pk="1" data-title="Nhập TimeLink" __userID="<%=user._id%>">
+                                                                <%if(!user.timeAlive || Number.isNaN(Number(user.timeAlive))){%>
+                                                                    0 
+                                                                <%}else{%>
+                                                                    <%=user.timeAlive%>
+                                                                <%}%> </a> Phút
+                                                            
+                                                        </td>
+                                                        <td class="rose_lv1">
+                                                            <a href="#" class="updatePercentCommissionField " data-type="text" data-pk="1" data-title="Nhập Hoa Hồng" __userID="<%=user._id%>">
+                                                                <%if(!user.percentCommission){%>
+                                                                    0
+                                                                <%}else{%>
+                                                                    <%=user.percentCommission%>
+                                                                <%}%> </a> %
+                                                            
+                                                        </td>
+                                                        <td>
+                                                            <%= _lodash.get(user, 'amountConcept', 0)%>
+                                                        </td>
+                                                        <td>
+                                                            <%if(user.lastLogin){%>
+                                                                <%= moment(user.lastLogin).fromNow();%>
+                                                            <%}%>
+                                                          </td>
+                                                        <td>
+                                                            <%if(user.createAt){%>
+                                                                <%= moment(user.createAt).format('L');%>
+                                                            <%}%>
+                                                        </td>
+                                                        <td class="date_modified">
+                                                            <%if(user.modifyAt){%>
+                                                                <%= moment(user.modifyAt).format('L');%>
+                                                            <%}%>
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group mb-2">
+                                                                <button type="button" class="btn btn-primary waves-effect waves-light" id="btnDropDownActionUser_<%=user._id%>">
+                                                                    Thao Tác
+                                                                </button>
+                                                                <button type="button" class="btn btn-primary waves-effect waves-light dropdown-toggle-split dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <span class="sr-only">Toggle Dropright</span>
+                                                                </button>
+                                                                <div class="dropdown-menu" x-placement="right-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(143px, 0px, 0px);">
+                                                                    <a class="dropdown-item" href="/admin/view-user/<%=user.username%>">Xem Thông Tin</a>
+                                                                    <% if (user) { %>
+                                                                        <% if (user.status == 1) { %>
+                                                                            <a class="dropdown-item btnUpdateStatusUser" _userID="<%=user._id%>" _status = 0 >Khoá User</a>
+                                                                        <% } %>
+                                                                        <% if (user.status == 0) { %>
+                                                                            <a class="dropdown-item btnUpdateStatusUser" _userID="<%=user._id%>" _status = 1 >Mở khóa User</a>
+                                                                        <% } %>
+                                                                    <% } %>
+                                                                    <a class="dropdown-item" href="#">Hiển Thị Nổi Bậc</a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                <%})%>
+                                            <%}%>
+                                        <%}%>
+                                    </tbody>
+                                    <div class="row">
+                                    <div class="col-md-6"> 
+                                        <%- include ./utils/data-table-length.ejs%>
+                                        <div class="dropdown mo-mb-2" id="dropdownMenuOptionUser" style="display: none">
+                                            <a class="btn btn-light dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Chọn Thao Tác
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 33px, 0px);">
+                                                <a class="dropdown-item btnUpdateStatusWithListUser" _status="1" href="#">Mở User</a>
+                                                <a class="dropdown-item btnUpdateStatusWithListUser" _status="0" href="#">Chặn User</a>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <input type="checkbox" name="#" value="" id="checkAll"> Chọn Tất Cả
+                                        <br>
+                                        <br>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="d-flex flex-column">
+                                            <!-- PAGING (WEB ADMIN) -->
+                                                <%- include ./utils/paging.ejs%>
+                                            <!--END PAGING (WEB ADMIN) -->
+                                            <div class="ml-auto d-flex flex-column">
+                                                <div class="ml-auto">
+                                                        <button class="btn btn-warning mr-2"  id="btnSearchUserNotActive">
+                                                            Danh Sách User Cần Gửi Mail Nhắc Kích Hoạt
+                                                        </button>
+                                                        <button class="btn btn-success"  id="btnSendMailReActive" <%= (onDisabled == 'true') ? '' : 'disabled' %> >
+                                                            Gửi Tất Cả
+                                                        </button>
+                                                        <button class="btn btn-success ml-2" id="btnSendMailTest"<%= (onDisabled == 'true') ? '' : 'disabled' %>  >
+                                                            Chọn User Gửi
+                                                        </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </table>
+                                <!-- PAGING (WEB ADMIN) -->
+                                <%- include ./utils/paging.ejs%>
+                                <!--END PAGING (WEB ADMIN) -->
+                            </div>
+
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END LIST USER -->
+        </div>
+        <!-- container-fluid -->
+    </div>
+    <!-- content -->
+    <%include ./utils/footer.ejs%>
+</div>

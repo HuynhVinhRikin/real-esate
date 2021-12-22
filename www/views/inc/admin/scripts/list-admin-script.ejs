@@ -1,0 +1,28 @@
+<script>
+    $(document).ready(function(){
+        $('.btnToggleStatus').on('click', function(){
+            let token = localStorage.getItem('token_admin');
+            if (!token)
+                return window.location.href = '/admin/clear-session-admin';
+
+            let adminID   = $(this).attr('_adminID');
+            let status = $(this).attr('_status');
+            $.ajax({ 
+                url: `/admin/update-status-admin/${adminID}`,
+                method: 'POST',
+                data: { status },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("Authorization", 'Bearer '+ token);
+                },
+                success: function(resp){
+                    if (!resp.error)
+                        return location.reload();
+                    alert('Lỗi Cập Nhật');
+                },
+                error: function(){
+                    alert('Lỗi Cập Nhật');
+                }
+            })
+        })
+    })
+</script>

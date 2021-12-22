@@ -1,0 +1,65 @@
+<script>
+    $(document).ready(function(){
+        $('.notification-content__header').on('click', '#btnSeenAllNoti', function(e){
+            e.preventDefault();
+            $.ajax({
+                url: `/ca-nhan/seen-all-notifications`,
+                method: 'GET',
+                success: function(resp) {
+                    console.log(resp);
+                    if (resp.error)
+                        return toastr['error']('Thất Bại, vui lòng thử lại');
+                    toastr['success']('Cập Nhật Thành Công');
+                    setTimeout(()=>{
+                        return window.location.reload(true);
+                    }, 1500);
+                },
+                error: function(err){
+                    return toastr['error']('Thất Bại, vui lòng thử lại');
+                    console.log(err.message)
+                }
+            })
+        });
+
+        $('.notification-content__body').on('click',".notification-content__item", function(e){
+            let isSeen = $(this).attr('_isSeen');
+            const self = $(this);
+            if (Number(isSeen) === 1) return;
+            let notificationID = $(this).attr('_notificationID');
+            $.ajax({
+                url: `/ca-nhan/update-seen/${notificationID}`,
+                method: 'GET',
+                success: function(resp) {
+                    console.log({ resp });
+                    if (resp.error)
+                        return toastr['error']('Thất Bại, vui lòng thử lại');
+                    self.removeClass('notification-content__item--notSeen');
+                },
+                error: function(err){
+                    return toastr['error']('Thất Bại, vui lòng thử lại');
+                    console.log(err.message)
+                }
+            })
+        });
+        $('.notification-content__body').on('click',".btnAccessListForUser", function(e){
+          e.preventDefault();
+          let receiverID = $(this).attr('_idUserRequest');
+          let imageID = $(this).attr('_imageID');
+          const notiID = $(this).closest('.notification-content__item').attr("_notificationid");
+          socket.emit('NOTIFICATION_ACCEPT_VIEW_PRIVATE_IMAGE', {
+              receiverID,notiID, imageID
+          });
+        });
+
+      socket.on("NOTIFICATION_ACCEPT_VIEW_PRIVATE_IMAGE_ERR", data => {
+        toastr['error'](data.message);
+      })
+      socket.on("NOTIFICATION_ACCEPT_VIEW_PRIVATE_IMAGE_SUCCESS", data => {
+        const { notiID, message, data: messageResult} = data;
+        const viewImage = $(`[_notificationid=${notiID}]`).find(".view-message");
+        viewImage.html(messageResult)
+        toastr['success'](message);
+      })
+
+  })
+</script>

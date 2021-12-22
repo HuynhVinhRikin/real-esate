@@ -1,0 +1,112 @@
+<script src="/template/ckeditor2/ckeditor.js"></script>
+<script>
+    $(document).ready(function(){
+        CKEDITOR.replace('conceptContent', {
+            language: 'vi',
+            filebrowserUploadUrl: '/files/concept',
+            height: 600
+        });
+
+        <% if (infoConcept) { %>
+            let data = `<%= infoConcept.content && infoConcept.content %>`;
+            if(data){
+                let dataAfterParse = $.parseHTML(data)[0].data;
+                CKEDITOR.instances.conceptContent.setData(dataAfterParse);
+            }
+        <% } %>
+
+         function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#imagePreview').css('background-image', 'url('+e.target.result +')');
+                    $('#imagePreview').hide();
+                    $('#imagePreview').fadeIn(650);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $("#imageUpload").change(function() {
+            readURL(this);
+        });
+
+        let getDataFormConcept = ()=>{
+            let title, description, content, linkVideo, address1, address2, address3,
+                time, cost, prayer, focusGender, focusAgeFrom, focusAgeTo, status, image, timeUpdate;
+            title = $('#txtTitle').val();
+            description = $('#txtDescription').val();
+            content = CKEDITOR.instances.conceptContent.getData()
+            linkVideo = $('#txtLinkYoutube').val();
+            address1 = $('#txtAddress1').val();
+            address2 = $('#txtAddress2').val();
+            address3 = $('#txtAddress3').val();
+            time     = $('.txtTime').val();
+            cost     = $('#txtCost').val();
+            prayer     = $('#txtPrayer').val();
+            focusGender     = $('#txtFocusGender').val();
+            focusAgeFrom     = $('#txtFocusAgeFrom').val();
+            focusAgeTo     = $('#txtFocusAgeTo').val();
+            status     = $('#txtStatus').val();
+            // Thoi gian hen ho mới nhất
+            timeUpdate = $('.txtTimeUpdate').val()
+           
+            let timeFormat;
+            if(timeUpdate){
+                let timeDay     = timeUpdate.substr(0, 3); 
+                let timeMonth   = timeUpdate.substr(3, 3); 
+                let timeYear    = timeUpdate.substr(6, 4); 
+                timeFormat = timeMonth + timeDay + timeYear;
+            }else{
+                let timeDay     = time.substr(0, 3); 
+                let timeMonth   = time.substr(3, 3); 
+                let timeYear    = time.substr(6, 4); 
+                timeFormat = timeMonth + timeDay + timeYear;
+            }
+            console.log(timeFormat, timeUpdate)
+            return { title, description, content, linkVideo, address1, address2, address3,
+                time: timeFormat, cost, prayer, focusGender, focusAgeFrom, focusAgeTo, status }
+        }
+
+        $('#txtStatus').on('change', function(){
+            let status = $(this).val();
+            if(status == 0){
+                $('#txtTimeUpdate').show();
+            }else{
+                $('#txtTimeUpdate').hide();
+            }
+        })  
+
+        $('#btnUpdate').on('click', function(e){
+            e.preventDefault();
+           
+            let data = getDataFormConcept();
+            let conceptID = $(this).attr('_conceptID');
+            // Kiểm tra nếu mở concept mà ngày hạn hò bé hơn ngày hiện tại thig thông báo: Start
+            // Kiểm tra nếu mở concept mà ngày hạn hò bé hơn ngày hiện tại thig thông báo : end
+
+            var fd = new FormData();
+            var image = $('#imageUpload')[0].files[0];
+            fd.append('image', image);
+            fd.append('data', JSON.stringify(data));
+            $.ajax({
+                url: `/admin/update-info-concept/${conceptID}`,
+                method: 'POST',
+                data: fd,
+                contentType: false,
+                processData: false,
+                // beforeSend: function(xhr) {
+                //     xhr.setRequestHeader("Authorization", 'Bearer ' + token);
+                // },
+                success: function(resp) {
+                    if (resp.error) 
+                        return toastr['error']('CẬP NHẬT THẤT BẠI', 'THÔNG BÁO');
+                    return toastr['success']('CẬP NHẬT THÀNH CÔNG', 'THÔNG BÁO');
+                },
+                error: function(err) {
+                    return toastr['error']('CẬP NHẬT THẤT BẠI', 'THÔNG BÁO');
+                }
+            })
+        })
+    })
+</script>

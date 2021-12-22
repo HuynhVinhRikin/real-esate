@@ -1,0 +1,74 @@
+<script>
+    $(document).ready(function(){
+        $('#province_concept').on('change', function(e) {
+            const provinceID = $(this).val();
+            $.ajax({
+                url: `/get-district/${provinceID}`,
+                method: 'GET',
+                success: function(listDistricts) {
+                    if (listDistricts) {
+                        $('#district_concept').empty();
+
+                        $('#district_concept').append(`
+                            <option value="null">Quận/Huyện</option>
+                        `);
+
+                        for (let index in listDistricts) {
+                            $('#district_concept').append(`
+                                <option value="${listDistricts[index].code}">${listDistricts[index].name_with_type}</option>
+                            `);
+                        }
+                    } else {
+                        alert('Tỉnh Không Có Huyện');
+                    }
+                },
+                error: function(err){
+                    console.log(err.message)
+                }
+            })
+        });
+        const getDataSearch = () => {
+            let key     = `"${ $('#txtSearch').val() }"`; //
+            let sort    = $('#txtSort').val(); //
+            let gender  = $("input.gender_concept[name=gender]:checked").val(); //
+            let fromAge = $('#fromAge_concept').text(); //
+            let toAge   = $('#toAge_concept').text(); //
+            let province   = $('#province_concept').val(); //
+            let district   = $('#district_concept').val(); //
+            let isHashAvatar    = $('#txtHaveAvatar').is(":checked") ? 1 : 0; //
+            let isUserView      = $('#txtUserView').is(":checked") ? 1 : 0; //
+            let isUsersMeLike   = $('#txtUsersMeLike').is(":checked") ? 1 : 0;
+            let isUsersLikeMe   = $('#txtUsersLikeMe').is(":checked") ? 1 : 0;
+            return { key, sort, gender, fromAge, toAge, province, district,
+                isHashAvatar, isUserView, isUsersMeLike, isUsersLikeMe
+            };
+        }
+
+        const buildURISearch = () => {
+            const { key, sort, gender, fromAge, toAge, province, 
+                isHashAvatar, isUserView, isUsersMeLike, isUsersLikeMe, district } = getDataSearch();
+            let uri = `/danh-sach-nguoi-dung?sort=${sort || '-createAt'}&type=user`;
+
+            if (!Number.isNaN(Number(gender))) uri += `&gender=${gender}`;
+            if (!Number.isNaN(Number(province))) uri += `&province=${province}`;
+            if (!Number.isNaN(Number(province)) && !Number.isNaN(Number(district))) uri += `&district=${district}`;
+            if (!Number.isNaN(Number(fromAge)) && !Number.isNaN(Number(toAge))) uri += `&fromAge=${fromAge}&toAge=${toAge}`;
+
+            if (!Number.isNaN(Number(isHashAvatar)) && Object.is(Number(isHashAvatar), 1)) uri += `&isHashAvatar=${isHashAvatar}`;
+            if (!Number.isNaN(Number(isUserView)) && Object.is(Number(isUserView), 1)) uri += `&isUserView=${isUserView}`;
+            if (!Number.isNaN(Number(isUsersMeLike)) && Object.is(Number(isUsersMeLike), 1)) uri += `&isUsersMeLike=${isUsersMeLike}`;
+            if (!Number.isNaN(Number(isUsersLikeMe)) && Object.is(Number(isUsersLikeMe), 1)) uri += `&isUsersLikeMe=${isUsersLikeMe}`;
+
+            if (key && key.length > 2) 
+                uri += `&key=${key}`;
+            return window.location.href = uri;
+        }
+        
+
+        $('.btnSearchNormal').on('click', function(e){
+            e.preventDefault();
+            buildURISearch();
+        });
+        // TODO SEARCH SERVER
+    })
+</script>

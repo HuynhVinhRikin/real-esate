@@ -1,0 +1,13 @@
+<%if(!_lodash.get(objUser, 'avatar.name', 'image-default.jpg').includes('http')){%>
+    <img 
+        class="thumb-sm mr-2 rounded-circle"
+        src="/files/users/<%=_lodash.get(objUser, 'avatar.name', 'image-default.jpg')%>" 
+        alt="<%=_lodash.get(objUser, 'fullname', 'WAODATE')%>"
+    />
+<%}else{%>
+    <img
+        class="thumb-sm mr-2 rounded-circle"
+        src="<%=_lodash.get(objUser, 'avatar.name', 'image-default.jpg')%>" 
+        alt="<%=_lodash.get(objUser, 'fullname', 'WAODATE')%>"
+    />
+<%}%>

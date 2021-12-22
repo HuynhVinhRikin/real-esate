@@ -1,0 +1,252 @@
+<% moment.locale('vi') %>
+<style>
+</style>
+
+<main>
+    <div class="wao-wrapper">
+        <div class="wao-message">
+            <p class="title wao-mb-container wao-mb">
+                <img src="./img/nav/nav_icon_mb_3.svg" alt=""> Tin nhắn
+            </p>
+            <div class="left-message wao-mb-container">
+                <!-- <div class="search-box">
+                    <img src="./img/lookup.svg" alt="">
+                    <input id="inputSearchMessage" type="text" placeholder="Tìm kiếm tin nhắn">
+                </div> -->
+                <div class="user-list">
+                    <!-- <div class="user-message has-unread">
+                        <div class="avatar">
+                            <img src="./img/message-avatar.jpg" alt="">
+                        </div>
+                        <div class="user-content">
+                            <p class="user-name">
+                                Thiên Minh
+                            </p>
+                            <p class="content">
+                                Ôi hoàng tử, xin hãy tha thứ cho công chú..
+                            </p>
+                        </div>
+                        <span class="unread-message">
+                            4
+                        </span>
+                        <a href="#message-1" class="link"></a>
+                    </div> -->
+
+                    <%if(infoReceiver){%>
+						<%listConversations && listConversations.length > 0 && listConversations.forEach((conversation, indexConversation) => {%>
+                            <%let infoUserGuest = conversation.members.find(item => !Object.is(item._id.toString(), infoUser._id.toString()))%>
+                            <%if(infoUserGuest){%>
+                                <div class="user-message 
+                                    <%if(Object.is(infoUserGuest._id.toString(), infoReceiver._id.toString())){%>
+                                        wao-user--active
+                                    <%}%>"
+                                    data-position="<%= 1000 - indexConversation%>"
+                                    _userSender='<%=infoUserGuest._id%>'
+                                    id="conversisation_<%=infoUserGuest._id%>"
+                                >
+                                    <div class="menu-message">
+                                        <button class="menu-btn"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></button>
+                                        <button _conversationID = <%= conversation._id %> class="menu-btn-delete">Xóa</i></button>
+                                    </div>
+                                    <%let objUser = infoUserGuest;%>
+                                    
+                                    <div class="avatar">
+                                        <%- include ./utils/image_RENDER-header.ejs%>
+                                    </div>
+                                    <div class="user-content">
+                                        
+                                        <p class="user-name">
+                                            <%=infoUserGuest.fullname%>
+                                            <%if(infoUserGuest.status == 0){%>
+                                                <span style="font-size:9px; font-style: italic;color: red;">User bị khoá</span>
+                                            <%}%>
+                                        </p>
+                                        <p class="content" id="latest_message_<%=infoUserGuest.username%>">
+                                            <% if (isPayer || infoUserGuest.username === "waodatesupport") { %>
+                                                <% if (conversation && conversation.latestMessage ) { %>
+                                                    <% if (conversation.latestMessage.status == 0) { %>
+                                                        <b>
+                                                            <%if(infoUser._id.toString() == conversation.latestMessage.author._id.toString()){%>
+                                                                <small>
+                                                                    <i>Bạn:</i>
+                                                                </small>
+                                                            <%}else{%>
+                                                                <small>
+                                                                    <i><%=infoUserGuest.fullname%>:</i>
+                                                                </small>
+                                                            <%}%>
+                                                            <%= conversation.latestMessage && conversation.latestMessage.body%>
+                                                        </b>
+                                                    <% }else {%>
+                                                        <%= conversation.latestMessage && conversation.latestMessage.body%>
+                                                    <% } %>
+                                                <% } %>
+                                            <% } else{ %>
+                                                <a href="/goi-dich-vu">
+                                                    <i>Vui lòng trả phí để xem Tin Nhắn này!</i>
+                                                </a>
+                                            <% } %>
+                                        </p>
+                                    </div>
+                                    <span class="unread-message">
+                                    </span>
+                                    <a 	
+                                        <%if(infoUserGuest.status == 1){%>
+                                            href="/ca-nhan/tin-nhan/<%=infoUserGuest.username%>"
+                                            style="margin-left: 8px;margin-bottom: 3px;display: inline-block;"
+                                        <%}else{%>
+                                            
+                                            href="#"
+                                            style="margin-left: 8px;margin-bottom: 3px;display: inline-block;"
+                                        <%}%> 
+                                        class="link"
+                                    ></a>
+                                </div>
+                            <%}%>
+                        <%})%>
+                    <%} else{%>
+                        <%listConversations && listConversations.length > 0 && listConversations.forEach(conversation => {%>
+							<%let infoUserGuest = conversation.members.find(item => !Object.is(item._id.toString(), infoUser._id.toString()))%>
+                            <%if(infoUserGuest){%>
+                                <div class="user-message">
+                                    <%let objUser = infoUserGuest;%>
+                                    <div class="avatar">
+                                        <%- include ./utils/image_RENDER-header.ejs%>
+                                    </div>
+                                    <div class="user-content">
+                                        <p class="user-name">
+                                            <%=infoUserGuest.fullname%>
+                                            <%if(infoUserGuest.status == 0){%>
+                                                <span style="font-size:9px; font-style: italic;color: red;">User bị khoá</span>
+                                            <%}%>
+                                        </p>
+                                        <p class="content" id="latest_message_<%=infoUserGuest.username%>">
+                                            <%= conversation.latestMessage && conversation.latestMessage.body%>
+                                        </p>
+                                    </div>
+                                    <span class="unread-message">
+                                    </span>
+                                    <a 	
+                                        <%if(infoUserGuest.status == 1){%>
+                                            href="/ca-nhan/tin-nhan/<%=infoUserGuest.username%>"
+                                        <%}else{%>
+                                            href="#"
+                                        <%}%> 
+                                        class="link"
+                                    ></a>
+                                </div>
+                            <%}%>
+						<%})%>
+                    <%}%>
+
+                    <%if(listConversations.length == 0) {%>
+						<strong class="pt-10 d-block">Bạn chưa có cuộc hội thoại</strong>
+					<%}%>
+                </div>
+            </div>
+
+            <%if(infoReceiver){%>
+                <div 
+                 <%if(isMobileDeviceRequest){%>
+                    class="right-message" 
+                   <%}else{%>  
+                    class="right-message active" 
+                    <%}%>
+                    id="message-1"
+                >
+                    <div class="top-right-message">
+                        <a href="" class="back-message-btn wao-mb">
+                            <img src="/template/front-end-new/img/home/left-arrow.svg" alt="">
+                        </a>
+                        <div class="avatar">
+                          <%let objUser = infoReceiver%>
+                           <% if(isSupport) {%>
+                            <a href="javascript: void(0)" class="user-info">
+                              <img class="" 
+                                src="/files/users/<%=_lodash.get(objUser, 'avatar.name', 'image-default.jpg')%>" 
+                                alt="<%=_lodash.get(objUser, 'fullname', 'WAODATE')%>"
+                                id="image_avatar_chat"
+                              />
+                            </a>
+                           <% } else { %> 
+                            <%- include ./utils/image_RENDER.ejs%>
+                           <% } %> 
+                        </div>
+                        <% if(isSupport) {%>
+                          <a href="javascript: void(0)" class="user-info">
+                        <% } else { %>
+                          <a href="/nguoi-dung/thong-tin/<%= infoReceiver.username %>" class="user-info">
+                        <% } %>   
+                        <p class="name <%= _lodash.get(infoReceiver, 'isOnline') == 1? 'has-active': '' %>">
+                            <%=infoReceiver.fullname%> <%=infoReceiver.age ? " ,"+infoReceiver.age : ""%>
+                        </p>
+                        <!-- <p class="meta">
+                            Hồ Chí Minh
+                        </p> -->
+                        </a>
+                    </div>
+                    <div class="main-message wao-mb-container">
+                        <div class="message-content-wrapper">
+                            <div class="message-content" _receiverID='<%=infoReceiver._id%>'>
+                                <%listConversationsOfUserCurrent && listConversationsOfUserCurrent.length && listConversationsOfUserCurrent.forEach((messageCurrent, indexMessage) => {%>
+                                    <%if(Object.is(infoUser._id.toString(), messageCurrent.author._id.toString())){%>
+                                        <%if(indexMessage == listConversationsOfUserCurrent.length - 1|| indexMessage % 10 == 0){%>
+                                            <p class="meta">
+                                                <%= moment(messageCurrent.createAt).calendar()%>
+                                            </p>
+                                        <%}%>
+                                        <p class="my-message">
+                                            <span><%= messageCurrent.body && messageCurrent.body%></span>
+                                        </p>
+                                    <%}else{%>
+                                        <%let objUser = messageCurrent.author%>
+                                        <%//-include ./utils/image_RENDER.ejs%>
+                                        <%if(isPayer || isSupport){%>
+                                            <%if(indexMessage == listConversationsOfUserCurrent.length - 1|| indexMessage % 10 == 0){%>
+                                                <p class="meta">
+                                                    <%= moment(messageCurrent.createAt).calendar()%>
+                                                </p>
+                                            <%}%>
+                                            <p class="their-message">
+                                                <span> <%= messageCurrent.body && messageCurrent.body%></span>
+                                            </p>
+                                        <%}else{%>
+                                            <p class="their-message">
+                                              <a href="/goi-dich-vu">
+                                                  <i style="font-size: 13.3px; color: #5038d4 ; border: 1px solid #5038d4; border-radius: 20px; padding: 6px 15px;">
+                                                      Vui lòng trả phí để xem Tin Nhắn này!    
+                                                  </i>
+                                              </a>
+                                            </p>
+                                            <%if(indexMessage == listConversationsOfUserCurrent.length - 1){%>
+                                                <small>
+                                                    <%= moment(messageCurrent.createAt).calendar()%>
+                                                </small>
+                                            <%}%>
+        
+                                        <%}%>
+                                    <%}%>
+                                <%})%>
+                            </div>
+                        </div>
+                        <% if(!isSupport) {%> 
+                        <div class="chat-content__footer input-message">
+                            <a href="" class="tool"><img src="/template/front-end-new/img/message-tool_icon.svg" alt=""></a>
+                            <input type="text" id="txtMessage">
+                            <a href="" id="btnSendMessagePrivite" class="send"  _receiverID='<%=infoReceiver._id%>'>
+                                <img src="/template/front-end-new/img/message-send_icon.svg" alt="" class="wao-mb" style="margin-right: 5px;">
+                                <span class="wao-pc-inline-block">Gửi</span>
+                            </a>
+                        </div>
+                        <% }%>
+                    </div>
+                </div>
+            <%}else{%>
+                <div class="right-message">
+                    <p style="padding:20px;text-align:center;display:inline-block;width:100%;"> Bạn chưa có tin nhắn. Hãy tìm hiểu những buổi hẹn hò trên Waodate trước nhé!  <a href="/" style="color:#4e37d3">Quay lại Trang chủ </a> </p>
+                </div>
+            <%}%>
+        </div>
+    </div>
+  
+</main>

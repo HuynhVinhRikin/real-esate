@@ -1,0 +1,125 @@
+<section class="profile__banner profile__banner--user container pb-24">
+    <div class="profile__banner__container banner-has-back-btn row">
+      <div class="profile__banner__btn-back back-btn"><a href="/"><img src="/template/user/img/back.svg" alt=""></a></div>
+      <div class="profile__banner__image gradient-black br-8">
+	  	<a data-fancybox="gallery2" <%if(infoUser){%>
+              <%if(!infoUser.cover){%>
+                  href="/template/user/img/banner-blog.png" >
+              <%}else{%>
+                  href="/files/users/<%=infoUser.cover.name%>" >
+              <%}%>
+          <%}else{%>
+              <!-- todo -->
+          <%}%>>
+        <img 
+          <%if(infoUser){%>
+              <%if(!infoUser.cover){%>
+                  src="/template/user/img/banner-blog.png" alt="">
+              <%}else{%>
+                  src="/files/users/<%=infoUser.cover.name%>" alt="<%=infoUser.fullname%>">
+              <%}%>
+          <%}else{%>
+              <!-- todo -->
+          <%}%>
+		  </a>
+      </div>
+      <span class="wao-profile-edit">
+  <i class="icon-edit"></i>
+  <span class="wao-profile-edit__text">
+    Tải Ảnh
+  </span> 
+        <input type="file" name="cover__update_site" id="upload-cover" accept="image/png,image/jpeg">
+      </span>
+    </div>
+</section>
+<section class="profile-top profile-top--user pb-24">
+      <div class="container-smaller container">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="profile-top__avatar br-8">
+				
+                <%let objUser = infoUser;%>
+                <%-include ./image_RENDER.ejs%>
+                <span class="wao-profile-edit">
+                    <i class="icon-edit"></i>
+                    <span class="wao-profile-edit__text"> Tải Ảnh </span>
+                    <input type="file" name="avatar__update_site" id="upload-avatar" accept="image/png,image/jpeg">
+                  </span>
+            </div>
+          </div>
+          <div class="col-lg-8">
+            <div class="profile-top__info profile-top__info--active br-8" style="height: 100%;">
+              <div class="profile-top__info-left">
+                <h3 class="profile-top__info-name">
+                    <%=infoUser.fullname%>
+                    <span 
+                      class="<%if(infoUser.cmnd){%>
+                        tick-verify
+                    <%}%>"
+                  ><%=infoUser.age%></span>
+                </h3>
+                <div class="profile-top__info-view"><a class="user-item__location" href="#"><i class="wd-icon icon-map-pin"></i>
+                  <%if(districts){%>
+                    <%if(infoUser && !Number.isNaN(Number(infoUser.district))  && Number(infoUser.district) != -1){%>
+                        <% var infodistrict = districts[infoUser.district]%>
+                        <%if(infodistrict){%>
+                            <%=infodistrict.name_with_type%>
+                        <%}else{%>
+                          Quận/Huyện (Chưa Cập Nhật)
+                        <%}%>
+                    <%}else{%>
+                      Quận/Huyện (Chưa Cập Nhật)
+                    <%}%>
+                  <%}%> -
+                  <%if(provinces){%>
+                    <%if(infoUser && !Number.isNaN(Number(infoUser.province))  && Number(infoUser.province) != -1){%>
+                        <% var infoprovince = provinces[infoUser.province]%>
+                        <%if(infoprovince){%>
+                            <%=infoprovince.name%>
+                        <%}else{%>
+                          Quận/Huyện (Chưa Cập Nhật)
+                        <%}%>
+                    <%}else{%>
+                      Quận/Huyện (Chưa Cập Nhật)
+                    <%}%>
+                <%}%> 
+
+                </a></div>
+              </div>
+              <div class="profile-top__info-right">
+      
+                <!-- <a class="user-item__like" href="#">
+                  <i class="wd-icon fa fa-heart-o "></i>
+                </a> -->
+                <a class="user-item__message" href="/ca-nhan/tao-buoi-hen-ho" rel="nofollow" style="font-size: 2rem;background: #4e37d3;
+                padding: 10px 15px;
+                border-radius: 3px;
+                color: white;">
+					        Tạo buổi hẹn hò 
+                </a>
+              </div> 
+            </div>
+          </div>
+        </div>
+      </div>
+</section>
+<div class="popup-upload" id="popup-avatar">
+  <div class="upload-demo-wrap">
+    <div id="block-upload-avatar">
+      <div class="actions">
+        <button id="btn-result-avatar" class="upload-result">Cắt hình</button>
+        <button id="btn-cancel-avatar" class="upload-cancel">Huỷ bỏ</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="popup-upload" id="popup-cover">
+  <div class="upload-demo-wrap">
+    <div id="block-upload-cover">
+      <div class="actions">
+        <button id="btn-result-cover" class="upload-result">Cắt hình</button>
+        <button id="btn-cancel-cover" class="upload-cancel">Huỷ bỏ</button>
+      </div>
+    </div>
+  </div>
+</div>

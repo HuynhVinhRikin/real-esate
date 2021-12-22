@@ -1,0 +1,81 @@
+<div class="content-page">
+        <div class="content">
+            <div class="container-fluid">
+                <br>
+                
+                <div class="row">
+                        <div class="col-12">
+                        <div class="card m-b-20">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="table-responsive">
+                                            
+                                        <table class="content-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Tên Gói VIP</th>
+                                                        <th>Phần Trăm Hoa Hồng</th>
+                                                        <th>Thời Gian Reset (Ngày)</th>
+                                                        <th>Ngưỡng Hoa Hồng</th>
+                                                        <th>Tuỳ Chọn</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <%packagesLevel1 && packagesLevel1.length && packagesLevel1.forEach((itemPackage, index) => {%>
+                                                        <tr id="item_package_level_<%=itemPackage._id%>">
+                                                            <td><%=index+1%></td>
+                                                            <td>
+                                                                <a href="#" class="updateItemPackage_LevelSite_name" data-type="text" data-pk="1" data-title="Nhập Tiêu Đề Gói" __packageID="<%=itemPackage._id%>">
+                                                                <%if(!itemPackage.name){%>
+                                                                    0
+                                                                <%}else{%>
+                                                                    <strong><%=itemPackage.name%></strong>
+                                                                <%}%> </a> 
+                                                            </td>
+    
+                                                            <td>
+                                                                <a href="#" class="updateItemPackage_LevelSite_Commission" data-type="text" data-pk="1" data-title="Nhập Hoa Hồng" __packageID="<%=itemPackage._id%>">
+                                                                    <%if(!itemPackage.percentCommission){%>
+                                                                        0
+                                                                    <%}else{%>
+                                                                        <%=itemPackage.percentCommission%>
+                                                                    <%}%> </a> %
+                                                            </td>
+
+                                                            <td>
+                                                                <a href="#" class="updateItemPackage_LevelSite_TimeReset" data-type="text" data-pk="1" data-title="Nhập Thời Gian Reset" __packageID="<%=itemPackage._id%>">
+                                                                    <%if(!itemPackage.timeReset){%>
+                                                                        0
+                                                                    <%}else{%>
+                                                                        <%=itemPackage.timeReset%>
+                                                                    <%}%> </a>
+                                                            </td>
+
+                                                            <td>
+                                                                <a href="#" class="updateItemPackage_LevelSite_thresholdTotatlCommission" data-type="text" data-pk="1" data-title="Nhập Thời  Ngưỡng USER" __packageID="<%=itemPackage._id%>">
+                                                                    <%if(!itemPackage.thresholdTotatlCommission){%>
+                                                                        0
+                                                                    <%}else{%>
+                                                                        <%= formatCurrency('###,###.', itemPackage.thresholdTotatlCommission)%> 
+                                                                    <%}%> </a>VNĐ
+                                                            </td>
+
+                                                            <td>
+                                                                <button class="btn btn-danger btnRemovePackage" _packageID="<%=itemPackage._id%>">Xoá <i class="mdi mdi-delete" style="margin-left: 8px"></i></button>
+                                                            </td>
+    
+                                                        </tr>
+                                                    <%})%>
+                                            </tbody>
+                                        </table>
+                                            
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

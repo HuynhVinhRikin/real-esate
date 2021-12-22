@@ -1,0 +1,274 @@
+</div>
+<!-- END wrapper -->
+<!-- jQuery  -->
+    <script src="/template/admin/vertical/assets/js/jquery.min.js"></script>
+    <script src="/template/admin/vertical/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="/template/admin/vertical/assets/js/metisMenu.min.js"></script>
+    <script src="/template/admin/vertical/assets/js/jquery.slimscroll.js"></script>
+    <script src="/template/admin/vertical/assets/js/waves.min.js"></script>
+    <script src="/template/admin/plugins/jquery-sparkline/jquery.sparkline.min.js"></script>
+    <!-- <script src="/template/admin/plugins/morris/morris.min.js"></script> -->
+    <script src="/template/admin/plugins/raphael/raphael-min.js"></script>
+    <script src="/template/admin/vertical/assets/pages/dashboard.js"></script>
+    <script src="/template/admin/vertical/assets/js/app.js"></script>
+    <link rel="stylesheet" href="/template/admin/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="/template/admin/fancybox/jquery.fancybox.pack.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.fancybox').fancybox();
+        });
+    </script>
+
+    <!-- RANGE -->
+    <script src="/template/admin/plugins/select2/js/select2.min.js"></script>
+    <script src="/template/admin/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js"></script>
+    <script src="/template/admin/plugins/bootstrap-touchspin/js/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="/template/admin/plugins/ion-rangeslider/ion.rangeSlider.min.js"></script>
+    <script src="/template/admin/vertical/assets/pages/rangeslider-init.js"></script>
+    <script src="/template/admin/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
+    <script src="/template/admin/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <!-- Plugins Init js -->
+    <script src="/template/admin/vertical/assets/pages/form-advanced.js"></script>
+    <!-- <script src="/template/Summernote/summernote.js"></script>
+ -->
+
+    <script src="/template/admin/plugins/x-editable/js/bootstrap-editable.min.js"></script>
+    <script src="/template/admin/vertical/assets/pages/xeditable.js"></script>
+
+    
+
+    <script>
+        $(document).ready(function(){
+            if($(window).width() < 1025){
+              $(".admin-back-icon").css({
+                display: "none"
+              })
+            }else{
+               $(".admin-back-icon").css({
+                display: "block"
+              })
+            }
+            $("#hidden-menu").on("click", (e)=> {
+              e.preventDefault();
+              $("#hidden-menu").hide();
+              $("body").addClass("enlarged")
+            })
+
+            $("#show-menu").on("click", (e)=> {
+              e.preventDefault();
+              $("#hidden-menu").show();
+               $("body").removeClass("enlarged")
+            })
+
+            $(".updatePointField").editable({
+                type:"text",
+                pk:1,
+                name:"username",
+                title:"Enter username",
+                mode:"inline",
+                inputclass:"form-control-sm",
+                success: function(response, newVal) {
+                    if (Number.isNaN(Number(newVal))) 
+                    {
+                        alert('Vui Lòng Nhập Số');
+                        return '';
+                    }
+                    let userID = $(this).attr('__userID');
+                    let isFeature = Number(newVal);
+                    
+                    $.ajax({
+                        url: `/admin/update-feature-user/${userID}`,
+                        method: 'POST',
+                        data: { amountFeature: isFeature },
+                        success: function(resp) {
+                            if (!resp.error) return alert('Cập Nhật Thành Công');
+                            return alert('Lỗi Cập Nhật, vui lòng thử lại sau!');
+                        },
+                        error: function(err){
+                            console.log(err.message)
+                            return alert('Lỗi Cập Nhật, vui lòng thử lại sau!');
+                        }
+                    });
+                    return Number(newVal);
+                }
+            });
+
+            $(".updatePercentCommissionField").editable({
+                type:"text",
+                pk:1,
+                name:"username",
+                title:"Nhập Hoa Hồng",
+                mode:"inline",
+                inputclass:"form-control-sm",
+                success: function(response, newVal) {
+                    if (Number.isNaN(Number(newVal))) 
+                    {
+                        alert('Vui Lòng Nhập Số');
+                        return '';
+                    }
+
+                    if (Number(newVal) > 1) {
+                        alert('Vui lòng nhập % từ 0.1->1.0');
+                        return '';
+                    }
+
+                    let userID = $(this).attr('__userID');
+                    let percentCommission = Number(newVal);
+                    
+                    $.ajax({
+                        url: `/admin/update-percentcommission-user/${userID}`,
+                        method: 'POST',
+                        data: { percentCommission },
+                        success: function(resp) {
+                            console.log({ resp });
+                            if (!resp.error) return alert('Cập Nhật Thành Công');
+                            return alert('Lỗi Cập Nhật, vui lòng thử lại sau!');
+                        },
+                        error: function(err){
+                            console.log(err.message)
+                            return alert('Lỗi Cập Nhật, vui lòng thử lại sau!');
+                        }
+                    });
+                    return Number(newVal);
+                }
+            });
+
+            $(".changeStatusWithdraw").editable({
+                mode: "inline",
+                pk:1,
+                inputclass: "form-control-sm",
+                source: [{
+                    value: 0,
+                    text: "Yêu cầu xử lý"
+                }, {
+                    value: 1,
+                    text: "Đang Xử Lý"
+                }, {
+                    value: 2,
+                    text: "Xử Lý Thành Công"
+                }, {
+                    value: 3,
+                    text: "Xử Lý Thất Bại"
+                }],
+                display: function(t, e) {
+                    var n = $.grep(e, function(e) {
+                        return e.value == t
+                    });
+                    n.length ? $(this).text(n[0].text).css("color", {
+                        0: "#ec536c",
+                        1: "#f5b225",
+                        2: "#58db83",
+                        3: "#000000",
+                    } [t]) : $(this).empty()
+                },
+                success: function(response, newVal) {
+                    if (Number.isNaN(Number(newVal))) 
+                    {
+                        alert('Vui Lòng Chọn Lại');
+                        return '';
+                    }
+
+                    let transactionID = $(this).attr('__transactionID');
+                    let oldStatus = Number($(this).attr('__oldStatus'));
+                    let status = Number(newVal);
+                    // console.log({ newVal, transactionID })
+
+                    let image = $(`#imageWithdraw_${transactionID}`)[0].files[0]
+                    if(Number(newVal) == 2) {
+                        if (!image) {
+                            alert('Vui Lòng Chọn Gửi Kèm Theo Ảnh');
+                            return '';
+                        }
+                    }
+
+                    var fd = new FormData();
+
+                    fd.append('avatar', image);
+
+                    let data = { transactionID, oldStatus };
+                    fd.append('data', JSON.stringify(data));
+
+
+                    $.ajax({
+                        url: `/admin/update-status-withdraw/${status}`,
+                        method: 'POST',
+                        data: fd,
+                        contentType: false,
+				        processData: false,
+                        success: function(resp) {
+                            if (!resp.error) {
+                                alert('Cập Nhật Thành Công');
+                                return window.location = window.location.href+'?eraseCache=true';
+                            } else if (resp.error) {
+                                if (resp.message === 'must_image_with_status2') 
+                                    return alert('Vui Lòng Gửi Hình Ảnh Minh Chứng khi cập nhật THÀNH CÔNG');
+                            }
+                            return alert('Lỗi Cập Nhật, vui lòng thử lại sau!');
+                        },
+                        error: function(err){
+                            console.log(err.message)
+                            return alert('Lỗi Cập Nhật, vui lòng thử lại sau!');
+                        }
+                    });
+                }
+            })
+            
+            $(".updateTimeAliveLinkAffiliate").editable({
+                type:"text",
+                pk:1,
+                name:"username",
+                title:"Enter username",
+                mode:"inline",
+                inputclass:"form-control-sm",
+                success: function(response, newVal) {
+                    if (Number.isNaN(Number(newVal))) 
+                    {
+                        alert('Vui Lòng Nhập Số');
+                        return '';
+                    }
+                    let userID = $(this).attr('__userID');
+                    let timeAlive = Number(newVal);
+                    
+                    $.ajax({
+                        url: `/admin/update-timeAlive-user/${userID}`,
+                        method: 'POST',
+                        data: { timeAlive: timeAlive },
+                        success: function(resp) {
+                            if (!resp.error) return alert('Cập Nhật Thành Công');
+                            return alert('Lỗi Cập Nhật, vui lòng thử lại sau!');
+                        },
+                        error: function(err){
+                            console.log(err.message)
+                            return alert('Lỗi Cập Nhật, vui lòng thử lại sau!');
+                        }
+                    });
+                    return Number(newVal);
+                }
+            });
+
+        })
+    </script>
+    <!-- END SLIDE RANGE -->
+    <script src="/reload/reload.js"></script>
+    <script src="/template/toastr/index.js"></script>
+    <script>
+      toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+      }
+	</script>
+</body>
+</html>

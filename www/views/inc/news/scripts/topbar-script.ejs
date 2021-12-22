@@ -1,0 +1,32 @@
+<script>
+    const headerComponent = () => {
+        $("#expand_menu").click(() => {
+            $(".wao-menu-mobile").addClass("is-active");
+            $("#wao-back-drop-header").addClass("is-active");
+        });
+        $("#wao-back-drop-header").click(() => {
+            $(".wao-menu-mobile").removeClass("is-active");
+            $("#wao-back-drop-header").removeClass("is-active");
+        });
+    };
+    const WaoNavFixed = () => {
+        $(".wao-nav-fixed-menu").on("click", function() {
+            $(this)
+                .children(".wao-nav-fixed-subMenu")
+                .toggleClass("is-active");
+        });
+    };
+
+    const WaoMainNav = () => {
+        $(".has-sub-nav").on("click", function() {
+            $(this).toggleClass("is-active");
+        });
+    };
+    
+    $( document ).ready(function() {
+        headerComponent();
+        WaoNavFixed();
+        WaoMainNav();
+    });
+
+</script>

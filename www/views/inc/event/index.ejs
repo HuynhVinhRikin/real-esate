@@ -1,0 +1,68 @@
+<body>
+
+	<!--_______________________________HEADER_______________________________________-->
+	<button class="flat-btn hide-pc t-mobile-menu-btn"><img src="/template/images/mobile-menu.svg" alt="Menu" /></button>
+    <% include ../core/topbar.ejs %>
+
+
+
+
+	<!--_________________________________NEWS TAB______________________________-->
+	<div class="t-news">
+		<div class="container">
+			<p class="t-title">
+				Lorem Ipsum is <span class="color-blue">simply <br /> dummy</span> text of the printing.
+			</p>
+			<div class="t-news-tab">
+				<ul class="nav nav-tabs">
+					<li class="nav-item">
+						<a class="btn" href="/event"><%- lang(langKey,'all')%></a>
+					</li>
+					<% listEventTopbar.forEach(event =>{%>
+					<li class="nav-item">
+						<a class="btn" href="/event?eventID=<%=event._id%>"> <%- lang(langKey,event.slug)%></a>
+					</li>
+					<%})%>
+				</ul>
+				<div class="tab-content">
+					<!--_____________________________TAB CONTENT___________________-->
+					<div class="tab-pane fade show active" id="t-news-tab-1">
+						<div id = 'container-list-blog-event' class="t-news-item-container row">
+							<%listBlogEvent1 && listBlogEvent1.forEach((blog, index)=>{%>
+								<%if(blog._id){%>
+								<div id = "<%=blog._id%>" class="col-12 col-xl-3 col-lg-4 col-md-6 t-news-item">
+									<div class="t-product-slider-item-wrapper">
+										<div class="t-product-slider-item-img">
+											<img src="/template/images/product-img2.jpg" alt="Product">
+										</div>
+										<p class="t-product-slider-item-title">
+											<%=blog.title%> 
+										</p>
+										<div class="t-news-author">
+											<img src="/template/images/icon-people.png" alt="Author" />
+											<%=blog.author && blog.author.fullname%>
+										</div>
+										<div class="t-product-slider-item-description">
+											<%=blog.description%>
+										</div>
+										<a class="t-product-slider-item-link" href="/event/details-blog-event/?slug=<%=blog.slug%>&category=<%=blog.category._id%>"><%- lang(langKey,'details')%> <img src="/template/images/icon-arrow-right.svg" alt="Arrow" /></a>
+									</div>
+								</div>
+								<%}%>
+
+							<%})%>
+						</div>
+						<div class="t-news-show-more">
+							<button id = "btn-load-more-event"class="btn"><%- lang(langKey,'see_more')%></button>
+						</div>
+					</div>
+					<!--_____________________________TAB CONTENT___________________-->
+			
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<% include utils/event-script.ejs%>
+	<!--____________________________________REGISTER & FOOTER_______________________________________-->

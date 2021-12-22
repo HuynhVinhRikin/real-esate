@@ -1,0 +1,301 @@
+<% moment.locale('vi') %>
+<div class="content-page">
+    <div class="content">
+        <div class="container-fluid">
+        <br>
+        <br>
+            <div class="row">
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-primary">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-verified float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Tổng Số Kí Gửi <br><br></h6>
+                                <h4 class="mb-4">
+                                 20
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tổng số user mới đăng ký (trong 24h qua) -->
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-info">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-gnome float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Tổng Số Khách</h6>
+                                <h4 class="mb-4">
+                                   15
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Tổng số user bị khóa
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-danger">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-lock float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Tổng Bài Viết đang Khoá</h6>
+                                <h4 class="mb-4">
+                                    
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                <!-- Tổng số user trả phí
+                <div class="col-xl-3 col-md-6">
+                    <div class="card mini-stat bg-success">
+                        <div class="card-body mini-stat-img">
+                            <div class="mini-stat-icon"><i class="mdi mdi-diamond float-right"></i></div>
+                            <div class="text-white">
+                                <h6 class="text-uppercase mb-3">Tổng bài viết đang hoạt động</h6>
+                                <h4 class="mb-4">
+                                    
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <h4 class="mt-0 header-title">Bộ Lọc và Sắp Xếp</h4>
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <div class="col-sm-12">
+                                        <input class="form-control" type="text" placeholder="Lọc theo Tên Đất" id="txtSearch" >
+                                    </div>
+                                </div>
+                                <hr>
+                                <br>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Ngày Nhập</label>
+                                        <div class="col-md-12" >
+                                            <div class="input-daterange input-group" data-date-format="dd/mm/yyyy" id="date-range">
+                                                <input type="text" class="form-control" name="start" placeholder="Ngày Bắt Đầu" id="txtStartTime"> 
+                                                <input type="text" class="form-control" name="end" placeholder="Ngày Kết Thúc" id="txtEndTime">
+                                            </div>
+                                        </div>
+                                         <div class="col-md-12">
+                                            <div class="card m-b-20" style="margin-top: 27px;">
+                                                <select class="form-control" id="txtTag">
+                                                    <option value="-1">Lọc Theo Thổ Cư </option>
+                                                        <option value="">
+                                                            Có
+                                                        </option>
+                                                        <option value="">
+                                                            Không
+                                                        </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <div class="card m-b-20" style="margin-top: 27px;">
+                                                <select class="form-control" id="txtCategory">
+                                                    <option value="-1">Lọc Theo Thành Phố Tỉnh </option>
+                                                        <option value="" >sss</option>
+                                                </select>
+                                            </div>
+                                           
+                                            <div class="card m-b-20" style="margin-top: 27px;">
+                                                <select class="form-control" id="txtCategory">
+                                                    <option value="-1">Lọc Theo Phường/Xã </option>
+                                                        <option value="" >sss</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="card m-b-20" style="margin-top: 27px;">
+                                                <select class="form-control" id="txtCategory">
+                                                    <option value="-1">Lọc Theo Quận/Huyện </option>
+                                                        <option value="" >sss</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                       
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <div class="card m-b-20" style="margin-top: 27px;">
+                                                <select class="form-control" id="txtSort">
+                                                <option value="-1">Lọc Theo Khách</option>
+                                                <option value="1">
+                                                    Nguuyễn Thị A
+                                                </option>
+                                                <option value="0">
+                                                     Nguyễn Văn B</option>
+                                            </select>
+                                            </div>
+                                        </div>
+<!-- 
+                                        <div class="col-md-12">
+                                            <div class="card m-b-20" style="margin-top: 27px;">
+                                                <select class="form-control" id="txtView">
+                                                    <option value="-1">Lọc Theo View</option>
+                                                    <option value="amountView">
+                                                       >Lượt Xem Tăng Dần</option>
+                                                    <option value="-amountView">
+                                                      >Lượt Xem Giảm Dần</option>
+                                                </select>
+                                            </div>
+                                        </div> -->
+                                        <div class="col-md-12">
+                                            <div class="card m-b-20" style="margin-top: 27px;">
+                                                Số Lô
+                                                <div class="col-md-12" >
+                                                    <div >
+                                                        <input type="text" class="form-control" name="start" placeholder="Từ" id="txtStartTime"> 
+                                                        <input type="text" class="form-control" name="end" placeholder="Đến" id="txtEndTime">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <span class="text-center"> 
+                                        <i>
+                                                Có <strong style="color: #29bbe3">0</strong> kết quả trả về 
+                                        </i>
+                                    </span>
+                                    <button class="btn btn-info float-right" id="btnSearch">Tìm Kiếm</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="card m-b-20">
+                        <div class="card-body">
+                            <table class="content-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        STT <input type="checkbox" name="#" value="" id="checkAll">
+                                    </th>
+                                    <th>Index</th>
+                                    <th>Tên Khách</th>
+                                    <th>Tên Đất</th>
+                                    <th>Địa Chỉ</th>
+                                    <th>Số Lô</th>
+                                    <!-- <th>Mô Tả Ngắn</th> -->
+                                    <th>Diện tích</th>
+                                    <th>Thổ Cư</th>
+                                    <th>Tuỳ Chọn</th>
+                                </tr>
+                            </thead>
+                                <tbody>
+                                                <tr>
+                                                    <th>
+                                                        1 &nbsp <input type="checkbox" value="" class="ckbBlogID">
+                                                    </th>
+                                                    <td>
+                                                      <div class="form-check" style="display: flex; align-items: center;">
+                                                        <input type="checkbox" class="form-check-input index_seo" data-blog=" "
+                                                            checked
+                                                        >
+                                                      </div>
+                                                    </td>
+                                                    <td>
+                                                        <i>
+                                                            Tên Khách
+                                                        </i>
+                                                    </td>
+                                                     <td>
+                                                        <i>
+                                                            Tên Đất
+                                                        </i>
+                                                    </td>
+                                                    <td>
+                                                        <i>
+                                                            Địa chỉ
+                                                        </i>
+                                                    </td>
+                                                    <td>
+                                                        <a href="/blog/" target="_blank">
+                                                            <i>
+                                                                Số Lô
+                                                            </i>
+                                                        </a>
+                                                    </td>
+                                                    <!-- <td>
+                                                        <i>
+                                                        </i>
+                                                    </td> -->
+
+                                                    <td>
+                                                        <i>
+                                                            Diện tích
+                                                        </i>
+                                                    </td> 
+                                                     <td>
+                                                        <i>
+                                                            Thổ Cư
+                                                        </i>
+                                                    </td> 
+                                                    <td>
+                                                        <div class="btn-group mb-2">
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light" id="btnDropDownBlog_">
+                                                                Thao Tác
+                                                            </button>
+                                                            <button type="button" class="btn btn-primary waves-effect waves-light dropdown-toggle-split dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <span class="sr-only">...</span>
+                                                            </button>
+                                                            <div class="dropdown-menu" x-placement="right-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(143px, 0px, 0px);">
+                                                                <a class="dropdown-item" href="/admin/update-blog/">Sửa Thông Tin</a>
+                                                                    <a class="dropdown-item btnBlockUser btnToggleStatus" _status="1" _slug="" >Xoá</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                </tbody>
+                                <div class="row">
+                                    <div class="col-md-6"> 
+                                        <div class="dropdown mo-mb-2" id="dropdownMenuRemoveBlog" style="display: none">
+                                            <a class="btn btn-light dropdown-toggle" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Chọn Thao Tác
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 33px, 0px);">
+                                                <a class="dropdown-item" id="btnRemoveWithListBlog" href="#">Xóa</a>
+                                                <a class="dropdown-item btnUpdateWithListBlog" _status="0" href="#">Tắt Hoạt Động</a>
+                                                <a class="dropdown-item btnUpdateWithListBlog" _status="1" href="#">Mở Hoạt Động</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!-- PAGING (WEB ADMIN) -->
+                                        <!--END PAGING (WEB ADMIN) -->
+                                    </div>
+                                </div>
+                            </table>
+                            <!-- PAGING (WEB ADMIN) -->
+                            <!--END PAGING (WEB ADMIN) -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+<script>
+    $(document).ready(function(){
+        
+        <% if (search) { %>
+            <% if(search.status){ %>
+                $('#txtSort').val(<%= search.status%>);
+            <% } %>
+        <% } %> 
+
+        let getFormSearchAndFilter = ()=>{
+            let key = $('#txtSearch').val();
+            let status = $('#txtSort').val();
+            let amountItemShow = $('#select_datatable_length').val();
+
+            return { key, status, amountItemShow };
+        }
+
+         $('#btnSearch').on('click', function(e){
+            e.preventDefault();
+            let { key, status, amountItemShow } = getFormSearchAndFilter();
+            let uri = `/admin/list-withdraw?`;
+            if(key && key.length > 0) uri += `&key=${key}`;
+            if(status != -1 && !Number.isNaN(Number(status))) uri += `&status=${status}`;
+            <%- include ./checkPerPageCurrent.ejs %>
+            return window.location.href = uri;
+        })
+    })
+</script>

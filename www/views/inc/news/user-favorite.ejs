@@ -1,0 +1,210 @@
+<!-- ////////////// Begin Main ////////////// -->
+<main>
+    <div class="wao-wrapper">
+        <div class="wao-favorite">
+            <div class="container wao-container">
+                <h1 class="title_icon">
+                    <i class="icon">
+                        <img src="/template/front-end-new/img/favorite/title_icon.svg" alt="">
+                    </i>
+                    <span>Yêu thích của bạn</span>
+                </h1>
+                <div class="wao-favorite-wrapper">
+                    <ul class="favorite-tags">
+                        <li>
+                            <a href="#date" class="wao-btn active">Buổi hẹn</a>
+                        </li>
+                        <li>
+                            <a href="#user" class="wao-btn">Bạn đã thích</a>
+                        </li>
+                        <li>
+                            <a href="#favorite" class="wao-btn">Yêu thích bạn</a>
+                        </li>
+                    </ul>
+                    <div id="date" class="wao-date-card-list active">
+                        
+                        <%if(concepts && concepts.length > 0){%>
+                        <%concepts.forEach((concept, i) => {%>
+                            <% if (i < 5 || isPayer) { %> 
+                            <%-include ./utils/concept/item_concept.ejs%>
+                            <% } else if (i == concepts.length - 1) {%>
+                                <h4 style="text-align: center;">
+                                    Bạn vui lòng<a style="margin: 0 5px" href="/goi-dich-vu">nâng cấp tài khoản</a>để xem thêm 
+                                    <span style="color: #4e37d3; font-size: 20px;"><%- concepts.length - 5 %></span> cuộc hẹn bạn đã thích
+                                </h4>
+                            <% } %>  
+                        <%})%>
+                        <%}else{%>
+                        <strong>Bạn chưa thích buổi hẹn nào</strong>
+                        <%}%>
+                    </div>
+                    <div id="user" class="wao-user-card-list wao-date-card-list">
+                        <%if(infoUserWithConcept && infoUserWithConcept.usersMeLike && infoUserWithConcept.usersMeLike.length > 0) {%>
+                        <% let infoUser = infoUserWithConcept; %>
+                        <%infoUserWithConcept.usersMeLike.forEach((user, i) => {%>
+                            <% if (i < 5 || isPayer) { %> 
+                                <%- include ./utils/user/item-user__USERS.ejs%>
+                                <% } else if (i == infoUserWithConcept.usersMeLike.length - 1 && infoUserWithConcept.usersMeLike.length > 5) {%>
+                                    <h4 style="text-align: center;">
+                                        Bạn vui lòng<a style="margin: 0 5px" href="/goi-dich-vu">nâng cấp tài khoản</a>để xem thêm 
+                                        <span style="color: #4e37d3; font-size: 20px;"><%- infoUserWithConcept.usersMeLike.length - 5 %></span> người bạn thích
+                                    </h4>
+                                <% } %> 
+                        <% })%>
+                        <%}else{%>
+                        <strong style="width: 100%; text-align: center;">
+                            Hiện bạn chưa thích ai
+                        </strong>
+                        <%}%>
+                    </div>
+                    <div id="favorite" class="wao-user-card-list wao-date-card-list">
+                        <%if(infoUserWithConcept && infoUserWithConcept.usersLikedMe && infoUserWithConcept.usersLikedMe.length > 0) {%>
+                        <%infoUserWithConcept.usersLikedMe.forEach((user, i) => {%>
+                            <% if (i < 2 || isPayer) { %> 
+                                <%- include ./utils/user/item-user__USERS.ejs%>
+                                <% } else if (i == infoUserWithConcept.usersLikedMe.length - 1 && infoUserWithConcept.usersLikedMe.length > 2) {%>
+                                    <h4 style="text-align: center;">
+                                        Bạn vui lòng<a style="margin: 0 5px" href="/goi-dich-vu">nâng cấp tài khoản</a>để xem thêm 
+                                        <span style="color: #4e37d3; font-size: 20px;"><%- infoUserWithConcept.usersLikedMe.length - 2 %></span> người thích bạn
+                                    </h4>
+                                <% } %> 
+                        <% })%>
+                        <%}else{%>
+                        <strong style="width: 100%; text-align: center;">
+                            Hiện chưa có ai thích bạn
+                        </strong>
+                        <%}%>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- [Minh] 7:40PM 24/05/2020 
+<!-- *** Already in footer / Just paste here to use (because this is before footer) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script>
+    $('.favorite-tags a').on('click', function (e) {
+        e.preventDefault()
+        $('.favorite-tags a').removeClass('active')
+        $(this).addClass('active')
+        $('.wao-favorite').find('.wao-date-card-list').removeClass('active')
+        $($(this).attr('href')).addClass('active')
+    });
+</script>
+
+<style>
+    .wao-favorite {
+        padding-top: 30px;
+    }
+    .wao-favorite h1 {
+        font-size: 16px;
+        line-height: 22px;
+        margin-bottom: 50px;
+    }
+    .wao-favorite h1 img {
+        max-width: 100%;
+    }
+    .wao-favorite h1 .icon {
+        display: inline-block;
+        width: 14px;
+    }
+    .wao-favorite-wrapper {
+        max-width: 875px;
+        margin: 0 auto;
+    }
+
+    /* Change style for concept-item */
+    hr {
+        display: none;
+    }
+
+    .right-card {
+        flex-grow: 1;
+    }
+
+    .card-content .title::after {
+        content: '';
+        width: 100%;
+        height: 1px;
+        background-color: #9A9A9A;
+        display: block;
+        margin: 14px 0;
+    }
+
+    @media only screen and (min-width: 320px) {
+        footer {
+            padding-bottom: 100px !important;
+        }
+        .favorite-tags > li {
+            align-self: stretch;
+        }
+        .favorite-tags a {
+            height: 100%;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    @media only screen and (min-width: 320px) and (max-width: 450px) {
+        .wao-date-card .card-user {
+            width: 100% !important;
+            flex-direction: column !important;
+            margin: 0 0 20px !important;
+        }
+        .wao-date-card .card-user .user-img.card-img, .wao-date-card .card-user .user-left {
+            width: 100px !important;
+            min-width: 100px !important;
+        }
+        .wao-date-card .card-user .user-right{
+            width: 100% !important;
+            max-width: 100% !important;
+            padding: 10px 0 !important;
+        }
+        .wao-date-card .card-user p.name {
+            width: 100% !important;
+            text-align: center !important;
+        }
+        .wao-date-card .card-user ul.meta {
+            text-align: center !important; 
+        }
+        .wao-favorite .right-top-card {
+            position: relative;
+        }
+        .likeConcept {
+            position: absolute;
+            top: 0;
+            right: 0;
+        }
+    }
+    
+    @media only screen and (min-width: 992px) {
+        .wao-favorite h1 {
+            font-size: 24px;
+            line-height: 33px;
+        }
+        .wao-favorite h1 .icon {
+            width: 24px;
+        }
+        .wao-favorite h1 span {
+            display: inline-block;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        .wao-favorite h1 span:after {
+            position: absolute;
+            height: 4px;
+            background: #000;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            content: "";
+        }
+        .favorite-tags a {
+            border-radius: 40px;
+        }
+    }
+    
+</style>

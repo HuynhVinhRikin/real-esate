@@ -1,0 +1,50 @@
+<!-- ////////////// Begin Main ////////////// -->
+<main>
+    <div class="wao-wrapper">
+        <div class="wao-date-buy">
+            <div class="container wao-container wao-buy-container">
+                <h1 class="text-center">Mua lượt hiển thị</h1>
+                <div class="wao-buy-card-list row wao-buy-card__row">
+                        <%buyViewsPackage && buyViewsPackage.length > 0 && buyViewsPackage.forEach((itemPackage, index) => {%>
+                            <div class="col-lg-4 wao-buy-card__col btnSubmitRequestBuyView"  style="cursor: pointer;">
+                                <div class="wao-buy-card">
+                                    <p class="wao-buy-card__meta">
+                                        <b><%=itemPackage.title%></b><br>
+                                        <span><%=itemPackage.subTitle%></span>
+                                    </p>
+                                    <p class="wao-buy-card__price">
+                                        <%-itemPackage.textPoint%>
+                                    </p>
+                                    <ul class="wao-buy-card__info">
+                                        <%-itemPackage.description%>
+                                    </ul>
+                                    <a _idViewPackage="<%= itemPackage._id && itemPackage._id%>" href="#" class="wao-btn wao-btn-outline2">
+                                        <%=itemPackage.textPrice%>
+                                    </a>
+                                </div>
+                            </div>
+                        <%})%>
+                </div>
+
+                <div style="display: flex; justify-content: center;">
+					<a href="/ca-nhan/lich-su-mua-hang"  class="wao-btn-history">Lịch sử mua hàng</a>
+				</div>
+
+
+            </div>
+		</div>
+		
+		<ul class="note-list">
+			<!-- <li data-aos="fade-up">
+				<p>Mua  lượt hiển thị để tiếp cận dễ dàng với hàng nghìn thành viên khác.</p>
+			</li> -->
+			<!-- <li data-aos="fade-up" data-aos-delay="100">
+				<p>Tăng cơ hội để “Buổi hẹn hò” của bạn nhận được hàng nghìn lượt quan tâm, yêu thích mỗi ngày.</p>
+			</li> -->
+			<!-- <li >
+				<p>Giúp bạn nhanh chóng tìm được “nửa kia” hợp gu, ưng ý.</p>
+			</li> -->
+		</ul>
+	</div>
+    <!-- <%- include ./utils/banner-ads-small.ejs%> -->
+</main>

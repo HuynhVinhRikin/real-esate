@@ -1,0 +1,64 @@
+<script>
+    $(document).ready(() => {
+
+        let get_idViewPackage;
+        $('.overlayPopupPay').on('click', function () {
+            $('div.popupPay').removeClass("active");
+            $('div.popupPayKhac').removeClass('active');
+            $('div.overlayPopupPay').removeClass('active');
+            $('div#tawkchat-container').removeClass('active');
+        });
+        $('#closePopupPay').on('click', function () {
+            $('div.popupPay').removeClass("active");
+            $('div.overlayPopupPay').removeClass('active');
+            $('div#tawkchat-container').removeClass('active');
+        });
+        $('#closePopupPayKhac').on('click', function () {
+            $('div.popupPayKhac').removeClass('active');
+            $('div.overlayPopupPay').removeClass('active');
+            $('div#tawkchat-container').removeClass('active');
+        });
+        $('a.wao-btn').on('click', function () {
+            $('.popupPay').addClass('active');
+            $('div.overlayPopupPay').addClass('active');
+            // $('div#tawkchat-container').addClass('active');
+            $('div#tawkchat-container').attr('style', 'display : none !important');
+            get_idViewPackage =$(this).attr('_idViewPackage');
+        });
+        $('.payKhac').on('click', function () {
+            $('.popupPayKhac').addClass('active');
+            $('.popupPay').removeClass('active');
+        });
+        $('#backPopupPay').on('click', function () {
+            $('.popupPay').addClass('active');
+            $('.popupPayKhac').removeClass('active');
+        });
+
+        $('.payBaoKim').on('click', function () {
+            const _idViewPackage = get_idViewPackage;
+            let token = localStorage.getItem('token_waodate');
+                if (!token) {
+                    alert('Vui Lòng Đăng Nhập');
+                    return window.location.href = '/dang-nhap'
+                }
+
+                $.ajax({
+                    url: `/ca-nhan/yeu-cau-thanh-toan-vnpay/${_idViewPackage}`,
+                    method: 'GET',
+                    success: function (resp) {
+                        console.log(resp)
+                        /* if (resp.error) {
+                            if (resp.message === `redirect_url_clear_session`)
+                                return window.location.href = '/clear-session';
+                            return alert(message.error);
+                        } else if (!resp.error) {
+                            // console.log({ resp });
+                            const { paymentURL_Sandbox } = resp.data;
+                            return window.location.href = paymentURL_Sandbox;
+                        } */
+                        return window.location.href = resp.data
+                    },
+                })
+        })
+    })
+</script>

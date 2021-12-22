@@ -1,0 +1,175 @@
+<% include layout/admin/head.ejs %>
+<%- include(render.inc) %>
+<% include layout/admin/footer.ejs %>
+<script src="/template/scripts/main.js" type="text/javascript"></script>
+
+
+<%if (render.inc == 'inc/admin/add-blog.ejs'){%>
+<!-- <script src="/template/ckeditor/ckeditor.js"></script> -->
+<script src="/template/ckeditor2/ckeditor.js"></script>
+
+<!-- <script src="https://cdn.ckeditor.com/ckeditor5/12.3.1/decoupled-document/ckeditor.js"></script> -->
+<%- include inc/admin/scripts/add-blog-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/list-blog.ejs'){%>
+<%- include inc/admin/scripts/list-blog-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/add-category.ejs'){%>
+<%- include inc/admin/scripts/add-category-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/list-category.ejs'){%>
+<%- include inc/admin/scripts/list-category-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/add-tagging.ejs'){%>
+<%- include inc/admin/scripts/add-tagging-script.ejs %>
+<%}%>
+<%if (render.inc == 'inc/admin/add-shortcode.ejs'){%>
+<%- include inc/admin/scripts/add-shortcode-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/list-tagging.ejs'){%>
+<%- include inc/admin/scripts/list-tagging-script.ejs %>
+<%}%>
+<%if (render.inc == 'inc/admin/list-shortcode.ejs'){%>
+<%- include inc/admin/scripts/list-shortcode-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/list-user'){%>
+<%- include inc/admin/scripts/list-user-script.ejs %>
+<%- include inc/admin/scripts/export-csv-non-utf8.ejs %> 
+<%}%>
+
+<%if (render.inc == 'inc/admin/info-user'){%>
+<%- include inc/admin/scripts/info-user-script.ejs %>
+
+<script src="/template/admin/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/template/admin/plugins/datatables/dataTables.bootstrap4.min.js"></script>
+<script src="/template/admin/plugins/datatables/dataTables.buttons.min.js"></script>
+<script src="/template/admin/plugins/datatables/buttons.bootstrap4.min.js"></script>
+<script src="/template/admin/plugins/datatables/jszip.min.js"></script>
+<script src="/template/admin/plugins/datatables/pdfmake.min.js"></script>
+<script src="/template/admin/plugins/datatables/vfs_fonts.js"></script>
+<script src="/template/admin/plugins/datatables/buttons.html5.min.js"></script>
+<script src="/template/admin/plugins/datatables/buttons.print.min.js"></script>
+<script src="/template/admin/plugins/datatables/buttons.colVis.min.js"></script>
+<!-- Responsive examples -->
+<script src="/template/admin/plugins/datatables/dataTables.responsive.min.js"></script>
+<script src="/template/admin/plugins/datatables/responsive.bootstrap4.min.js"></script>
+
+<%- include inc/admin/scripts/info-user-datatable.ejs %>
+
+<%}%>
+
+<%if (render.inc == 'inc/admin/list-notis.ejs'){%>
+<script src="/template/admin/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/template/admin/plugins/datatables/dataTables.bootstrap4.min.js"></script>
+<script src="/template/admin/plugins/datatables/dataTables.buttons.min.js"></script>
+<script src="/template/admin/plugins/datatables/buttons.bootstrap4.min.js"></script>
+<script src="/template/admin/plugins/datatables/jszip.min.js"></script>
+<script src="/template/admin/plugins/datatables/pdfmake.min.js"></script>
+<script src="/template/admin/plugins/datatables/vfs_fonts.js"></script>
+<script src="/template/admin/plugins/datatables/buttons.html5.min.js"></script>
+<script src="/template/admin/plugins/datatables/buttons.print.min.js"></script>
+<script src="/template/admin/plugins/datatables/buttons.colVis.min.js"></script>
+<!-- Responsive examples -->
+<script src="/template/admin/plugins/datatables/dataTables.responsive.min.js"></script>
+<script src="/template/admin/plugins/datatables/responsive.bootstrap4.min.js"></script>
+
+<%- include inc/admin/scripts/list-notis-datatable.ejs %>
+
+<%}%>
+
+<%if (render.inc == 'inc/admin/create-group-admin.ejs'){%>
+<%- include inc/admin/scripts/create-group-admin-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/list-admin.ejs'){%>
+<%- include inc/admin/scripts/list-admin-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/create-admin.ejs'){%>
+<%- include inc/admin/scripts/create-admin-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/list-concept.ejs'){%>
+<%- include inc/admin/scripts/list-concept-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/info-concept.ejs'){%>
+<%- include inc/admin/scripts/info-concept-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/list-recharge.ejs'){%>
+<%- include inc/admin/scripts/list-recharge-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/list-pricing-package.ejs'){%>
+<%- include inc/admin/scripts/list-pricing-package-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/config-system.ejs'){%>
+<%- include inc/admin/scripts/config-system-script.ejs %>
+<%}%>
+<%if (render.inc == 'inc/admin/list-features.ejs'){%>
+<%- include inc/admin/scripts/list-features-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/add-menu.ejs'){%>
+<%- include inc/admin/scripts/add-menu-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/list-menu.ejs'){%>
+<%- include inc/admin/scripts/list-menu-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/list-report-user.ejs'){%>
+<%- include inc/admin/scripts/list-report-user-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/list-report-concept.ejs'){%>
+<%- include inc/admin/scripts/list-report-concept-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/add-package-level.ejs'){%>
+<%- include inc/admin/scripts/add-package-level-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/list-package-level.ejs'){%>
+<%- include inc/admin/scripts/list-package-level-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/noti-detail-flow.ejs'){%>
+<%- include inc/admin/scripts/noti-detail-flow-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/user-verify.ejs'){%>
+<%- include inc/admin/scripts/user-verify-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/add-user-blog.ejs'){%>
+<%- include inc/admin/scripts/add-user-blog-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/list-influencer.ejs'){%>
+<%- include inc/admin/scripts/list-influencer-script.ejs %>
+<%}%>
+
+<%if (render.inc == 'inc/admin/list-withdraw.ejs'){%>
+<%- include inc/admin/scripts/list-withdraw-script.ejs %>
+<%}%>
+
+
+<script>
+    $(document).ready(function () {
+        $('body').on('click', '#btnLogout', function (e) {
+            e.preventDefault();
+            localStorage.removeItem('token_admin');
+
+            window.location.href = '/admin/destroy-session';
+        })
+    })
+</script>

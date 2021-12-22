@@ -1,0 +1,73 @@
+<div class="wrapper">
+    <!-- header -->
+    <%-include ./utils/header_BLOG.ejs%>
+	<section id="page-content" class="page-wrapper">
+		<div class="zm-section  xs-pt-30 sm-pt-30 pt-30 pb-40">
+		<div class="container">
+		<div class="row pb-40">
+			<div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 columns">
+				<div class="category-parent__title">
+					<h1 class="h1" style="margin-left:5px"> <%=infoContent && infoContent.title %></h1>
+				</div>
+				<% if (infoContent && infoContent.description) { %>
+					<div class="category-parent__description">
+						<p><%=infoContent && infoContent.description %></p>
+					</div>
+				<% } %>
+				
+				<%for (let i in listBlogs) {%>
+					<% var index = Object.keys(listBlogs).indexOf(i)%>
+					<%# category parennt nêú thằng đầu tiên thì title h3%>
+					<%# category parennt những thằng còn lại thì title h4%>
+					<% if (index == 0) { %>
+					 	<div class="row mb-40">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="section-title">
+								<h2 class="h6 header-color inline-block uppercase">
+									<%let itemCategory_i = categoryChilds.find(item => item._id.toString() === i.toString())%>
+									<%=itemCategory_i && itemCategory_i.title %>
+								</h2>
+							</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="zm-posts clearfix">
+								<%listBlogs[i].length > 0 && listBlogs[i].forEach((blogInfo, index) => {%>
+									<%-include ./utils/item_h3_CATEGORY_col-4.ejs%>
+								<%})%>
+							</div>
+						</div>
+						<a href="/blog/<%=itemCategory_i && itemCategory_i.slug %>" style="float:right; color:#be0e73">Xem thêm...</a>
+					<% }else{ %>
+						<div class="row mb-40">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+							<div class="section-title">
+								<h2 class="h6 header-color inline-block uppercase">
+									<%let itemCategory_i = categoryChilds.find(item => item._id.toString() === i.toString())%>
+									<%=itemCategory_i && itemCategory_i.title %>
+								</h2>
+							</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="zm-posts clearfix">
+								<%listBlogs[i].length > 0 && listBlogs[i].forEach((blogInfo, index) => {%>
+									<%-include ./utils/item_CATEGORY_col-4.ejs%>
+								<%})%>
+							</div>
+						</div>
+						<a href="/blog/<%=itemCategory_i && itemCategory_i.slug %>" style="float:right; color:#be0e73">Xem thêm...</a>
+					<% } %>
+				<%}%>
+				
+			</div>
+			<%-include ./utils/right_bar__BLOG_DETAIL.ejs%>
+		</div>
+	</section>
+    <!-- Start footer area -->
+    <div id="footer-sidebar1">
+    
+</div>
+    <%-include ./utils/widget-footer.ejs%>
+    <!-- End footer area -->
+</div>
